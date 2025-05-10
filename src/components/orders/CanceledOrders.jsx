@@ -32,9 +32,16 @@ const CanceledOrders = () => {
   
     
     // Filtering
-    const filteredOrders = orders.filter((order) =>
-        order?.order?.orderId?.toLowerCase().includes(searchTerm.toLowerCase())
-      )
+    const filteredOrders = orders.filter((order) => {
+        const term = searchTerm.toLowerCase();
+        return (
+            order?.order?.customer?.name?.toLowerCase().includes(term) ||
+            order?.product?.name?.toLowerCase().includes(term) ||
+            order?.price?.toString().toLowerCase().includes(term) ||
+            order?.quantity?.toString().toLowerCase().includes(term) 
+           
+        );
+      });
       
   
     // Pagination logic
@@ -94,11 +101,11 @@ const CanceledOrders = () => {
       <tbody>
         {currentItems.length > 0 ? (
           currentItems.map((order) => (
-            <tr key={order.order.orderIdEvent}>
-                <td>{order.order.customer.name}</td>
-                <td>{order.product.name}</td>
-                <td>{order.quantity}</td>
-                <td>{order.price}</td>
+            <tr key={order?.order?.orderIdEvent}>
+                <td>{order?.order?.customer?.name}</td>
+                <td>{order?.product?.name}</td>
+                <td>{order?.quantity}</td>
+                <td>{order?.price}</td>
                 <td>a faire</td>
                 <td>
                     <button className="btn btn-outline-warning btn-sm" onClick={() => viewOrder(order.order.orderIdEvent)}>
