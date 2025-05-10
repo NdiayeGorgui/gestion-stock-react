@@ -1,0 +1,27 @@
+/* Pour s'assurer que toute la hauteur de l'écran est utilisée */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Conteneur principal de l'app en colonne */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Le bloc entre le header et le footer doit prendre tout l'espace restant */
+.content-wrap {
+  flex: 1;
+  padding: 20px; /* facultatif */
+}
+
+/* Footer stylé */
+.footer {
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+}

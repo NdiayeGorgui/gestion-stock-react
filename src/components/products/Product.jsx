@@ -1,0 +1,197 @@
+
+import React, { useState, useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom';
+import { createProduct, getProduct, updateProduct } from '../../services/ProductService';
+
+const Product = () => {
+
+    const [name, setName] = useState('')
+    const [category, setCategory] = useState('')
+    const [price, setPrice] = useState('')
+    const [qty, setQty] = useState('')
+    const [qtyStatus, setQtyStatus] = useState('');
+
+    
+
+    const {id} = useParams();
+    const [errors, setErrors] = useState({
+        name: '',
+        category: '',
+        price: '',
+        qty: ''
+    })
+
+    const navigator = useNavigate();
+
+    useEffect(() => {
+
+        if(id){
+            getProduct(id).then((response) => {
+                setName(response.data.name);
+                setCategory(response.data.category);
+                setPrice(response.data.price);
+                setQty(response.data.qty);
+                setQtyStatus(response.data.qtyStatus);
+
+            }).catch(error => {
+                console.error(error);
+            })
+        }
+
+    }, [id])
+
+
+    function saveOrUpdateProduct(e){
+        e.preventDefault();
+
+        if(validateForm()){
+
+            const product = {name, category, qty, price, qtyStatus}
+            console.log(product)
+
+            if(id){
+                updateProduct(id, product).then((response) => {
+                    console.log(response.data);
+                    navigator('/admin/products');
+                    window.location.reload(); // recharge toute la page
+                }).catch(error => {
+                    console.error(error);
+                })
+            } else {
+                createProduct(product).then((response) => {
+                    console.log(response.data);
+                    navigator('/admin/products')
+                    window.location.reload(); // recharge toute la page
+                }).catch(error => {
+                    console.error(error);
+                })
+            }
+        }
+    }
+
+    function validateForm(){
+        let valid = true;
+
+        const errorsCopy = {... errors}
+
+        if(name.trim()){
+            errorsCopy.name = '';
+        } else {
+            errorsCopy.name = 'Product name is required';
+            valid = false;
+        }
+
+        if(category.trim()){
+            errorsCopy.category = '';
+        } else {
+            errorsCopy.category = 'Product category is required';
+            valid = false;
+        }
+
+        if(String(price).trim() && !isNaN(price)){
+            errorsCopy.price = '';
+        } else {
+            errorsCopy.price = 'Product price is required';
+            valid = false;
+        }
+
+        if(String(qty).trim() && !isNaN(qty)){
+            errorsCopy.qty = '';
+        } else {
+            errorsCopy.qty = 'Product quantity is required';
+            valid = false;
+        }
+
+        setErrors(errorsCopy);
+        
+        return valid;
+
+    }
+    function pageTitle(){
+        if(id){
+            return <h2 className='text-center'>Update Product</h2>
+        }else{
+            return <h2 className='text-center'>Add Product</h2>
+        }
+    }
+
+
+  return (
+    <div className='container'>
+    <br /> <br />
+    <div className='row'>
+        <div className='card col-md-6 offset-md-3 offset-md-3'>
+           {
+                pageTitle()
+           }
+            <div className='card-body'>
+                <form>
+                    <div className='form-group mb-2'>
+                        <label className='form-label'>Name:</label>
+                        <input
+                            type='text'
+                            placeholder='Enter Product Name'
+                            name='name'
+                            value={name}
+                            className={`form-control ${ errors.name ? 'is-invalid': '' }`}
+                            onChange={(e) => setName(e.target.value)}
+                        >
+                        </input>
+                        { errors.name && <div className='invalid-feedback'> { errors.name} </div> }
+                    </div>
+
+                    <div className='form-group mb-2'>
+                        <label className='form-label'>Category:</label>
+                        <input
+                            type='text'
+                            placeholder='Enter Product category'
+                            name='category'
+                            value={category}
+                            className={`form-control ${ errors.category ? 'is-invalid': '' }`}
+                            onChange={(e) => setCategory(e.target.value)}
+                        >
+                        </input>
+                        { errors.category && <div className='invalid-feedback'> { errors.category} </div> }
+                    </div>
+
+                    <div className='form-group mb-2'>
+                        <label className='form-label'>Price:</label>
+                        <input
+                            type='text'
+                            placeholder='Enter Product price'
+                            name='price'
+                            value={price}
+                            className={`form-control ${ errors.price ? 'is-invalid': '' }`}
+                            onChange={(e) => setPrice(e.target.value)}
+                        >
+                        </input>
+                        { errors.price && <div className='invalid-feedback'> { errors.price} </div> }
+                    </div>
+
+                    <div className='form-group mb-2'>
+                        <label className='form-label'>Quantity:</label>
+                        <input
+                            type='text'
+                            placeholder='Enter Product quantity'
+                            name='qty'
+                            value={qty}
+                            className={`form-control ${ errors.qty ? 'is-invalid': '' }`}
+                            onChange={(e) => setQty(e.target.value)}
+                        >
+                        </input>
+                        { errors.qty && <div className='invalid-feedback'> { errors.qty} </div> }
+                    </div>
+
+                    <button className='btn btn-success' onClick={saveOrUpdateProduct} >Submit</button>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+  )
+}
+
+export default Product
