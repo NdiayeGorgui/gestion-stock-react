@@ -28,7 +28,11 @@ const CreatedOrders = () => {
   
   
     function viewOrder(orderIdEvent) {
-      navigator(`/admin/orderDetails/${orderIdEvent}`)
+      navigator(`/admin/created-order-details/${orderIdEvent}`)
+    }
+
+    function createPayment(orderIdEvent) {
+      navigator(`/admin/create-payment/${orderIdEvent}`)
     }
   
     
@@ -96,7 +100,7 @@ const CreatedOrders = () => {
       <thead>
         <tr>
           <th>Customer</th><th>Product</th><th>Quantity</th><th>Price</th>
-          <th>payment</th><th>Details</th>
+          <th>Payment</th><th>Details</th>
         </tr>
       </thead>
       <tbody>
@@ -107,7 +111,11 @@ const CreatedOrders = () => {
                 <td>{order?.product?.name}</td>
                 <td>{order?.quantity}</td>
                 <td>{order?.price}</td>
-                <td>a faire</td>
+                <td>
+                    <button className="btn btn-outline-warning btn-sm" onClick={() => createPayment(order.order.orderIdEvent)}>
+                    <i className="bi bi-eye"></i>
+                    </button>
+                </td>
                 <td>
                     <button className="btn btn-outline-warning btn-sm" onClick={() => viewOrder(order.order.orderIdEvent)}>
                     <i className="bi bi-eye"></i>

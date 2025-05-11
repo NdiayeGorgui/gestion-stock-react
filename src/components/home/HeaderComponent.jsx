@@ -87,7 +87,7 @@ const HeaderComponent = () => {
             </span>
           </li>
           <li className="nav-item">
-            <Link to="/login" className="btn btn-sm btn-outline-light ms-2">
+            <Link to="/admin/login" className="btn btn-sm btn-outline-light ms-2">
               <i className="bi bi-box-arrow-right"></i> Logout
             </Link>
           </li>

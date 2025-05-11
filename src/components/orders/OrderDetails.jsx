@@ -40,14 +40,14 @@ const OrderDetails = () => {
 
         {/* Colonne 1 - Commande */}
         <div className='col-md-4'>
-          <h5 className='text-primary'>Commande</h5>
+          <h5 className='text-primary'>Order</h5>
           <div className='form-group mb-3'>
             <label className='fw-bold'>Order IdEvent:</label>
             <input type='text' value={order?.orderIdEvent || ''} className='form-control' readOnly />
           </div>
           <div className='form-group mb-3'>
             <label className='fw-bold'>Order Id:</label>
-            <input type='text' value={order?.orderId || ''} className='form-control' readOnly />
+            <input type='text' value={order?.id || ''} className='form-control' readOnly />
           </div>
           <div className='form-group mb-3'>
             <label className='fw-bold'>Date:</label>
@@ -65,7 +65,7 @@ const OrderDetails = () => {
 
         {/* Colonne 2 - Client */}
         <div className='col-md-4'>
-          <h5 className='text-success'>Client</h5>
+          <h5 className='text-success'>Customer</h5>
           <div className='form-group mb-3'>
             <label className='fw-bold'>Customer Id:</label>
             <input type='text' value={customer?.customerIdEvent || ''} className='form-control' readOnly />
@@ -90,7 +90,7 @@ const OrderDetails = () => {
 
         {/* Colonne 3 - Produit */}
         <div className='col-md-4'>
-          <h5 className='text-danger'>Produit</h5>
+          <h5 className='text-danger'>Product</h5>
           <div className='form-group mb-3'>
             <label className='fw-bold'>Product IdEvent:</label>
             <input type='text' value={productIdEvent} className='form-control' readOnly />

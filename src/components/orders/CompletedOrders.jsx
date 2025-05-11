@@ -92,8 +92,7 @@ const CompletedOrders = () => {
     <table className="table table-striped table-bordered">
       <thead>
         <tr>
-          <th>Customer</th><th>Product</th><th>Quantity</th><th>Price</th>
-          <th>payment</th><th>Details</th>
+          <th>Customer</th><th>Product</th><th>Quantity</th><th>Price</th><th>Details</th>
         </tr>
       </thead>
       <tbody>
@@ -104,7 +103,6 @@ const CompletedOrders = () => {
                 <td>{order?.product?.name}</td>
                 <td>{order?.quantity}</td>
                 <td>{order?.price}</td>
-                <td>a faire</td>
                 <td>
                     <button className="btn btn-outline-warning btn-sm" onClick={() => viewOrder(order.order.orderIdEvent)}>
                     <i className="bi bi-eye"></i>

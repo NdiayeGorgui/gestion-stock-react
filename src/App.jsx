@@ -31,6 +31,8 @@ import Bills from './components/bills/Bills'
 import Bill from './components/bills/Bill'
 import Payments from './components/payments/Payments'
 import OrderDetails from './components/orders/OrderDetails'
+import CreatePayment from './components/payments/CreatePayment'
+import OrderCreatedDetails from './components/orders/OrderCreatedDetails'
 
 
 
@@ -58,11 +60,13 @@ function App() {
               <Route path="bill/:id" element={<Bill />} />
               <Route path="payments" element={<Payments />} />
               <Route path="payment/:id" element={<Payment />} />
+              <Route path="create-payment/:id" element={<CreatePayment />} />
               <Route path="profile" element={<Profile />} />
               <Route path="chat-bot" element={<ChatBot />} />
               <Route path="home" element={<Home />} />
               <Route path="login" element={<Login />} />
               <Route path="orderDetails/:id" element={<OrderDetails />} />
+              <Route path="created-order-details/:id" element={<OrderCreatedDetails />} />
               <Route path="created-orders" element={<CreatedOrders />} />
               <Route path="completed-orders" element={<CompletedOrders />} />
               <Route path="canceled-orders" element={<CanceledOrders />} />
