@@ -7,7 +7,7 @@ const Customers = () => {
 
   const [customers, setCustomers] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
-  const [itemsPerPage, setItemsPerPage] = useState(5)
+  const [itemsPerPage, setItemsPerPage] = useState(10)
   const [searchTerm, setSearchTerm] = useState('')
 
   const navigator = useNavigate()
@@ -121,9 +121,9 @@ const Customers = () => {
               setCurrentPage(1)
             }}
           >
-            <option value={5}>5</option>
             <option value={10}>10</option>
             <option value={20}>20</option>
+            <option value={40}>40</option>
           </select>
           entries
         </div>

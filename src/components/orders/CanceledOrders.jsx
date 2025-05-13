@@ -5,7 +5,7 @@ import { listCanceledOrders } from '../../services/OrderSrvice'
 const CanceledOrders = () => {
   const [orders, setOrders] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
-  const [itemsPerPage, setItemsPerPage] = useState(5)
+  const [itemsPerPage, setItemsPerPage] = useState(10)
   const [searchTerm, setSearchTerm] = useState('')
 
   const navigator = useNavigate()
@@ -83,9 +83,10 @@ const CanceledOrders = () => {
               setCurrentPage(1)
             }}
           >
-            <option value={5}>5</option>
+            
             <option value={10}>10</option>
             <option value={20}>20</option>
+            <option value={40}>40</option>
           </select>
           entries
         </div>
