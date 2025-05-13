@@ -64,7 +64,7 @@ const Products = () => {
       }
     });
   }
-  
+
 
   // Filtering
   const filteredProducts = products.filter((product) => {
@@ -144,17 +144,17 @@ const Products = () => {
                 <td>{product.qtyStatus}</td>
                 <td>{product.status}</td>
                 <td>
-                    <button className="btn btn-outline-info btn-sm me-2" onClick={() => updateProduct(product.productIdEvent)}>
-                        <i className="bi bi-pencil-square"></i>
-                    </button>
+                  <button className="btn btn-outline-info btn-sm me-2" onClick={() => updateProduct(product.productIdEvent)}>
+                    <i className="bi bi-pencil-square"></i>
+                  </button>
 
-                    <button className="btn btn-outline-danger btn-sm me-2" onClick={() => removeProduct(product.productIdEvent)}>
-                        <i className="bi bi-trash"></i>
-                    </button>
+                  <button className="btn btn-outline-danger btn-sm me-2" onClick={() => removeProduct(product.productIdEvent)}>
+                    <i className="bi bi-trash"></i>
+                  </button>
 
-                    <button className="btn btn-outline-warning btn-sm" onClick={() => viewProduct(product.productIdEvent)}>
-                      <i className="bi bi-eye"></i>
-                    </button>
+                  <button className="btn btn-outline-warning btn-sm" onClick={() => viewProduct(product.productIdEvent)}>
+                    <i className="bi bi-eye"></i>
+                  </button>
 
                 </td>
               </tr>
@@ -169,38 +169,38 @@ const Products = () => {
 
       {/* Pagination buttons */}
       {totalPages > 1 && (
-  <nav>
-    <ul className="pagination justify-content-center">
-      <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-        <button className="page-link" onClick={() => setCurrentPage(1)} disabled={currentPage === 1}>
-          ⏮ First
-        </button>
-      </li>
-      <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-        <button className="page-link" onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
-          ← Previous
-        </button>
-      </li>
+        <nav>
+          <ul className="pagination justify-content-center">
+            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+              <button className="page-link" onClick={() => setCurrentPage(1)} disabled={currentPage === 1}>
+                ⏮ First
+              </button>
+            </li>
+            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+              <button className="page-link" onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
+                ← Previous
+              </button>
+            </li>
 
-      <li className="page-item disabled">
-        <span className="page-link">
-          Page {currentPage} sur {totalPages}
-        </span>
-      </li>
+            <li className="page-item disabled">
+              <span className="page-link">
+                Page {currentPage} sur {totalPages}
+              </span>
+            </li>
 
-      <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-        <button className="page-link" onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages}>
-          Next →
-        </button>
-      </li>
-      <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-        <button className="page-link" onClick={() => setCurrentPage(totalPages)} disabled={currentPage === totalPages}>
-          Last ⏭
-        </button>
-      </li>
-    </ul>
-  </nav>
-)}
+            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+              <button className="page-link" onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages}>
+                Next →
+              </button>
+            </li>
+            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+              <button className="page-link" onClick={() => setCurrentPage(totalPages)} disabled={currentPage === totalPages}>
+                Last ⏭
+              </button>
+            </li>
+          </ul>
+        </nav>
+      )}
     </div>
   )
 }

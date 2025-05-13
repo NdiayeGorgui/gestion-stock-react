@@ -5,3 +5,4 @@ const REST_API_BILL_BASE_URL='http://localhost:8888/payment-service/api/v1/payme
 export const listPayments = () => axios.get(REST_API_BASE_URL);
 
 export const getPayment = (paymentIdEvent) => axios.get(REST_API_BASE_URL + '/' + paymentIdEvent);
+export const createPayment = (payment) => axios.post(REST_API_BASE_URL,payment );

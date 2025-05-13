@@ -33,6 +33,7 @@ import Payments from './components/payments/Payments'
 import OrderDetails from './components/orders/OrderDetails'
 import CreatePayment from './components/payments/CreatePayment'
 import OrderCreatedDetails from './components/orders/OrderCreatedDetails'
+import OrderEvents from './components/orders/OrderEvents'
 
 
 
@@ -60,6 +61,7 @@ function App() {
               <Route path="bill/:id" element={<Bill />} />
               <Route path="payments" element={<Payments />} />
               <Route path="payment/:id" element={<Payment />} />
+              
               <Route path="create-payment/:id" element={<CreatePayment />} />
               <Route path="profile" element={<Profile />} />
               <Route path="chat-bot" element={<ChatBot />} />
@@ -70,6 +72,7 @@ function App() {
               <Route path="created-orders" element={<CreatedOrders />} />
               <Route path="completed-orders" element={<CompletedOrders />} />
               <Route path="canceled-orders" element={<CanceledOrders />} />
+              <Route path="order-events" element={<OrderEvents />} />
               <Route path="ships" element={<Ships />} />
               <Route path="ship/:id" element = { <Ship /> }/>
               <Route path="delivers" element={<Delivers />} />

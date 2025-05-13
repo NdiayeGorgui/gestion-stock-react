@@ -20,10 +20,10 @@ const SidebarComponent = () => {
           <Link className="nav-link" to="/admin/create-order">🛒 Create Orders</Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/admin/ships">🚚 Ships</Link>
+          <Link className="nav-link" to="/admin/ships">🚚 Ship Orders</Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/admin/delivers">📬 Delivers</Link>
+          <Link className="nav-link" to="/admin/delivers">📬 Deliver Orders</Link>
         </li>
         <li className="nav-item">
           <Link className="nav-link" to="/admin/bills">💰 View Bills</Link>
@@ -31,7 +31,10 @@ const SidebarComponent = () => {
         <li className="nav-item">
           <Link className="nav-link" to="/admin/payments">💳 View Payments</Link>
         </li>
-        
+        <li className="nav-item">
+          <Link className="nav-link" to="/admin/order-events">📬 View Order Events</Link>
+        </li>
+
       </ul>
     </div>
   )
