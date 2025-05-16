@@ -9,21 +9,18 @@ import Swal from 'sweetalert2';
 const CreateOrder = () => {
   const [customers, setCustomers] = useState([]);
   const [products, setProducts] = useState([]);
-
   const [selectedClientId, setSelectedClientId] = useState('');
   const [selectedClient, setSelectedClient] = useState(null);
-
   const [selectedProductId, setSelectedProductId] = useState('');
   const [selectedProduct, setSelectedProduct] = useState(null);
-
   const [itemQty, setItemQty] = useState(1);
   const [amount, setAmount] = useState(0);
   const [tax, setTax] = useState(0);
   const [discount, setDiscount] = useState(0);
-
   const [orderItems, setOrderItems] = useState([]);
-  const navigator = useNavigate();
   const [showCart, setShowCart] = useState(false);
+  const [showPaymentButton, setShowPaymentButton] = useState(false);
+  const navigator = useNavigate();
 
 
   useEffect(() => {
@@ -59,21 +56,22 @@ const CreateOrder = () => {
   }, [selectedProductId, products]);
 
   useEffect(() => {
+  const calculateTotals = async () => {
     if (selectedProduct && itemQty > 0) {
       const price = Number(selectedProduct.price);
       const qty = Number(itemQty);
-      const total = qty * price;
+      const totalHT = price * qty;
 
-      const calculatedTax = total * 0.2;
+      const calculatedTax = totalHT * 0.2;
 
       let calculatedDiscount = 0;
-      if (total >= 200) {
-        calculatedDiscount = total * 0.01;
-      } else if (total >= 100) {
-        calculatedDiscount = total * 0.005;
+      if (totalHT >= 200) {
+        calculatedDiscount = totalHT * 0.01;
+      } else if (totalHT >= 100) {
+        calculatedDiscount = totalHT * 0.005;
       }
 
-      const calculatedAmount = total + calculatedTax - calculatedDiscount;
+      const calculatedAmount = totalHT + calculatedTax - calculatedDiscount;
 
       setTax(calculatedTax);
       setDiscount(calculatedDiscount);
@@ -83,7 +81,11 @@ const CreateOrder = () => {
       setDiscount(0);
       setAmount(0);
     }
-  }, [selectedProduct, itemQty]);
+  };
+
+  calculateTotals();
+}, [selectedProduct, itemQty]);
+
 
 
   const addProductToOrder = () => {
@@ -114,10 +116,9 @@ const CreateOrder = () => {
   const totalAmount = orderItems.reduce((sum, item) => sum + item.amount, 0);
   const totalTax = orderItems.reduce((sum, item) => sum + item.tax, 0);
   const totalDiscount = orderItems.reduce((sum, item) => sum + item.discount, 0);
+  const totalPrice = orderItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
-  function gotoCreatedOrders() {
-    navigator('/admin/created-orders');
-  }
+
 
   const handleSubmitOrder = () => {
     if (!selectedClient || orderItems.length === 0) {
@@ -136,7 +137,7 @@ const CreateOrder = () => {
         productQty: item.qty,
       },
     }));
-    
+
 
     Promise.all(ordersToSend.map(order => createOrder(order)))
       .then(() => {
@@ -154,6 +155,15 @@ const CreateOrder = () => {
     <Container className="mt-4">
       <Row className="justify-content-between align-items-center mb-3">
         <Col><h2>New Order</h2></Col>
+        <Col>
+          {showPaymentButton && (
+            <div className="text-center mt-4">
+              <Button variant="success" size="lg" onClick={() => navigator('/admin/created-orders')}>
+                💳 Proceed to Payment
+              </Button>
+            </div>
+          )}
+        </Col>
         <Col className="text-end">
           <Button
             variant="outline-primary"
@@ -167,6 +177,7 @@ const CreateOrder = () => {
           </Button>
 
         </Col>
+
       </Row>
 
       <Form>
@@ -218,11 +229,11 @@ const CreateOrder = () => {
               ))}
             </Form.Select>
           </Col>
-          <Col md={3}>
+          <Col md={4}>
             <Form.Label><b>Product Name</b></Form.Label>
             <Form.Control value={selectedProduct?.name || ''} readOnly />
           </Col>
-          <Col md={3}>
+          <Col md={4}>
             <Form.Label><b>Price ($)</b></Form.Label>
             <Form.Control value={selectedProduct?.price || ''} readOnly />
           </Col>
@@ -275,7 +286,7 @@ const CreateOrder = () => {
               <tr key={idx}>
                 <td>{item.name}</td>
                 <td>{item.qty}</td>
-                <td>{item.amount.toFixed(2)} $</td>
+                <td>{item.price.toFixed(2)*item.qty} $</td>
                 <td>{item.tax.toFixed(2)} $</td>
                 <td>{item.discount.toFixed(2)} $</td>
                 <td>
@@ -291,106 +302,113 @@ const CreateOrder = () => {
         {/* Totals */}
         <Row>
           <Col className="text-end">
-            <h5>Amount : {totalAmount.toFixed(2)} $</h5>
+            <h6>Total Amount HT: {totalPrice.toFixed(2)} $</h6>
             <h6>Total Tax : {totalTax.toFixed(2)} $</h6>
             <h6>Total Discount: {totalDiscount.toFixed(2)} $</h6>
+            <h5>Amount : {totalAmount.toFixed(2)} $</h5>
+
           </Col>
         </Row>
 
       </Form>
       {/* 🛒 Cart Modal */}
       <Modal show={showCart} onHide={() => setShowCart(false)} size="lg">
-  <Modal.Header closeButton>
-    <Modal.Title>🛒 Order Summary</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-    {orderItems.length === 0 ? (
-      <p>No products added.</p>
-    ) : (
-      <>
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>Product</th>
-              <th>Qty</th>
-              <th>Amount</th>
-              <th>Tax</th>
-              <th>Discount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orderItems.map((item, idx) => (
-              <tr key={idx}>
-                <td>{item.name}</td>
-                <td>{item.qty}</td>
-                <td>{item.amount.toFixed(2)} $</td>
-                <td>{item.tax.toFixed(2)} $</td>
-                <td>{item.discount.toFixed(2)} $</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-        <h6>Total Amount: {totalAmount.toFixed(2)} $</h6>
-        <h6>Total Tax: {totalTax.toFixed(2)} $</h6>
-        <h6>Total Discount: {totalDiscount.toFixed(2)} $</h6>
-      </>
-    )}
-  </Modal.Body>
-  <Modal.Footer>
-    <Button variant="secondary" onClick={() => setShowCart(false)}>
-      Close
-    </Button>
-    <Button
-      variant="success"
-      disabled={orderItems.length === 0 || !selectedClient}
-      onClick={() => {
-        Swal.fire({
-          title: 'Confirm Order',
-          text: 'Are you sure you want to submit this order?',
-          icon: 'question',
-          showCancelButton: true,
-          confirmButtonColor: '#28a745',
-          cancelButtonColor: '#d33',
-          
-          confirmButtonText: 'Yes, submit it!',
-          heightAuto: false,  // 👈 Désactive la hauteur auto
-          width: '400px',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            const ordersToSend = orderItems.map((item) => ({
-              customer: {
-                customerIdEvent: selectedClient.customerIdEvent,
-              },
-              product: {
-                productIdEvent: item.productIdEvent,
-              },
-              productItem: {
-                productQty: item.qty,
-              },
-            }));
-        
-            Promise.all(ordersToSend.map(order => createOrder(order)))
-              .then(() => {
-                Swal.fire('Success!', 'Order(s) successfully created.', 'success');
-                setOrderItems([]);
-                setSelectedClientId('');
-                setSelectedClient(null);
-                setShowCart(false);
-                navigator('/admin/created-orders', { state: { refresh: true } });
-              })
-              .catch((error) => {
-                console.error("Failed to create order(s):", error);
-                Swal.fire('Error', 'An error occurred while creating the order(s).', 'error');
-              });
+        <Modal.Header closeButton>
+          <Modal.Title>🛒 Order Summary</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {orderItems.length === 0 ? (
+            <p>No products added.</p>
+          ) : (
+            <>
+              <Table striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Amount</th>
+                    <th>Tax</th>
+                    <th>Discount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {orderItems.map((item, idx) => (
+                    <tr key={idx}>
+                      <td>{item.name}</td>
+                      <td>{item.qty}</td>
+                      <td>{item.price.toFixed(2)*item.qty} $</td>
+                      <td>{item.tax.toFixed(2)} $</td>
+                      <td>{item.discount.toFixed(2)} $</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+              <h6>Total Amount HT: {totalPrice.toFixed(2)} $</h6>
+              <h6>Total Tax: {totalTax.toFixed(2)} $</h6>
+              <h6>Total Discount: {totalDiscount.toFixed(2)} $</h6>
+              <h6>Total Amount: {totalAmount.toFixed(2)} $</h6>
+
+            </>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowCart(false)}>
+            Close
+          </Button>
+          <Button
+  variant="success"
+  disabled={orderItems.length === 0 || !selectedClient}
+  onClick={() => {
+    Swal.fire({
+      title: 'Confirm Order',
+      text: 'Are you sure you want to submit this order?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, submit it!',
+      heightAuto: false,
+      width: '400px',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const ordersToSend = orderItems.map((item) => ({
+          customer: {
+            customerIdEvent: selectedClient.customerIdEvent,
+          },
+          product: {
+            productIdEvent: item.productIdEvent,
+          },
+          productItem: {
+            productQty: item.qty,
+          },
+        }));
+
+        try {
+          for (let i = 0; i < ordersToSend.length; i++) {
+            await createOrder(ordersToSend[i]);
+            await new Promise((resolve) => setTimeout(resolve, 300)); // ⏱️ Délai entre chaque commande
           }
-        });
-        
-      }}
-    >
-      ✅ Place Order
-    </Button>
-  </Modal.Footer>
-</Modal>
+
+          Swal.fire('Success!', 'Order(s) successfully created.', 'success');
+          setOrderItems([]);
+          setSelectedClientId('');
+          setSelectedClient(null);
+          setShowCart(false);
+          setShowPaymentButton(true);
+        } catch (error) {
+          console.error("Failed to create order(s):", error);
+          Swal.fire('Error', 'An error occurred while creating the order(s).', 'error');
+        }
+      }
+    });
+  }}
+>
+  ✅ Place Order
+</Button>
+
+        </Modal.Footer>
+      </Modal>
+
 
     </Container>
   );

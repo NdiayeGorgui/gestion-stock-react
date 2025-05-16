@@ -103,7 +103,7 @@ const CompletedOrders = () => {
                 <td>{order?.order?.customer?.name}</td>
                 <td>{order?.product?.name}</td>
                 <td>{order?.quantity}</td>
-                <td>{order?.price}</td>
+                <td>{order?.price.toFixed(2)}</td>
                 <td>
                   <button className="btn btn-outline-warning btn-sm" onClick={() => viewOrder(order.order.orderIdEvent)}>
                     <i className="bi bi-eye"></i>

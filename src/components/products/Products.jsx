@@ -118,7 +118,7 @@ const Products = () => {
               setCurrentPage(1)
             }}
           >
-            
+
             <option value={10}>10</option>
             <option value={20}>20</option>
             <option value={40}>40</option>
@@ -140,9 +140,20 @@ const Products = () => {
               <tr key={product.id}>
                 <td>{product.name}</td>
                 <td>{product.category}</td>
-                <td>{product.price}</td>
+                <td>{product.price.toFixed(2)}</td>
                 <td>{product.qty}</td>
-                <td>{product.qtyStatus}</td>
+                <td>
+                  <td>
+                    {product.qtyStatus === 'UNAVAILABLE' ? (
+                      <span className="text-danger fw-bold">OUT OF STOCK</span>
+                    ) : product.qtyStatus === 'LOW' ? (
+                      <span className="text-warning fw-bold">LOW STOCK</span>
+                    ) : (
+                      <span>{product.qtyStatus}</span>
+                    )}
+                  </td>
+
+                </td>
                 <td>{product.status}</td>
                 <td>
                   <button className="btn btn-outline-info btn-sm me-2" onClick={() => updateProduct(product.productIdEvent)}>

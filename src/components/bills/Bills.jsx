@@ -85,7 +85,7 @@ const Bills = () => {
               setCurrentPage(1)
             }}
           >
-            
+
             <option value={10}>10</option>
             <option value={20}>20</option>
             <option value={40}>40</option>
@@ -108,8 +108,9 @@ const Bills = () => {
                 <td>{bill.customerName}</td>
                 <td>{bill.productName}</td>
                 <td>{bill.quantity}</td>
-                <td>{bill.price}</td>
-                <td>{bill.discount}</td>
+                <td>{bill.price.toFixed(2)}</td>
+                <td>{bill.discount.toFixed(2)}</td>
+
                 <td>{new Date(bill.billingDate).toLocaleDateString('fr-FR')}</td>
                 <td>{bill.status}</td>
                 <td>

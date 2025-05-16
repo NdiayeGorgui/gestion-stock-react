@@ -155,7 +155,7 @@ const CreatedOrders = () => {
                   )}
                   <td>{order?.product?.name}</td>
                   <td>{order?.quantity}</td>
-                  <td>{order?.price}</td>
+                  <td>{order?.price.toFixed(2)}</td>
                   {index === 0 && (
                     <>
                       <td className="align-middle " rowSpan={group.length}>

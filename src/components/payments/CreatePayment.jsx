@@ -36,7 +36,7 @@ const CreatePayment = () => {
       setCustomer(customerRes.data);     // ✅ Ici
       setAmountDto(amountRes.data);     // ✅ Et ici
     } catch (error) {
-      console.error('Erreur lors du chargement des données:', error);
+      console.error('Error loading data:', error);
     }
   };
 
@@ -48,18 +48,18 @@ const handleSubmit = async (e) => {
     Swal.fire({
       icon: 'warning',
       title: 'Attention',
-      text: 'Veuillez sélectionner un mode de paiement.',
+      text: 'Please select a payment method.',
     });
     return;
   }
 
   Swal.fire({
     title: 'Confirmation',
-    text: 'Voulez-vous confirmer le paiement et imprimer la facture ?',
+    text: 'Would you like to confirm the payment and print the invoice?',
     icon: 'question',
     showCancelButton: true,
-    confirmButtonText: 'Oui, imprimer',
-    cancelButtonText: 'Annuler',
+    confirmButtonText: 'Yes, print',
+    cancelButtonText: 'Cancel',
   }).then(async (result) => {
     if (result.isConfirmed) {
       try {
@@ -88,7 +88,7 @@ const handleSubmit = async (e) => {
         Swal.fire({
           icon: 'success',
           title: 'Succès',
-          text: 'Paiement effectué et facture imprimée.',
+          text: 'Payment made and invoice printed.',
         }).then(() => {
           navigate('/admin/payments');
         });
@@ -96,15 +96,13 @@ const handleSubmit = async (e) => {
         console.error('Erreur :', error);
         Swal.fire({
           icon: 'error',
-          title: 'Erreur',
-          text: 'Une erreur est survenue lors de l\'impression ou du paiement.',
+          title: 'Error',
+          text: 'An error occurred while printing or paying.',
         });
       }
     }
   });
 };
-
-
 
   return (
     <div className='container mt-5'>
