@@ -19,7 +19,7 @@ jobs:
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18.x  # Vite compatible (ajuste si nécessaire)
+          node-version: 18.x
           cache: 'npm'
 
       - name: 📦 Install dependencies
@@ -47,11 +47,6 @@ jobs:
         with:
           name: react-build
           path: dist/
-
-      - name: 📄 Copy dist/ to expected location
-        run: |
-          rm -rf ./dist
-          mv dist ./ # pour que COPY fonctionne dans Dockerfile
 
       - name: 🔨 Build Docker Image
         run: |
