@@ -1,0 +1,67 @@
+name: CI/CD React + Vite + Docker
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x  # Vite compatible (ajuste si nécessaire)
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🏗 Build React (Vite) App
+        run: npm run build
+
+      - name: 📂 Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: react-build
+          path: dist/
+
+  docker:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
+
+      - name: 📂 Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: react-build
+          path: dist/
+
+      - name: 📄 Copy dist/ to expected location
+        run: |
+          rm -rf ./dist
+          mv dist ./ # pour que COPY fonctionne dans Dockerfile
+
+      - name: 🔨 Build Docker Image
+        run: |
+          docker build -t gorgui/stock-web-app-react:latest .
+
+      - name: 🔑 Login to Docker Hub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: 📤 Push Docker Image
+        run: |
+          docker tag gorgui/stock-web-app-react:latest gorgui/stock-web-app-react:${{ github.sha }}
+          docker push gorgui/stock-web-app-react:${{ github.sha }}
+          docker push gorgui/stock-web-app-react:latest
