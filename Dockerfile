@@ -23,7 +23,10 @@ RUN rm -rf /usr/share/nginx/html/*
 # Copy the build output from Vite
 COPY --from=build /usr/local/app/dist /usr/share/nginx/html
 
-# Expose port 
+# Copy custom nginx config to handle React routing
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose port
 EXPOSE 4300
 
 # Start nginx
