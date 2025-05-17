@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createDeliver, getDeliver } from '../../services/DeliverService';
+import Swal from 'sweetalert2';
 
 const Deliver = () => {
   const [orderId, setOrderId] = useState('');
@@ -33,29 +34,44 @@ const Deliver = () => {
     }
   }, [id]);
 
-  const handleDeliver = (e) => {
-    e.preventDefault();
+const handleDeliver = (e) => {
+  e.preventDefault();
 
-    const deliver = {
-      orderId,
-      customerId,
-      customerName,
-      customerMail,
-      eventTimeStamp,
-      paymentId, // ✅ obligatoire pour que le backend valide
-      status
-    };
-
-    createDeliver(deliver)
-      .then((response) => {
-        console.log(response.data);
-        navigator('/admin/delivers');
-        window.location.reload();
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  const deliver = {
+    orderId,
+    customerId,
+    customerName,
+    customerMail,
+    eventTimeStamp,
+    paymentId,
+    status
   };
+
+  Swal.fire({
+    title: 'Confirm delivery ?',
+    text: 'Are you sure you want to create this delivery ?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, deliver',
+    cancelButtonText: 'Cancel',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      createDeliver(deliver)
+        .then((response) => {
+          console.log(response.data);
+          Swal.fire('Success', 'The delivery has been created.', 'success').then(() => {
+            navigator('/admin/delivers');
+            window.location.reload();
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          Swal.fire('Error', "Creation failed.", 'error');
+        });
+    }
+  });
+};
+
 
   return (
     <div className='container'>

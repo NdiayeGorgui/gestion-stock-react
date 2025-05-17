@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { createShip, getShip } from '../../services/ShippingService';
+import Swal from 'sweetalert2';
 
 const Ship = () => {
 
@@ -37,29 +38,44 @@ const Ship = () => {
   }, [id]);
 
   const handleShip = (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const ship = {
-      orderId,
-      customerId,
-      customerName,
-      customerMail,
-      eventTimeStamp,
-      paymentId, // ✅ obligatoire pour que le backend valide
-      status,
-      details
-    };
-
-    createShip(ship)
-      .then((response) => {
-        console.log(response.data);
-        navigator('/admin/ships');
-        window.location.reload();
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  const ship = {
+    orderId,
+    customerId,
+    customerName,
+    customerMail,
+    eventTimeStamp,
+    paymentId,
+    status,
+    details
   };
+
+  Swal.fire({
+    title: 'Confirm shipment?',
+    text: 'Are you sure you want to create this shipment?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, ship',
+    cancelButtonText: 'Cancel',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      createShip(ship)
+        .then((response) => {
+          console.log(response.data);
+          Swal.fire('Success', 'The expedition has been created.', 'success').then(() => {
+            navigator('/admin/ships');
+            window.location.reload();
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          Swal.fire('Error', "Creation failed.", 'error');
+        });
+    }
+  });
+};
+
 
 
   return (
