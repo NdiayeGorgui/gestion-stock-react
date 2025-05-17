@@ -80,51 +80,61 @@ const Ship = () => {
 
   return (
     <div className='container'>
-    <br /><br />
-    <div className='row'>
-      <div className='card col-md-6 offset-md-3'>
-        <h2 className='text-center'>Ship Order</h2>
-        <div className='card-body'>
-          <form>
-            <div className='form-group mb-2'>
-              <label className='form-label fw-bold'>Order Id:</label>
-              <input type='text' name='orderId' value={orderId} className='form-control' readOnly />
-            </div>
-            <div className='form-group mb-2'>
-              <label className='form-label fw-bold'>Customer Id:</label>
-              <input type='text' name='customerId' value={customerId} className='form-control' readOnly />
-            </div>
-            <div className='form-group mb-2'>
-              <label className='form-label fw-bold'>Customer Name:</label>
-              <input type='text' name='customerName' value={customerName} className='form-control' readOnly />
-            </div>
-            <div className='form-group mb-2'>
-              <label className='form-label fw-bold'>Customer Email:</label>
-              <input type='text' name='customerMail' value={customerMail} className='form-control' readOnly />
-            </div>
-            <div className='form-group mb-2'>
-              <label className='form-label fw-bold'>Date:</label>
-              <input type='text' name='eventTimeStamp' value={eventTimeStamp} className='form-control' readOnly />
-            </div>
-            <div className='form-group mb-2'>
-              <label className='form-label fw-bold'>Status:</label>
-              <input type='text' name='status' value={status} className='form-control' readOnly />
+  <br /><br />
+  <div className='row'>
+    <div className='card col-md-8 offset-md-2'>
+      <h2 className='text-center'>Ship Order</h2>
+      <div className='card-body'>
+        <form>
+          <div className='row'>
+            {/* Colonne 1 */}
+            <div className='col-md-6'>
+              <div className='form-group mb-3'>
+                <label className='form-label fw-bold'>Order Id:</label>
+                <input type='text' name='orderId' value={orderId} className='form-control' readOnly />
+              </div>
+              <div className='form-group mb-3'>
+                <label className='form-label fw-bold'>Date:</label>
+                <input type='text' name='eventTimeStamp' value={eventTimeStamp} className='form-control' readOnly />
+              </div>
+              <div className='form-group mb-3'>
+                <label className='form-label fw-bold'>Status:</label>
+                <input type='text' name='status' value={status} className='form-control' readOnly />
+              </div>
             </div>
 
-            <div className='text-center mt-4'>
-              <button
-                className='btn btn-success w-50'
-                onClick={handleShip}
-                disabled={status !== 'SHIPPING'}
-              >
-                Ship
-              </button>
+            {/* Colonne 2 */}
+            <div className='col-md-6'>
+              <div className='form-group mb-3'>
+                <label className='form-label fw-bold'>Customer Id:</label>
+                <input type='text' name='customerId' value={customerId} className='form-control' readOnly />
+              </div>
+              <div className='form-group mb-3'>
+                <label className='form-label fw-bold'>Customer Name:</label>
+                <input type='text' name='customerName' value={customerName} className='form-control' readOnly />
+              </div>
+              <div className='form-group mb-3'>
+                <label className='form-label fw-bold'>Customer Email:</label>
+                <input type='text' name='customerMail' value={customerMail} className='form-control' readOnly />
+              </div>
             </div>
-          </form>
-        </div>
+          </div>
+
+          <div className='text-center mt-4'>
+            <button
+              className='btn btn-success w-50'
+              onClick={handleShip}
+              disabled={status !== 'SHIPPING'}
+            >
+              Ship
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
+</div>
+
   )
 }
 

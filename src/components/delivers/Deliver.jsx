@@ -7,11 +7,10 @@ const Deliver = () => {
   const [orderId, setOrderId] = useState('');
   const [customerId, setCustomerId] = useState('');
   const [customerName, setCustomerName] = useState('');
-  const [customerMail, setCustomerMail] = useState(''); // ✅ Correction ici
+  const [customerMail, setCustomerMail] = useState('');
   const [eventTimeStamp, setEventTimeStamp] = useState('');
   const [status, setStatus] = useState('');
   const [paymentId, setPaymentId] = useState('');
-
 
   const { id } = useParams();
   const navigator = useNavigate();
@@ -23,10 +22,10 @@ const Deliver = () => {
           setOrderId(response.data.orderId);
           setCustomerId(response.data.customerId);
           setCustomerName(response.data.customerName);
-          setCustomerMail(response.data.customerMail); 
+          setCustomerMail(response.data.customerMail);
           setEventTimeStamp(response.data.eventTimeStamp);
           setStatus(response.data.status);
-          setPaymentId(response.data.paymentId); // ✅ Important
+          setPaymentId(response.data.paymentId);
         })
         .catch((error) => {
           console.error(error);
@@ -34,82 +33,92 @@ const Deliver = () => {
     }
   }, [id]);
 
-const handleDeliver = (e) => {
-  e.preventDefault();
+  const handleDeliver = (e) => {
+    e.preventDefault();
 
-  const deliver = {
-    orderId,
-    customerId,
-    customerName,
-    customerMail,
-    eventTimeStamp,
-    paymentId,
-    status
-  };
+    const deliver = {
+      orderId,
+      customerId,
+      customerName,
+      customerMail,
+      eventTimeStamp,
+      paymentId,
+      status,
+    };
 
-  Swal.fire({
-    title: 'Confirm delivery ?',
-    text: 'Are you sure you want to create this delivery ?',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, deliver',
-    cancelButtonText: 'Cancel',
-  }).then((result) => {
-    if (result.isConfirmed) {
-      createDeliver(deliver)
-        .then((response) => {
-          console.log(response.data);
-          Swal.fire('Success', 'The delivery has been created.', 'success').then(() => {
-            navigator('/admin/delivers');
-            window.location.reload();
+    Swal.fire({
+      title: 'Confirm delivery ?',
+      text: 'Are you sure you want to create this delivery ?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, deliver',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        createDeliver(deliver)
+          .then(() => {
+            Swal.fire('Success', 'The delivery has been created.', 'success').then(() => {
+              navigator('/admin/delivers');
+              window.location.reload();
+            });
+          })
+          .catch((error) => {
+            console.error(error);
+            Swal.fire('Error', 'Creation failed.', 'error');
           });
-        })
-        .catch((error) => {
-          console.error(error);
-          Swal.fire('Error', "Creation failed.", 'error');
-        });
-    }
-  });
-};
-
+      }
+    });
+  };
 
   return (
     <div className='container'>
       <br /><br />
-      <div className='row'>
-        <div className='card col-md-6 offset-md-3'>
-          <h2 className='text-center'>Deliver Order</h2>
+      <div className='row justify-content-center'>
+        <div className='card col-md-10'>
+          <h2 className='text-center mt-3'>Deliver Order</h2>
           <div className='card-body'>
-            <form>
-              <div className='form-group mb-2'>
-                <label className='form-label fw-bold'>Order Id:</label>
-                <input type='text' name='orderId' value={orderId} className='form-control' readOnly />
-              </div>
-              <div className='form-group mb-2'>
-                <label className='form-label fw-bold'>Customer Id:</label>
-                <input type='text' name='customerId' value={customerId} className='form-control' readOnly />
-              </div>
-              <div className='form-group mb-2'>
-                <label className='form-label fw-bold'>Customer Name:</label>
-                <input type='text' name='customerName' value={customerName} className='form-control' readOnly />
-              </div>
-              <div className='form-group mb-2'>
-                <label className='form-label fw-bold'>Customer Email:</label>
-                <input type='text' name='customerMail' value={customerMail} className='form-control' readOnly />
-              </div>
-              <div className='form-group mb-2'>
-                <label className='form-label fw-bold'>Date:</label>
-                <input type='text' name='eventTimeStamp' value={eventTimeStamp} className='form-control' readOnly />
-              </div>
-              <div className='form-group mb-2'>
-                <label className='form-label fw-bold'>Status:</label>
-                <input type='text' name='status' value={status} className='form-control' readOnly />
+            <form onSubmit={handleDeliver}>
+              <div className='row'>
+                {/* Colonne 1 */}
+                <div className='col-md-6'>
+                  <div className='form-group mb-3'>
+                    <label className='form-label fw-bold'>Order Id:</label>
+                    <input type='text' value={orderId} className='form-control' readOnly />
+                  </div>
+                  
+                  <div className='form-group mb-3'>
+                    <label className='form-label fw-bold'>Date:</label>
+                    <input type='text' value={eventTimeStamp} className='form-control' readOnly />
+                  </div>
+                  <div className='form-group mb-3'>
+                    <label className='form-label fw-bold'>Status:</label>
+                    <input type='text' value={status} className='form-control' readOnly />
+                  </div>
+                </div>
+
+                {/* Colonne 2 */}
+                <div className='col-md-6'>
+                  <div className='form-group mb-3'>
+                    <label className='form-label fw-bold'>Customer Id:</label>
+                    <input type='text' value={customerId} className='form-control' readOnly />
+                  </div>
+                  <div className='form-group mb-3'>
+                    <label className='form-label fw-bold'>Customer Name:</label>
+                    <input type='text' value={customerName} className='form-control' readOnly />
+                  </div>
+                  <div className='form-group mb-3'>
+                    <label className='form-label fw-bold'>Customer Email:</label>
+                    <input type='text' value={customerMail} className='form-control' readOnly />
+                  </div>
+                  
+                </div>
               </div>
 
+              {/* Bouton centré */}
               <div className='text-center mt-4'>
                 <button
+                  type='submit'
                   className='btn btn-success w-50'
-                  onClick={handleDeliver}
                   disabled={status !== 'DELIVERING'}
                 >
                   Deliver

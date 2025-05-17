@@ -20,12 +20,11 @@ html, body, #root {
 
 /* Footer stylé */
 .footer {
-  background-color: black;
-  color: white;
+  background-color: rgb(241, 240, 238);
+  color: rgb(19, 4, 4);
   text-align: center;
   padding: 1rem;
 }
-.small-swal {
-  width: 250px !important;
-}
+
+
 

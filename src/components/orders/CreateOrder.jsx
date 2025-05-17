@@ -312,7 +312,7 @@ const CreateOrder = () => {
 
       </Form>
       {/* 🛒 Cart Modal */}
-      <Modal show={showCart} onHide={() => setShowCart(false)} size="lg">
+      <Modal show={showCart} onHide={() => setShowCart(false)} size="lg" style={{ marginTop: '80px' }}>
         <Modal.Header closeButton>
           <Modal.Title>🛒 Order Summary</Modal.Title>
         </Modal.Header>
