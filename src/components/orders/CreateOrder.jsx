@@ -56,39 +56,44 @@ const CreateOrder = () => {
   }, [selectedProductId, products]);
 
   useEffect(() => {
-  const calculateTotals = async () => {
-    if (selectedProduct && itemQty > 0) {
-      const price = Number(selectedProduct.price);
-      const qty = Number(itemQty);
-      const totalHT = price * qty;
+    const calculateTotals = async () => {
+      if (selectedProduct && itemQty > 0) {
+        const price = Number(selectedProduct.price);
+        const qty = Number(itemQty);
+        const totalHT = price * qty;
 
-      const calculatedTax = totalHT * 0.2;
+        const calculatedTax = totalHT * 0.2;
 
-      let calculatedDiscount = 0;
-      if (totalHT >= 200) {
-        calculatedDiscount = totalHT * 0.01;
-      } else if (totalHT >= 100) {
-        calculatedDiscount = totalHT * 0.005;
+        let calculatedDiscount = 0;
+        if (totalHT >= 200) {
+          calculatedDiscount = totalHT * 0.01;
+        } else if (totalHT >= 100) {
+          calculatedDiscount = totalHT * 0.005;
+        }
+
+        const calculatedAmount = totalHT + calculatedTax - calculatedDiscount;
+
+        setTax(calculatedTax);
+        setDiscount(calculatedDiscount);
+        setAmount(calculatedAmount);
+      } else {
+        setTax(0);
+        setDiscount(0);
+        setAmount(0);
       }
+    };
 
-      const calculatedAmount = totalHT + calculatedTax - calculatedDiscount;
-
-      setTax(calculatedTax);
-      setDiscount(calculatedDiscount);
-      setAmount(calculatedAmount);
-    } else {
-      setTax(0);
-      setDiscount(0);
-      setAmount(0);
-    }
-  };
-
-  calculateTotals();
-}, [selectedProduct, itemQty]);
+    calculateTotals();
+  }, [selectedProduct, itemQty]);
 
 
 
   const addProductToOrder = () => {
+    const alreadyInOrder = orderItems.some(item => item.productIdEvent === selectedProduct.productIdEvent);
+    if (alreadyInOrder) {
+      Swal.fire('Warning', 'This product is already in the cart.', 'warning');
+      return;
+    }
     if (selectedProduct && itemQty > 0) {
       const newItem = {
         ...selectedProduct,
@@ -286,7 +291,7 @@ const CreateOrder = () => {
               <tr key={idx}>
                 <td>{item.name}</td>
                 <td>{item.qty}</td>
-                <td>{item.price.toFixed(2)*item.qty} $</td>
+                <td>{(item.price * item.qty).toFixed(2)} $</td>
                 <td>{item.tax.toFixed(2)} $</td>
                 <td>{item.discount.toFixed(2)} $</td>
                 <td>
@@ -336,7 +341,7 @@ const CreateOrder = () => {
                     <tr key={idx}>
                       <td>{item.name}</td>
                       <td>{item.qty}</td>
-                      <td>{item.price.toFixed(2)*item.qty} $</td>
+                      <td>{(item.price * item.qty).toFixed(2)} $</td>
                       <td>{item.tax.toFixed(2)} $</td>
                       <td>{item.discount.toFixed(2)} $</td>
                     </tr>
@@ -356,55 +361,62 @@ const CreateOrder = () => {
             Close
           </Button>
           <Button
-  variant="success"
-  disabled={orderItems.length === 0 || !selectedClient}
-  onClick={() => {
-    Swal.fire({
-      title: 'Confirm Order',
-      text: 'Are you sure you want to submit this order?',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#28a745',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, submit it!',
-      heightAuto: false,
-      width: '400px',
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        const ordersToSend = orderItems.map((item) => ({
-          customer: {
-            customerIdEvent: selectedClient.customerIdEvent,
-          },
-          product: {
-            productIdEvent: item.productIdEvent,
-          },
-          productItem: {
-            productQty: item.qty,
-          },
-        }));
+            variant="success"
+            disabled={orderItems.length === 0 || !selectedClient}
+            onClick={() => {
+              Swal.fire({
+                title: 'Confirm Order',
+                text: 'Are you sure you want to submit this order?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, submit it!',
+                heightAuto: false,
+                width: '400px',
+              }).then(async (result) => {
+                if (result.isConfirmed) {
+                  const ordersToSend = orderItems.map((item) => ({
+                    customer: {
+                      customerIdEvent: selectedClient.customerIdEvent,
+                    },
+                    product: {
+                      productIdEvent: item.productIdEvent,
+                    },
+                    productItem: {
+                      productQty: item.qty,
+                    },
+                  }));
 
-        try {
-          for (let i = 0; i < ordersToSend.length; i++) {
-            await createOrder(ordersToSend[i]);
-            await new Promise((resolve) => setTimeout(resolve, 300)); // ⏱️ Délai entre chaque commande
-          }
+                  try {
+                    for (let i = 0; i < ordersToSend.length; i++) {
+                      await createOrder(ordersToSend[i]);
+                      await new Promise((resolve) => setTimeout(resolve, 300)); // ⏱️ Délai entre chaque commande
+                    }
 
-          Swal.fire('Success!', 'Order(s) successfully created.', 'success');
-          setOrderItems([]);
-          setSelectedClientId('');
-          setSelectedClient(null);
-          setShowCart(false);
-          setShowPaymentButton(true);
-        } catch (error) {
-          console.error("Failed to create order(s):", error);
-          Swal.fire('Error', 'An error occurred while creating the order(s).', 'error');
-        }
-      }
-    });
-  }}
->
-  ✅ Place Order
-</Button>
+                    Swal.fire('Success!', 'Order(s) successfully created.', 'success');
+                    setOrderItems([]);
+                    setSelectedClientId('');
+                    setSelectedClient(null);
+                    setSelectedProductId('');
+                    setSelectedProduct(null);
+                    setItemQty(1);
+                    setAmount(0);
+                    setTax(0);
+                    setDiscount(0);
+
+                    setShowCart(false);
+                    setShowPaymentButton(true);
+                  } catch (error) {
+                    console.error("Failed to create order(s):", error);
+                    Swal.fire('Error', 'An error occurred while creating the order(s).', 'error');
+                  }
+                }
+              });
+            }}
+          >
+            ✅ Place Order
+          </Button>
 
         </Modal.Footer>
       </Modal>
