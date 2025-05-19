@@ -65,7 +65,7 @@ const Ship = () => {
           console.log(response.data);
           Swal.fire('Success', 'The expedition has been created.', 'success').then(() => {
             navigator('/admin/ships');
-            window.location.reload();
+           // window.location.reload();
           });
         })
         .catch((error) => {

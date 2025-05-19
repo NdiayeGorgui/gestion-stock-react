@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { createProduct, getProduct, updateProduct } from '../../services/ProductService';
+import Swal from 'sweetalert2';
 
 const Product = () => {
     const [name, setName] = useState('');
@@ -48,7 +49,24 @@ const Product = () => {
         }
     }, [qty]);
 
+    function confirmSaveOrUpdate(e) {
+        e.preventDefault();
 
+        Swal.fire({
+            title: id ? 'Confirm update' : 'Confirm add',
+            text: id ? 'Are you sure you want to update this product ?' : 'Do you really want to save this product ?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#d33',
+            confirmButtonText: id ? 'Yes, update' : 'Yes, save',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                saveOrUpdateProduct(e);
+            }
+        });
+    }
     function saveOrUpdateProduct(e) {
         e.preventDefault();
 
@@ -200,7 +218,7 @@ const Product = () => {
                                 />
                             </div>
 
-                            <button className='btn btn-success' onClick={saveOrUpdateProduct}>Submit</button>
+                            <button className='btn btn-success' onClick={confirmSaveOrUpdate}>Submit</button>
                         </form>
                     </div>
                 </div>

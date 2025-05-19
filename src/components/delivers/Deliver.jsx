@@ -59,7 +59,7 @@ const Deliver = () => {
           .then(() => {
             Swal.fire('Success', 'The delivery has been created.', 'success').then(() => {
               navigator('/admin/delivers');
-              window.location.reload();
+             // window.location.reload();
             });
           })
           .catch((error) => {
