@@ -104,7 +104,7 @@ const Payments = () => {
               <tr key={payment.id}>
                 <td>{payment.customerName}</td>
                 <td>{payment.paymentMode}</td>
-                <td>{payment.amount}</td>
+                <td>{payment.amount.toFixed(2)}</td>
                 <td>{new Date(payment.timeStamp).toLocaleDateString('fr-FR')}</td>
                 <td>{payment.paymentStatus}</td>
                 <td>

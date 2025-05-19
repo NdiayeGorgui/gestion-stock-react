@@ -148,10 +148,13 @@ const Products = () => {
                       <span className="text-danger fw-bold">OUT OF STOCK</span>
                     ) : product.qtyStatus === 'LOW' ? (
                       <span className="text-warning fw-bold">LOW STOCK</span>
+                    ) : product.qtyStatus === 'AVAILABLE' ? (
+                      <span className="text-success fw-bold">AVAILABLE</span>
                     ) : (
-                      <span>{product.qtyStatus}</span>
+                      <span>{product.qtyStatus}</span> // fallback si statut inconnu
                     )}
                   </td>
+
 
                 </td>
                 <td>{product.status}</td>
