@@ -69,15 +69,17 @@ const Customer = () => {
                 updateCustomer(id, customer).then((response) => {
                     console.log(response.data);
                     navigator('/admin/customers');
-                    window.location.reload(); // recharge toute la page
+                    setTimeout(() => window.location.reload(), 100);
                 }).catch(error => {
                     console.error(error);
                 })
             } else {
                 createCustomer(customer).then((response) => {
                     console.log(response.data);
-                    navigator('/admin/customers')
-                    window.location.reload(); // recharge toute la page
+                    navigator('/admin/customers');
+                    setTimeout(() => window.location.reload(), 100);
+
+
                 }).catch(error => {
                     console.error(error);
                 })

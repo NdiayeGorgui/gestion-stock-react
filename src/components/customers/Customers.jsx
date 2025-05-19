@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { deleteCustomer, listCustomers } from '../../services/CustomerService'
 import Swal from 'sweetalert2'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const Customers = () => {
 
@@ -9,6 +9,7 @@ const Customers = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [searchTerm, setSearchTerm] = useState('')
+  const location = useLocation();
 
   const navigator = useNavigate()
 

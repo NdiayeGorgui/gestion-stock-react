@@ -92,7 +92,7 @@ const Product = () => {
                 updateProduct(id, product).then((response) => {
                     console.log(response.data);
                     navigator('/admin/products');
-                    window.location.reload();
+                   setTimeout(() => window.location.reload(), 100);
                 }).catch(error => {
                     console.error(error);
                 });
@@ -100,7 +100,7 @@ const Product = () => {
                 createProduct(product).then((response) => {
                     console.log(response.data);
                     navigator('/admin/products');
-                    window.location.reload();
+                    setTimeout(() => window.location.reload(), 100);
                 }).catch(error => {
                     console.error(error);
                 });
