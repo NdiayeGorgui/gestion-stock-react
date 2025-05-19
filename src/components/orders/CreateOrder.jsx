@@ -87,30 +87,47 @@ const CreateOrder = () => {
   }, [selectedProduct, itemQty]);
 
 
+const addProductToOrder = () => {
+  if (!selectedProduct || itemQty <= 0) {
+    Swal.fire('Warning', 'Please select a product and enter a valid quantity.', 'warning');
+    return;
+  }
 
-  const addProductToOrder = () => {
-    const alreadyInOrder = orderItems.some(item => item.productIdEvent === selectedProduct.productIdEvent);
-    if (alreadyInOrder) {
-      Swal.fire('Warning', 'This product is already in the cart.', 'warning');
-      return;
-    }
-    if (selectedProduct && itemQty > 0) {
-      const newItem = {
-        ...selectedProduct,
-        qty: itemQty,
-        amount,
-        tax,
-        discount,
-      };
-      setOrderItems([...orderItems, newItem]);
-      setSelectedProductId('');
-      setSelectedProduct(null);
-      setItemQty(1);
-      setAmount(0);
-      setTax(0);
-      setDiscount(0);
-    }
+  const alreadyInOrder = orderItems.some(
+    item => item.productIdEvent === selectedProduct.productIdEvent
+  );
+
+  if (alreadyInOrder) {
+    Swal.fire('Warning', 'This product is already in the cart.', 'warning');
+    return;
+  }
+
+  if (itemQty > selectedProduct.qty) {
+    Swal.fire(
+      'Insufficient Stock',
+      `Only ${selectedProduct.qty} item(s) left in stock.`,
+      'error'
+    );
+    return;
+  }
+
+  const newItem = {
+    ...selectedProduct,
+    qty: itemQty,
+    amount,
+    tax,
+    discount,
   };
+
+  setOrderItems([...orderItems, newItem]);
+  setSelectedProductId('');
+  setSelectedProduct(null);
+  setItemQty(1);
+  setAmount(0);
+  setTax(0);
+  setDiscount(0);
+};
+
 
   const handleRemoveItem = (index) => {
     const updatedItems = [...orderItems];
