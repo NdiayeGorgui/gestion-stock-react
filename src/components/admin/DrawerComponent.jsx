@@ -51,6 +51,15 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
   const [anchorElMobileMenu, setAnchorElMobileMenu] = React.useState(null);
   const isSmallScreen = useMediaQuery('(max-width:768px)');
 
+  React.useEffect(() => {
+  if (isSmallScreen) {
+    setIsDrawerOpen(false); // 👈 ferme automatiquement le drawer sur mobile
+  } else {
+    setIsDrawerOpen(true); // 👈 ouvre automatiquement sur écran large
+  }
+}, [isSmallScreen]);
+
+
   const handleOrdersClick = (event) => {
     setAnchorElOrders(event.currentTarget);
   };
@@ -67,6 +76,13 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
     setAnchorElMobileMenu(null);
   };
 
+  const handleLinkClick = () => {
+  if (isSmallScreen) {
+    setIsDrawerOpen(false);
+  }
+};
+
+
   return (
     <>
       {/* HEADER */}
@@ -82,7 +98,7 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            Stock Management System
+            Trocady Management System
           </Typography>
 
           {isSmallScreen ? (
@@ -183,39 +199,39 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
         </Box>
         <Divider />
         <List>
-          <ListItem button component={Link} to="/admin/dashboard">
+          <ListItem button component={Link} to="/admin/dashboard"  onClick={handleLinkClick}>
             <ListItemIcon><DashboardIcon /></ListItemIcon>
             <ListItemText primary="Dashboard" />
           </ListItem>
-          <ListItem button component={Link} to="/admin/products">
+          <ListItem button component={Link} to="/admin/products"  onClick={handleLinkClick}>
             <ListItemIcon><InventoryIcon /></ListItemIcon>
             <ListItemText primary="Manage Products" />
           </ListItem>
-          <ListItem button component={Link} to="/admin/customers">
+          <ListItem button component={Link} to="/admin/customers"  onClick={handleLinkClick}>
             <ListItemIcon><PeopleIcon /></ListItemIcon>
             <ListItemText primary="Manage Customers" />
           </ListItem>
-          <ListItem button component={Link} to="/admin/create-order">
+          <ListItem button component={Link} to="/admin/create-order"  onClick={handleLinkClick}>
             <ListItemIcon><AddShoppingCartIcon /></ListItemIcon>
             <ListItemText primary="Create Orders" />
           </ListItem>
-          <ListItem button component={Link} to="/admin/ships">
+          <ListItem button component={Link} to="/admin/ships"  onClick={handleLinkClick}>
             <ListItemIcon><LocalShippingIcon /></ListItemIcon>
             <ListItemText primary="Ship Orders" />
           </ListItem>
-          <ListItem button component={Link} to="/admin/delivers">
+          <ListItem button component={Link} to="/admin/delivers"  onClick={handleLinkClick}>
             <ListItemIcon><DeliveryDiningIcon /></ListItemIcon>
             <ListItemText primary="Deliver Orders" />
           </ListItem>
-          <ListItem button component={Link} to="/admin/bills">
+          <ListItem button component={Link} to="/admin/bills"  onClick={handleLinkClick}>
             <ListItemIcon><ReceiptIcon /></ListItemIcon>
             <ListItemText primary="View Bills" />
           </ListItem>
-          <ListItem button component={Link} to="/admin/payments">
+          <ListItem button component={Link} to="/admin/payments"  onClick={handleLinkClick}>
             <ListItemIcon><PaymentIcon /></ListItemIcon>
             <ListItemText primary="View Payments" />
           </ListItem>
-          <ListItem button component={Link} to="/admin/order-events">
+          <ListItem button component={Link} to="/admin/order-events"  onClick={handleLinkClick}>
             <ListItemIcon><EventNoteIcon /></ListItemIcon>
             <ListItemText primary="View Order Events" />
           </ListItem>
