@@ -192,11 +192,13 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
           },
         }}
       >
+          {/*
         <Box display="flex" justifyContent="flex-end" p={1}>
           <IconButton onClick={() => setIsDrawerOpen(false)}>
             Admin Panel <ChevronLeftIcon />
           </IconButton>
         </Box>
+        */}
         <Divider />
         <List>
           <ListItem button component={Link} to="/admin/dashboard"  onClick={handleLinkClick}>
