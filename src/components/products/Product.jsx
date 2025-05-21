@@ -50,23 +50,28 @@ const Product = () => {
     }, [qty]);
 
     function confirmSaveOrUpdate(e) {
-        e.preventDefault();
+    e.preventDefault();
 
-        Swal.fire({
-            title: id ? 'Confirm update' : 'Confirm add',
-            text: id ? 'Are you sure you want to update this product ?' : 'Do you really want to save this product ?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#28a745',
-            cancelButtonColor: '#d33',
-            confirmButtonText: id ? 'Yes, update' : 'Yes, save',
-            cancelButtonText: 'Cancel'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                saveOrUpdateProduct(e);
-            }
-        });
+    if (!validateForm()) {
+        return; // Ne pas continuer si le formulaire est invalide
     }
+
+    Swal.fire({
+        title: id ? 'Confirm update' : 'Confirm add',
+        text: id ? 'Are you sure you want to update this product ?' : 'Do you really want to save this product ?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#d33',
+        confirmButtonText: id ? 'Yes, update' : 'Yes, save',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            saveOrUpdateProduct(e);
+        }
+    });
+}
+
     function saveOrUpdateProduct(e) {
         e.preventDefault();
 

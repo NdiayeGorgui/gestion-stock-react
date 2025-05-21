@@ -38,23 +38,28 @@ const Customer = () => {
     }, [id])
 
     function confirmSaveOrUpdate(e) {
-        e.preventDefault();
+  e.preventDefault();
 
-        Swal.fire({
-            title: id ? 'Confirm update' : 'Confirm add',
-            text: id ? 'Are you sure you want to update this customer ?' : 'Do you really want to save this customer ?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#28a745',
-            cancelButtonColor: '#d33',
-            confirmButtonText: id ? 'Yes, update' : 'Yes, save',
-            cancelButtonText: 'Cancel'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                saveOrUpdateCustomer(e);
-            }
-        });
+  if (!validateForm()) {
+    return; // Ne rien faire si la validation échoue
+  }
+
+  Swal.fire({
+    title: id ? 'Confirm update' : 'Confirm add',
+    text: id ? 'Are you sure you want to update this customer ?' : 'Do you really want to save this customer ?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#28a745',
+    cancelButtonColor: '#d33',
+    confirmButtonText: id ? 'Yes, update' : 'Yes, save',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      saveOrUpdateCustomer(e);
     }
+  });
+}
+
 
 
     function saveOrUpdateCustomer(e) {

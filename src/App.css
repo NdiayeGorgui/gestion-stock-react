@@ -18,12 +18,53 @@ html, body, #root {
   padding: 20px; /* facultatif */
 }
 
-/* Footer stylé */
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 100vh;
+}
+
 .footer {
-  background-color: rgb(241, 240, 238);
-  color: rgb(19, 4, 4);
+  background-color: #f6f4f4;
+  color: #0a0909;
   text-align: center;
-  padding: 1rem;
+  padding: 12px;
+  margin-top: auto;
+  width: 100%;
+}
+
+
+@media (min-width: 768px) {
+  .footer {
+    font-size: 15px;
+    padding: 20px 32px;
+  }
+}
+
+.admin-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.admin-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.admin-content {
+  flex-grow: 1;
+  padding: 80px 24px 24px 24px; /* espace sous AppBar */
+  overflow-y: auto;
+  min-height: 0; /* important pour ne pas casser flex */
 }
 
 

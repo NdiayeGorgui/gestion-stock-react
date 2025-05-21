@@ -35,12 +35,12 @@ import './App.css';
 
 function App() {
   return (
-    <div className="d-flex flex-column min-vh-100">
-      <BrowserRouter>
-        <div className="flex-grow-1">
+    <BrowserRouter>
+      <div className="app-layout">
+        {/* Contenu principal */}
+        <div className="main-content">
           <Routes>
             <Route path="/" element={<Navigate to="/admin/home" />} />
-
             <Route path="/admin" element={<Admin />}>
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="products" element={<Products />} />
@@ -73,11 +73,12 @@ function App() {
               <Route path="deliver/:id" element={<Deliver />} />
             </Route>
           </Routes>
-        </div>
 
-        <FooterComponent />
-      </BrowserRouter>
-    </div>
+          {/* Footer toujours en bas, pleine largeur */}
+          <FooterComponent />
+        </div>
+      </div>
+    </BrowserRouter>
   );
 }
 
