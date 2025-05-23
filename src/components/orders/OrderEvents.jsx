@@ -99,8 +99,7 @@ const OrderEvents = () => {
                                 <td>{order?.customerId}</td>
                                 <td>{order?.status}</td>
                                 <td>{order?.details}</td>
-                                <td>{order?.eventTimeStamp}</td>
-
+                                <td>{new Date(order?.eventTimeStamp).toLocaleDateString('fr-FR')}</td>
                             </tr>
 
                         ))
