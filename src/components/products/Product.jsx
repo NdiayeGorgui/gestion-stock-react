@@ -96,16 +96,16 @@ const Product = () => {
             if (id) {
                 updateProduct(id, product).then((response) => {
                     console.log(response.data);
-                    navigator('/admin/products');
-                   setTimeout(() => window.location.reload(), 100);
+                    navigator('/admin/products', { state: { refresh: true } });
+
                 }).catch(error => {
                     console.error(error);
                 });
             } else {
                 createProduct(product).then((response) => {
                     console.log(response.data);
-                    navigator('/admin/products');
-                    setTimeout(() => window.location.reload(), 100);
+                    navigator('/admin/products', { state: { refresh: true } });
+
                 }).catch(error => {
                     console.error(error);
                 });

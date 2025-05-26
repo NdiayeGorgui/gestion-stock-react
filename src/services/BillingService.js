@@ -1,14 +1,32 @@
-import axios from "axios";
-const REST_API_BASE_URL='http://localhost:8888/billing-service/api/v1/bills';
-const REST_API_BILL_BASE_URL='http://localhost:8888/billing-service/api/v1/bills/bill';
-const REST_API_PRINT_BASE_URL='http://localhost:8888/billing-service/api/v1/bills/export';
 
-export const listBills = () => axios.get(REST_API_BASE_URL);
+import keycloak from "../components/Keycloack/keycloak";
+import apiClient from "../components/Keycloack/axios-client";
 
-export const getBill = (orderId) => axios.get(REST_API_BILL_BASE_URL + '/' + orderId);
+// Assurez-vous que Keycloak est initialisé avant d'appeler cette fonction
+const authHeader = () => {
+  if (keycloak && keycloak.token) {
+    return {
+      headers: {
+        Authorization: `Bearer ${keycloak.token}`
+      }
+    };
+  } else {
+    return {}; // ou throw new Error("Token manquant");
+  }
+};
+
+
+
+const REST_API_BASE_URL='/billing-service/api/v1/bills';
+const REST_API_BILL_BASE_URL='/billing-service/api/v1/bills/bill';
+const REST_API_PRINT_BASE_URL='/billing-service/api/v1/bills/export';
+
+export const listBills = () => apiClient.get(REST_API_BASE_URL,authHeader());
+
+export const getBill = (orderId) => apiClient.get(REST_API_BILL_BASE_URL + '/' + orderId,authHeader());
 
 export const printInvoice = (customerIdEvent) => {
-  return axios.get(`${REST_API_PRINT_BASE_URL}/${customerIdEvent+ '/' + 'CREATED'}`, {
+  return apiClient.get(`${REST_API_PRINT_BASE_URL}/${customerIdEvent+ '/' + 'CREATED'}`, {...authHeader(),
     responseType: 'blob', // important pour Excel
   });
 };

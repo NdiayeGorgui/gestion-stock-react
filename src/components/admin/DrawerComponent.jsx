@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { useKeycloak } from '@react-keycloak/web';
+
 
 import {
   AppBar,
@@ -44,9 +46,12 @@ import PaymentIcon from '@mui/icons-material/Payment';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 
 
+
+
 const drawerWidth = 250;
 
 const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
+   const { keycloak } = useKeycloak();
   const [anchorElOrders, setAnchorElOrders] = React.useState(null);
   const [anchorElMobileMenu, setAnchorElMobileMenu] = React.useState(null);
   const isSmallScreen = useMediaQuery('(max-width:768px)');
@@ -130,9 +135,15 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
                 <MenuItem component={Link} onClick={handleMobileMenuClose}>
                   <AccountCircleIcon sx={{ mr: 1 }} /> UserName
                 </MenuItem>
-                <MenuItem component={Link} to="/admin/login" onClick={handleMobileMenuClose}>
+                <MenuItem
+                  onClick={() => {
+                    handleMobileMenuClose();
+                    keycloak.logout({ redirectUri: window.location.origin });
+                  }}
+                >
                   <ExitToAppIcon sx={{ mr: 1 }} /> Logout
                 </MenuItem>
+
               </Menu>
             </>
           ) : (
@@ -155,9 +166,14 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
               <Button color="inherit" startIcon={<PersonPinCircleOutlined />}>
                 UserName
               </Button>
-              <Button color="inherit" component={Link} to="/admin/login" startIcon={<ExitToAppIcon />}>
+              <Button
+                color="inherit"
+                startIcon={<ExitToAppIcon />}
+                onClick={() => keycloak.logout({ redirectUri: window.location.origin })}
+              >
                 Logout
               </Button>
+
             </>
           )}   {/*  */}
 
@@ -267,7 +283,7 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
         </List>
 
       </Drawer>
-      
+
       {/* BOUTON RÉOUVRIR DRAWER */}
       {/* {!isDrawerOpen && (
         <IconButton

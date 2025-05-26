@@ -32,9 +32,14 @@ import OrderEvents from './components/orders/OrderEvents';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './App.css';
+import KeycloakProviderWrapper from './components/Keycloack/KeycloakProviderWrapper';
+
 
 function App() {
+ 
+
   return (
+    <KeycloakProviderWrapper>
     <BrowserRouter>
       <div className="app-layout">
         {/* Contenu principal */}
@@ -79,6 +84,7 @@ function App() {
         </div>
       </div>
     </BrowserRouter>
+    </KeycloakProviderWrapper>
   );
 }
 
