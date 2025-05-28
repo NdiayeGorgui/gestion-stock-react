@@ -4,6 +4,16 @@ import { Button, Typography, Box } from '@mui/material';
 
 const Profile = () => {
   const { keycloak } = useKeycloak();
+ 
+
+  // Liste blanche des rôles à afficher
+  const allowedRoles = ['ADMIN', 'USER'];
+
+  // Récupération des rôles depuis le token
+  const allRoles = keycloak.tokenParsed?.realm_access?.roles || [];
+
+  // Filtrage
+  const displayedRoles = allRoles.filter(role => allowedRoles.includes(role));
 
  /* const handleManageAccount = () => {
     // Redirige vers l'interface de gestion de compte Keycloak
@@ -15,7 +25,6 @@ const Profile = () => {
       <Typography variant="h5" gutterBottom>
         Profile
       </Typography>
-
       <Typography>
         First Name : {keycloak.tokenParsed?.given_name}
       </Typography>
@@ -24,6 +33,9 @@ const Profile = () => {
       </Typography>
       <Typography>
         Email : {keycloak.tokenParsed?.email}
+      </Typography>
+       <Typography>
+       Roles : {displayedRoles.join(', ')}
       </Typography>
 
     {/*   <Button
