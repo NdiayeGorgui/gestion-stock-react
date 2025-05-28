@@ -51,10 +51,14 @@ import EventNoteIcon from '@mui/icons-material/EventNote';
 const drawerWidth = 250;
 
 const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
-   const { keycloak } = useKeycloak();
+  const { keycloak } = useKeycloak();
   const [anchorElOrders, setAnchorElOrders] = React.useState(null);
   const [anchorElMobileMenu, setAnchorElMobileMenu] = React.useState(null);
   const isSmallScreen = useMediaQuery('(max-width:768px)');
+
+  const user = keycloak?.tokenParsed;
+  const firstname = user?.given_name || 'Utilisateur';
+
 
   React.useEffect(() => {
     if (isSmallScreen) {
@@ -119,12 +123,6 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
                 <MenuItem component={Link} to="/admin/home" onClick={handleMobileMenuClose}>
                   <HomeIcon sx={{ mr: 1 }} /> Home
                 </MenuItem>
-                <MenuItem component={Link} to="/admin/chat-bot" onClick={handleMobileMenuClose}>
-                  <ChatIcon sx={{ mr: 1 }} /> Chat Bot Zone
-                </MenuItem>
-                <MenuItem component={Link} to="/admin/profile" onClick={handleMobileMenuClose}>
-                  <AccountCircleIcon sx={{ mr: 1 }} /> Profile
-                </MenuItem>
                 <MenuItem onClick={handleOrdersClick}>
                   <Box display="flex" alignItems="center" width="100%">
                     <InboxIcon sx={{ mr: 1 }} />
@@ -132,8 +130,14 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
                     <ExpandMoreIcon />
                   </Box>
                 </MenuItem>
+                <MenuItem component={Link} to="/admin/chat-bot" onClick={handleMobileMenuClose}>
+                  <ChatIcon sx={{ mr: 1 }} /> Chat Bot Zone
+                </MenuItem>
+                <MenuItem component={Link} to="/admin/profile" onClick={handleMobileMenuClose}>
+                  <AccountCircleIcon sx={{ mr: 1 }} /> Profile
+                </MenuItem>
                 <MenuItem component={Link} onClick={handleMobileMenuClose}>
-                  <AccountCircleIcon sx={{ mr: 1 }} /> UserName
+                  <AccountCircleIcon sx={{ mr: 1 }} /> {firstname}
                 </MenuItem>
                 <MenuItem
                   onClick={() => {
@@ -151,20 +155,21 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
               <Button color="inherit" component={Link} to="/admin/home" startIcon={<HomeIcon />}>
                 Home
               </Button>
+              <Divider orientation="vertical" flexItem sx={{ mx: 2, bgcolor: 'gray' }} />
+               <Button color="inherit" onClick={handleOrdersClick}>
+                <Box display="flex" alignItems="center">
+                  Orders List
+                  <ExpandMoreIcon sx={{ ml: 1 }} />
+                </Box>
+              </Button>
               <Button color="inherit" component={Link} to="/admin/chat-bot" startIcon={<ChatIcon />}>
                 Chat Bot Zone
               </Button>
               <Button color="inherit" component={Link} to="/admin/profile" startIcon={<AccountCircleIcon />}>
                 Profile
               </Button>
-              <Button color="inherit" onClick={handleOrdersClick}>
-                <Box display="flex" alignItems="center">
-                  Orders List
-                  <ExpandMoreIcon sx={{ ml: 1 }} />
-                </Box>
-              </Button>
               <Button color="inherit" startIcon={<PersonPinCircleOutlined />}>
-                UserName
+                {firstname}
               </Button>
               <Button
                 color="inherit"
