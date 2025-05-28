@@ -165,6 +165,7 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
               <Button color="inherit" component={Link} to="/admin/chat-bot" startIcon={<ChatIcon />}>
                 Chat Bot Zone
               </Button>
+              <Divider orientation="vertical" flexItem sx={{ mx: 2, bgcolor: 'gray' }} />
               <Button color="inherit" component={Link} to="/admin/profile" startIcon={<AccountCircleIcon />}>
                 Profile
               </Button>
