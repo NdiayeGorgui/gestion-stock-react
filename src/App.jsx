@@ -33,6 +33,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './App.css';
 import KeycloakProviderWrapper from './components/Keycloack/KeycloakProviderWrapper';
+import AdminRoute from './components/admin/AdminRoute';
 
 
 function App() {
@@ -47,7 +48,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/admin/home" />} />
             <Route path="/admin" element={<Admin />}>
-              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="dashboard" element={
+    <AdminRoute><Dashboard /></AdminRoute>
+  } />
               <Route path="products" element={<Products />} />
               <Route path="add-product" element={<Product />} />
               <Route path="edit-product/:id" element={<Product />} />
