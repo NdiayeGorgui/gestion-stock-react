@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { listProducts, deleteProduct } from '../../services/ProductService'
 import Swal from 'sweetalert2';
+import { useAuth } from '../hooks/useAuth';
 
 const Products = () => {
   const [products, setProducts] = useState([])
@@ -10,6 +11,12 @@ const Products = () => {
   const [searchTerm, setSearchTerm] = useState('')
 
   const navigator = useNavigate()
+
+  const { roles } = useAuth()
+
+  // Supposons que le rôle admin est la string 'ADMIN'
+  const isAdmin = roles && roles.includes('ADMIN')
+
 
   useEffect(() => {
     getAllProducts()
@@ -93,9 +100,11 @@ const Products = () => {
       <h2 className="text-center">List of products</h2>
 
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <button className="btn btn-primary" onClick={addNewProduct}>
-          Add Product
-        </button>
+        {isAdmin && (
+          <button className="btn btn-primary" onClick={addNewProduct}>
+            Add Product
+          </button>
+        )}
 
         <input
           type="text"
@@ -142,30 +151,34 @@ const Products = () => {
                 <td>{product.category}</td>
                 <td>{product.price.toFixed(2)}</td>
                 <td>{product.qty}</td>
+
                 <td>
-                  <td>
-                    {product.qtyStatus === 'UNAVAILABLE' ? (
-                      <span className="text-danger fw-bold">OUT OF STOCK</span>
-                    ) : product.qtyStatus === 'LOW' ? (
-                      <span className="text-warning fw-bold">LOW STOCK</span>
-                    ) : product.qtyStatus === 'AVAILABLE' ? (
-                      <span className="text-success fw-bold">AVAILABLE</span>
-                    ) : (
-                      <span>{product.qtyStatus}</span> // fallback si statut inconnu
-                    )}
-                  </td>
-
-
+                  {product.qtyStatus === 'UNAVAILABLE' ? (
+                    <span className="text-danger fw-bold">OUT OF STOCK</span>
+                  ) : product.qtyStatus === 'LOW' ? (
+                    <span className="text-warning fw-bold">LOW STOCK</span>
+                  ) : product.qtyStatus === 'AVAILABLE' ? (
+                    <span className="text-success fw-bold">AVAILABLE</span>
+                  ) : (
+                    <span>{product.qtyStatus}</span> // fallback si statut inconnu
+                  )}
                 </td>
+
+
+
                 <td>{product.status}</td>
                 <td>
-                  <button className="btn btn-outline-info btn-sm me-2" onClick={() => updateProduct(product.productIdEvent)}>
-                    <i className="bi bi-pencil-square"></i>
-                  </button>
+                  {isAdmin && (
+                    <>
+                      <button className="btn btn-outline-info btn-sm me-2" onClick={() => updateProduct(product.productIdEvent)}>
+                        <i className="bi bi-pencil-square"></i>
+                      </button>
 
-                  <button className="btn btn-outline-danger btn-sm me-2" onClick={() => removeProduct(product.productIdEvent)}>
-                    <i className="bi bi-trash"></i>
-                  </button>
+                      <button className="btn btn-outline-danger btn-sm me-2" onClick={() => removeProduct(product.productIdEvent)}>
+                        <i className="bi bi-trash"></i>
+                      </button>
+                    </>
+                  )}
 
                   <button className="btn btn-outline-warning btn-sm" onClick={() => viewProduct(product.productIdEvent)}>
                     <i className="bi bi-eye"></i>

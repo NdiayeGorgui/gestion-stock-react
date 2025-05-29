@@ -44,6 +44,7 @@ import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import PaymentIcon from '@mui/icons-material/Payment';
 import EventNoteIcon from '@mui/icons-material/EventNote';
+import { useAuth } from '../hooks/useAuth';
 
 
 
@@ -58,6 +59,11 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
 
   const user = keycloak?.tokenParsed;
   const firstname = user?.given_name || 'Utilisateur';
+
+  const { roles } = useAuth()
+  
+  // Supposons que le rôle admin est la string 'ADMIN'
+  const isAdmin = roles && roles.includes('ADMIN')
 
 
   React.useEffect(() => {
@@ -249,10 +255,13 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
         */}
         <Divider />
         <List>
+          {isAdmin && (
           <ListItem button component={Link} to="/admin/dashboard" onClick={handleLinkClick}>
             <ListItemIcon><DashboardIcon /></ListItemIcon>
             <ListItemText primary="Dashboard" />
           </ListItem>
+          )}
+
           <ListItem button component={Link} to="/admin/products" onClick={handleLinkClick}>
             <ListItemIcon><InventoryIcon /></ListItemIcon>
             <ListItemText primary="Manage Products" />
