@@ -98,7 +98,7 @@ const addProductToOrder = () => {
   );
 
   if (alreadyInOrder) {
-    Swal.fire('Warning', 'This product is already in the cart.', 'warning');
+    Swal.fire('Warning', 'This product is already in the cart, please update the quantity.', 'warning');
     return;
   }
 
@@ -141,36 +141,30 @@ const addProductToOrder = () => {
   const totalPrice = orderItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
 
+    const handleQtyChange = (index, newQty) => {
+    const updatedItems = [...orderItems];
+    const item = updatedItems[index];
 
-  const handleSubmitOrder = () => {
-    if (!selectedClient || orderItems.length === 0) {
-      alert("Please select a customer and add at least one product.");
+    if (newQty <= 0 || newQty > item.qtyStock) {
+      Swal.fire('Invalid Quantity', 'Please enter a valid quantity within available stock.', 'warning');
       return;
     }
 
-    const ordersToSend = orderItems.map((item) => ({
-      customer: {
-        customerIdEvent: selectedClient.customerIdEvent,
-      },
-      product: {
-        productIdEvent: item.productIdEvent,
-      },
-      productItem: {
-        productQty: item.qty,
-      },
-    }));
+    const totalHT = item.price * newQty;
+    const newTax = totalHT * 0.2;
+    let newDiscount = 0;
+    if (totalHT >= 200) newDiscount = totalHT * 0.01;
+    else if (totalHT >= 100) newDiscount = totalHT * 0.005;
 
+    updatedItems[index] = {
+      ...item,
+      qty: newQty,
+      tax: newTax,
+      discount: newDiscount,
+      amount: totalHT + newTax - newDiscount,
+    };
 
-    Promise.all(ordersToSend.map(order => createOrder(order)))
-      .then(() => {
-        alert("Order(s) successfully created!");
-        setOrderItems([]);
-        setSelectedClientId('');
-      })
-      .catch((error) => {
-        console.error("Failed to create order(s):", error);
-        alert("An error occurred while creating the order(s).");
-      });
+    setOrderItems(updatedItems);
   };
 
   return (
@@ -305,9 +299,17 @@ const addProductToOrder = () => {
           </thead>
           <tbody>
             {orderItems.map((item, idx) => (
-              <tr key={idx}>
-                <td>{item.name}</td>
-                <td>{item.qty}</td>
+            <tr key={idx}>
+              <td>{item.name}</td>
+              <td>
+                <Form.Control
+                  type="number"
+                  min={1}
+                  max={item.qtyStock}
+                  value={item.qty}
+                  onChange={(e) => handleQtyChange(idx, parseInt(e.target.value))}
+                />
+              </td>
                 <td>{(item.price * item.qty).toFixed(2)} $</td>
                 <td>{item.tax.toFixed(2)} $</td>
                 <td>{item.discount.toFixed(2)} $</td>

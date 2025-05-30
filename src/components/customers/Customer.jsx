@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { createCustomer, getCustomer, updateCustomer } from '../../services/CustomerService'
+import { createCustomer, customerExistByEmail, getCustomer, updateCustomer } from '../../services/CustomerService'
 import Swal from 'sweetalert2'
 
 const Customer = () => {
@@ -38,58 +38,82 @@ const Customer = () => {
     }, [id])
 
     function confirmSaveOrUpdate(e) {
-  e.preventDefault();
-
-  if (!validateForm()) {
-    return; // Ne rien faire si la validation échoue
-  }
-
-  Swal.fire({
-    title: id ? 'Confirm update' : 'Confirm add',
-    text: id ? 'Are you sure you want to update this customer ?' : 'Do you really want to save this customer ?',
-    icon: 'question',
-    showCancelButton: true,
-    confirmButtonColor: '#28a745',
-    cancelButtonColor: '#d33',
-    confirmButtonText: id ? 'Yes, update' : 'Yes, save',
-    cancelButtonText: 'Cancel'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      saveOrUpdateCustomer(e);
-    }
-  });
-}
-
-
-
-    function saveOrUpdateCustomer(e) {
         e.preventDefault();
 
-        if (validateForm()) {
+        if (!validateForm()) {
+            return; // Ne rien faire si la validation échoue
+        }
 
-            const customer = { name, address, phone, email }
-            console.log(customer)
+        Swal.fire({
+            title: id ? 'Confirm update' : 'Confirm add',
+            text: id ? 'Are you sure you want to update this customer ?' : 'Do you really want to save this customer ?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#d33',
+            confirmButtonText: id ? 'Yes, update' : 'Yes, save',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                saveOrUpdateCustomer(e);
+            }
+        });
+    }
 
-            if (id) {
-                updateCustomer(id, customer).then((response) => {
-                    console.log(response.data);
-                    navigator('/admin/customers', { state: { refresh: true } });
 
-                }).catch(error => {
-                    console.error(error);
-                })
-            } else {
-                createCustomer(customer).then((response) => {
-                    console.log(response.data);
-                   navigator('/admin/customers', { state: { refresh: true } });
+    const saveOrUpdateCustomer = async (e) => {
+        e.preventDefault();
 
+        if (!validateForm()) return;
 
-                }).catch(error => {
-                    console.error(error);
-                })
+        const customer = { name, address, phone, email };
+
+        if (!id) {
+            try {
+                const response = await customerExistByEmail(email);
+                const exists = response.data.exists;
+
+                if (exists) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Customer exists',
+                        text: response.data.message,
+                        confirmButtonColor: '#d33'
+                    });
+                    return;
+                }
+            } catch (error) {
+                console.error('Error verifying email:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Server Error',
+                    text: 'Unable to verify email. Please try again later.',
+                    confirmButtonColor: '#d33'
+                });
+                return;
             }
         }
-    }
+
+        const action = id
+            ? updateCustomer(id, customer)
+            : createCustomer(customer);
+
+        action
+            .then(() => {
+                navigator('/admin/customers', { state: { refresh: true } });
+            })
+            .catch((error) => {
+                console.error(error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while saving.',
+                    confirmButtonColor: '#d33'
+                });
+            });
+    };
+
+
 
     function validateForm() {
         let valid = true;
