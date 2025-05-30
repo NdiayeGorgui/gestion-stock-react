@@ -3,6 +3,7 @@ import { Container, Row, Col, Form, Button, Table, Modal } from 'react-bootstrap
 import { useNavigate } from 'react-router-dom';
 import { createOrder, listCustomers, listProducts } from '../../services/OrderSrvice';
 import Swal from 'sweetalert2';
+import Select from 'react-select';
 
 
 
@@ -21,6 +22,16 @@ const CreateOrder = () => {
   const [showCart, setShowCart] = useState(false);
   const [showPaymentButton, setShowPaymentButton] = useState(false);
   const navigator = useNavigate();
+
+  const customerOptions = customers.map((client) => ({
+    value: client.customerIdEvent,
+    label: client.name,
+  }));
+
+  const productOptions = products.map((product) => ({
+    value: product.productIdEvent,
+    label: `${product.name} - ${product.price} $`,
+  }));
 
 
   useEffect(() => {
@@ -87,46 +98,47 @@ const CreateOrder = () => {
   }, [selectedProduct, itemQty]);
 
 
-const addProductToOrder = () => {
-  if (!selectedProduct || itemQty <= 0) {
-    Swal.fire('Warning', 'Please select a product and enter a valid quantity.', 'warning');
-    return;
-  }
+  const addProductToOrder = () => {
+    if (!selectedProduct || itemQty <= 0) {
+      Swal.fire('Warning', 'Please select a product and enter a valid quantity.', 'warning');
+      return;
+    }
 
-  const alreadyInOrder = orderItems.some(
-    item => item.productIdEvent === selectedProduct.productIdEvent
-  );
-
-  if (alreadyInOrder) {
-    Swal.fire('Warning', 'This product is already in the cart, please update the quantity.', 'warning');
-    return;
-  }
-
-  if (itemQty > selectedProduct.qty) {
-    Swal.fire(
-      'Insufficient Stock',
-      `Only ${selectedProduct.qty} item(s) left in stock.`,
-      'error'
+    const alreadyInOrder = orderItems.some(
+      item => item.productIdEvent === selectedProduct.productIdEvent
     );
-    return;
-  }
 
-  const newItem = {
-    ...selectedProduct,
-    qty: itemQty,
-    amount,
-    tax,
-    discount,
+    if (alreadyInOrder) {
+      Swal.fire('Warning', 'This product is already in the cart, please update the quantity.', 'warning');
+      return;
+    }
+
+    if (itemQty > selectedProduct.qty) {
+      Swal.fire(
+        'Insufficient Stock',
+        `Only ${selectedProduct.qty} item(s) left in stock.`,
+        'error'
+      );
+      return;
+    }
+
+    const newItem = {
+      ...selectedProduct,
+      qty: itemQty,
+      amount,
+      tax,
+      discount,
+    };
+
+    setOrderItems([...orderItems, newItem]);
+    setSelectedProductId('');
+    setSelectedProduct(null);
+    setItemQty(1);
+    setAmount(0);
+    setTax(0);
+    setDiscount(0);
+    setSelectedProductId(''); // ou null selon l'initialisation
   };
-
-  setOrderItems([...orderItems, newItem]);
-  setSelectedProductId('');
-  setSelectedProduct(null);
-  setItemQty(1);
-  setAmount(0);
-  setTax(0);
-  setDiscount(0);
-};
 
 
   const handleRemoveItem = (index) => {
@@ -141,7 +153,7 @@ const addProductToOrder = () => {
   const totalPrice = orderItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
 
-    const handleQtyChange = (index, newQty) => {
+  const handleQtyChange = (index, newQty) => {
     const updatedItems = [...orderItems];
     const item = updatedItems[index];
 
@@ -201,17 +213,13 @@ const addProductToOrder = () => {
         <Row className="mb-3">
           <Col md={4}>
             <Form.Label><b>Customer</b></Form.Label>
-            <Form.Select
-              value={selectedClientId}
-              onChange={(e) => setSelectedClientId(e.target.value)}
-            >
-              <option value="">-- Select customer --</option>
-              {customers.map((client) => (
-                <option key={client.customerIdEvent} value={client.customerIdEvent}>
-                  {client.name}
-                </option>
-              ))}
-            </Form.Select>
+            <Select
+              options={customerOptions}
+              value={customerOptions.find(opt => opt.value === selectedClientId)}
+              onChange={(selected) => setSelectedClientId(selected.value)}
+              placeholder="Search or select customer..."
+            />
+
           </Col>
           <Col md={4}>
             <Form.Group>
@@ -233,17 +241,15 @@ const addProductToOrder = () => {
         <Row className="mb-3">
           <Col md={4}>
             <Form.Label><b>Product</b></Form.Label>
-            <Form.Select
-              value={selectedProductId}
-              onChange={(e) => setSelectedProductId(e.target.value)}
-            >
-              <option value="">-- Select product --</option>
-              {products.map((product) => (
-                <option key={product.productIdEvent} value={product.productIdEvent}>
-                  {product.name} - {product.price} $
-                </option>
-              ))}
-            </Form.Select>
+            <Select
+              options={productOptions}
+              value={productOptions.find(opt => opt.value === selectedProductId) || null}
+              onChange={(selected) => setSelectedProductId(selected.value)}
+              placeholder="Search or select product..."
+              isClearable
+            />
+
+
           </Col>
           <Col md={4}>
             <Form.Label><b>Product Name</b></Form.Label>
@@ -299,17 +305,17 @@ const addProductToOrder = () => {
           </thead>
           <tbody>
             {orderItems.map((item, idx) => (
-            <tr key={idx}>
-              <td>{item.name}</td>
-              <td>
-                <Form.Control
-                  type="number"
-                  min={1}
-                  max={item.qtyStock}
-                  value={item.qty}
-                  onChange={(e) => handleQtyChange(idx, parseInt(e.target.value))}
-                />
-              </td>
+              <tr key={idx}>
+                <td>{item.name}</td>
+                <td>
+                  <Form.Control
+                    type="number"
+                    min={1}
+                    max={item.qtyStock}
+                    value={item.qty}
+                    onChange={(e) => handleQtyChange(idx, parseInt(e.target.value))}
+                  />
+                </td>
                 <td>{(item.price * item.qty).toFixed(2)} $</td>
                 <td>{item.tax.toFixed(2)} $</td>
                 <td>{item.discount.toFixed(2)} $</td>
