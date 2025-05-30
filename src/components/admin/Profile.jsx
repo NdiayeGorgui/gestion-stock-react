@@ -23,7 +23,7 @@ const Profile = () => {
   return (
     <Box p={3}>
       <Typography variant="h5" gutterBottom>
-        Profile
+        Profile Details
       </Typography>
       <Typography>
         First Name : {keycloak.tokenParsed?.given_name}

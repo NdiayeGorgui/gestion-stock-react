@@ -58,7 +58,7 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
   const isSmallScreen = useMediaQuery('(max-width:768px)');
 
   const user = keycloak?.tokenParsed;
-  const firstname = user?.given_name || 'Utilisateur';
+  const firstname = user?.given_name || 'UserName';
 
   const { roles } = useAuth()
   
@@ -172,19 +172,35 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
                 Chat Bot Zone
               </Button>
               <Divider orientation="vertical" flexItem sx={{ mx: 2, bgcolor: 'gray' }} />
-              <Button color="inherit" component={Link} to="/admin/profile" startIcon={<AccountCircleIcon />}>
-                Profile
-              </Button>
-              <Button color="inherit" startIcon={<PersonPinCircleOutlined />}>
-                {firstname}
-              </Button>
-              <Button
-                color="inherit"
-                startIcon={<ExitToAppIcon />}
-                onClick={() => keycloak.logout({ redirectUri: window.location.origin })}
-              >
-                Logout
-              </Button>
+              {/* Username dropdown menu */}
+<Box sx={{ ml: 2 }}>
+  <Button
+    color="inherit"
+    startIcon={<PersonPinCircleOutlined />}
+    endIcon={<ExpandMoreIcon />}
+    onClick={(e) => setAnchorElMobileMenu(e.currentTarget)}
+  >
+    {firstname}
+  </Button>
+  <Menu
+    anchorEl={anchorElMobileMenu}
+    open={Boolean(anchorElMobileMenu)}
+    onClose={handleMobileMenuClose}
+  >
+    <MenuItem component={Link} to="/admin/profile" onClick={handleMobileMenuClose}>
+      <AccountCircleIcon sx={{ mr: 1 }} /> Profile
+    </MenuItem>
+    <MenuItem
+      onClick={() => {
+        handleMobileMenuClose();
+        keycloak.logout({ redirectUri: window.location.origin });
+      }}
+    >
+      <ExitToAppIcon sx={{ mr: 1 }} /> Logout
+    </MenuItem>
+  </Menu>
+</Box>
+
 
             </>
           )}   {/*  */}

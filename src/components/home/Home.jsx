@@ -140,10 +140,10 @@ const Home = () => {
       </div>
   
      
-      <div class="col-sm-12 col-md-6 col-lg-4">
-        <div class="card h-100 d-flex flex-column">
-          <div class="card-header text-center fw-bold">🔌 BUREAUTIQUE !</div>
-          <div class="card-body">
+      <div className="col-sm-12 col-md-6 col-lg-4">
+        <div className="card h-100 d-flex flex-column">
+          <div className="card-header text-center fw-bold">🔌 BUREAUTIQUE !</div>
+          <div className="card-body">
             <p>📱 Gadgets & accessoires high-tech</p>
             <p>🔥 Offres spéciales :</p>
             <ul>
