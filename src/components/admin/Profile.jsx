@@ -15,10 +15,10 @@ const Profile = () => {
   // Filtrage
   const displayedRoles = allRoles.filter(role => allowedRoles.includes(role));
 
- /* const handleManageAccount = () => {
-    // Redirige vers l'interface de gestion de compte Keycloak
-    window.location.href = `${keycloak.authServerUrl}realms/${keycloak.realm}/account`;
-  };*/
+  const handleManageAccount = () => {
+  keycloak.accountManagement();
+};
+
 
   return (
     <Box p={3}>
@@ -38,14 +38,14 @@ const Profile = () => {
        Roles : {displayedRoles.join(', ')}
       </Typography>
 
-    {/*   <Button
+       <Button
         variant="contained"
         color="primary"
         sx={{ mt: 2 }}
         onClick={handleManageAccount}
       >
         Modifier mon profil
-      </Button>*/}
+      </Button>
     </Box>
   );
 };
