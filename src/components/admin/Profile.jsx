@@ -22,31 +22,36 @@ const Profile = () => {
 
   return (
     <Box p={3}>
-      <Typography variant="h5" gutterBottom>
-        Profile Details
-      </Typography>
-      <Typography>
-        First Name : {keycloak.tokenParsed?.given_name}
-      </Typography>
-      <Typography>
-        Last Name : {keycloak.tokenParsed?.family_name}
-      </Typography>
-      <Typography>
-        Email : {keycloak.tokenParsed?.email}
-      </Typography>
-       <Typography>
-       Roles : {displayedRoles.join(', ')}
-      </Typography>
+  <Typography variant="h5" gutterBottom>
+    Profile Details
+  </Typography>
+  
+  <Typography>
+    <strong>First Name:</strong> {keycloak.tokenParsed?.given_name}
+  </Typography>
 
-       <Button
-        variant="contained"
-        color="primary"
-        sx={{ mt: 2 }}
-        onClick={handleManageAccount}
-      >
-        Modifier mon profil
-      </Button>
-    </Box>
+  <Typography>
+    <strong>Last Name:</strong> {keycloak.tokenParsed?.family_name}
+  </Typography>
+
+  <Typography>
+    <strong>Email:</strong> {keycloak.tokenParsed?.email}
+  </Typography>
+
+  <Typography>
+    <strong>Roles:</strong> {displayedRoles.join(', ')}
+  </Typography>
+
+  <Button
+    variant="contained"
+    color="primary"
+    sx={{ mt: 2 }}
+    onClick={handleManageAccount}
+  >
+    Update my profile
+  </Button>
+</Box>
+
   );
 };
 
