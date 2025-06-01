@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getProduct } from '../../services/ProductService'; // ✅ Assure-toi que ce chemin est correct
 
 const ProductDetails = () => {
@@ -10,6 +10,7 @@ const ProductDetails = () => {
   const [qtyStatus, setQtyStatus] = useState('');
 
   const { id } = useParams();
+   const navigator = useNavigate();
 
   useEffect(() => {
     if (id) {
@@ -26,6 +27,9 @@ const ProductDetails = () => {
         });
     }
   }, [id]);
+   function close() {
+     navigator('/admin/products', { state: { refresh: true } });
+   }
 
   return (
     <div className='container'>
@@ -89,6 +93,7 @@ const ProductDetails = () => {
                   readOnly
                 />
               </div>
+              
             </form>
           </div>
         </div>
