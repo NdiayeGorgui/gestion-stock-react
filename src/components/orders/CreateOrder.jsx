@@ -223,8 +223,8 @@ const CreateOrder = () => {
           </Col>
           <Col md={4}>
             <Form.Group>
-              <Form.Label><b>Name</b></Form.Label>
-              <Form.Control value={selectedClient?.name || ''} readOnly />
+              <Form.Label><b>Address</b></Form.Label>
+              <Form.Control value={selectedClient?.address || ''} readOnly />
             </Form.Group>
           </Col>
           <Col md={4}>
@@ -252,8 +252,8 @@ const CreateOrder = () => {
 
           </Col>
           <Col md={4}>
-            <Form.Label><b>Product Name</b></Form.Label>
-            <Form.Control value={selectedProduct?.name || ''} readOnly />
+            <Form.Label><b>Category</b></Form.Label>
+            <Form.Control value={selectedProduct?.category || ''} readOnly />
           </Col>
           <Col md={4}>
             <Form.Label><b>Price ($)</b></Form.Label>
