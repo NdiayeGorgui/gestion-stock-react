@@ -25,8 +25,8 @@ if (!isAuthenticated) {
   if (!isAdmin) {
     return (
       <div className="text-center mt-5">
-        <h2 className="text-danger">403 - Forbidden</h2>
-        <p >You do not have the required permissions to access this page.</p>
+        <h1 className="text-danger">403 - Forbidden</h1>
+        <h4 className="text-danger" >You do not have the required permissions to access this page.</h4>
       </div>
     );
   }
