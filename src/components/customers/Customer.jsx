@@ -113,8 +113,6 @@ const Customer = () => {
             });
     };
 
-
-
     function validateForm() {
         let valid = true;
 

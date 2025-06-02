@@ -292,53 +292,58 @@ const CreateOrder = () => {
         )}
 
         {/* Order Items Table */}
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>Product</th>
-              <th>Quantity</th>
-              <th>Amount</th>
-              <th>Tax</th>
-              <th>Discount</th>
-              <th>Remove</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orderItems.map((item, idx) => (
-              <tr key={idx}>
-                <td>{item.name}</td>
-                <td>
-                  <Form.Control
-                    type="number"
-                    min={1}
-                    max={item.qtyStock}
-                    value={item.qty}
-                    onChange={(e) => handleQtyChange(idx, parseInt(e.target.value))}
-                  />
-                </td>
-                <td>{(item.price * item.qty).toFixed(2)} $</td>
-                <td>{item.tax.toFixed(2)} $</td>
-                <td>{item.discount.toFixed(2)} $</td>
-                <td>
-                  <Button variant="danger" size="sm" onClick={() => handleRemoveItem(idx)}>
-                    Remove
-                  </Button>
-                </td>
+        {orderItems.length > 0 && (
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Amount</th>
+                <th>Tax</th>
+                <th>Discount</th>
+                <th>Remove</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              {orderItems.map((item, idx) => (
+                <tr key={idx}>
+                  <td>{item.name}</td>
+                  <td>
+                    <Form.Control
+                      type="number"
+                      min={1}
+                      max={item.qtyStock}
+                      value={item.qty}
+                      onChange={(e) => handleQtyChange(idx, parseInt(e.target.value))}
+                    />
+                  </td>
+                  <td>{(item.price * item.qty).toFixed(2)} $</td>
+                  <td>{item.tax.toFixed(2)} $</td>
+                  <td>{item.discount.toFixed(2)} $</td>
+                  <td>
+                    <Button variant="danger" size="sm" onClick={() => handleRemoveItem(idx)}>
+                      Remove
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
+
 
         {/* Totals */}
-        <Row>
-          <Col className="text-end">
-            <h6>Total Amount HT: {totalPrice.toFixed(2)} $</h6>
-            <h6>Total Tax : {totalTax.toFixed(2)} $</h6>
-            <h6>Total Discount: {totalDiscount.toFixed(2)} $</h6>
-            <h5>Amount : {totalAmount.toFixed(2)} $</h5>
+        {orderItems.length > 0 && (
+          <Row>
+            <Col className="text-end">
+              <h6>Total Amount HT: {totalPrice.toFixed(2)} $</h6>
+              <h6>Total Tax : {totalTax.toFixed(2)} $</h6>
+              <h6>Total Discount: {totalDiscount.toFixed(2)} $</h6>
+              <h5>Amount : {totalAmount.toFixed(2)} $</h5>
+            </Col>
+          </Row>
+        )}
 
-          </Col>
-        </Row>
 
       </Form>
       {/* 🛒 Cart Modal */}
