@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { listPayments } from '../../services/PaymentService'
+import { useAuth } from '../hooks/useAuth'
 
 const Payments = () => {
 
@@ -9,11 +10,17 @@ const Payments = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [searchTerm, setSearchTerm] = useState('')
 
-  const navigator = useNavigate()
+  const { token, loading } = useAuth();
 
   useEffect(() => {
-    getAllPayments()
-  }, [])
+    if (!loading && token) {
+      getAllPayments();
+    }
+  }, [loading, token]);
+
+
+  const navigator = useNavigate()
+
 
   function getAllPayments() {
     listPayments()
@@ -82,10 +89,10 @@ const Payments = () => {
               setCurrentPage(1)
             }}
           >
-           
+
             <option value={10}>10</option>
             <option value={20}>20</option>
-             <option value={40}>40</option>
+            <option value={40}>40</option>
           </select>
           entries
         </div>

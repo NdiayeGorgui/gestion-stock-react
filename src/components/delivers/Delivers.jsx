@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { listDelivers } from '../../services/DeliverService'
+import { useAuth } from '../hooks/useAuth'
 
 const Delivers = () => {
 
@@ -11,9 +12,14 @@ const Delivers = () => {
 
   const navigator = useNavigate()
 
+  const { token, loading } = useAuth();
+
   useEffect(() => {
-    getAllDelivers()
-  }, [])
+    if (!loading && token) {
+      getAllDelivers();
+    }
+  }, [loading, token]);
+
 
   function getAllDelivers() {
     listDelivers()
@@ -84,7 +90,7 @@ const Delivers = () => {
               setCurrentPage(1)
             }}
           >
-            
+
             <option value={10}>10</option>
             <option value={20}>20</option>
             <option value={40}>40</option>

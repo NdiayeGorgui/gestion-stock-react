@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { getOrder } from '../../services/OrderSrvice'
+import { useAuth } from '../hooks/useAuth'
 
 const OrderDetails = () => {
   const [orderDetails, setOrderDetails] = useState(null)
-  const { id } = useParams()
+  const { id } = useParams();
+  const navigator = useNavigate();
+  const { token, loading } = useAuth();
 
   useEffect(() => {
-    if (id) {
+   if (!loading && token && id) {
       getOrder(id)
         .then((response) => {
           setOrderDetails(response.data)
@@ -16,7 +19,16 @@ const OrderDetails = () => {
           console.error('Erreur lors de la récupération de la commande:', error)
         })
     }
-  }, [id])
+}, [loading, token, id]);
+
+function close() {
+  if (order?.orderStatus === 'CANCELED') {
+    navigator('/admin/canceled-orders');
+  } else {
+    navigator('/admin/completed-orders');
+  }
+}
+
 
   if (!orderDetails) {
     return <div className='container mt-5'>Chargement des détails de la commande...</div>
@@ -114,6 +126,15 @@ const OrderDetails = () => {
         </div>
 
       </div>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <button
+                  onClick={() => close()}
+                  className="btn btn-primary"
+                  style={{ width: '50%' }}
+                >
+                  Close
+                </button>
+              </div>
     </div>
   )
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { createCustomer, customerExistByEmail, getCustomer, updateCustomer } from '../../services/CustomerService'
 import Swal from 'sweetalert2'
+import { useAuth } from '../hooks/useAuth'
 
 const Customer = () => {
 
@@ -20,10 +21,11 @@ const Customer = () => {
     })
 
     const navigator = useNavigate();
+    const { token, loading } = useAuth();
 
     useEffect(() => {
 
-        if (id) {
+         if (!loading && token && id) {
             getCustomer(id).then((response) => {
                 setName(response.data.name);
                 setAddress(response.data.address);
@@ -35,7 +37,7 @@ const Customer = () => {
             })
         }
 
-    }, [id])
+   }, [loading, token, id]);
 
     function confirmSaveOrUpdate(e) {
         e.preventDefault();

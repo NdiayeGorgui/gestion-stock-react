@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { deleteCustomer, listCustomers } from '../../services/CustomerService'
 import Swal from 'sweetalert2'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
 
 const Customers = () => {
 
@@ -11,11 +12,17 @@ const Customers = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const location = useLocation();
 
-  const navigator = useNavigate()
+  const { token, loading } = useAuth();
 
   useEffect(() => {
-    getAllCustomers()
-  }, [])
+    if (!loading && token) {
+      getAllCustomers();
+    }
+  }, [loading, token]);
+
+
+  const navigator = useNavigate()
+
 
   function getAllCustomers() {
     listCustomers()

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { listOrderEvents } from '../../services/OrderSrvice'
+import { useAuth } from '../hooks/useAuth'
 
 const OrderEvents = () => {
 
@@ -9,9 +10,14 @@ const OrderEvents = () => {
     const [searchTerm, setSearchTerm] = useState('')
 
 
+    const { token, loading } = useAuth();
+
     useEffect(() => {
-        getAllOrderEvents()
-    }, [])
+        if (!loading && token) {
+            getAllOrderEvents();
+        }
+    }, [loading, token]);
+
 
     function getAllOrderEvents() {
         listOrderEvents()
@@ -76,7 +82,7 @@ const OrderEvents = () => {
                             setCurrentPage(1)
                         }}
                     >
-                        
+
                         <option value={10}>10</option>
                         <option value={20}>20</option>
                         <option value={40}>40</option>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { getCustomer } from '../../services/CustomerService'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
 
 const CustomerDetails = () => {
 
@@ -9,13 +10,15 @@ const CustomerDetails = () => {
     const [phone, setPhone] = useState('')
     const [email, setEmail] = useState('')
     const [status, setStatus] = useState('')
-    
 
+     const navigator = useNavigate();
+    
     const {id} = useParams();
+    const { token, loading } = useAuth();
 
     useEffect(() => {
     
-            if(id){
+            if (!loading && token && id) {
                 getCustomer(id).then((response) => {
                     setName(response.data.name);
                     setAddress(response.data.address);
@@ -28,7 +31,11 @@ const CustomerDetails = () => {
                 })
             }
     
-        }, [id])
+      }, [loading, token, id]);
+
+      function close() {
+    navigator('/admin/customers');
+  }
 
   return (
     <div className='container'>
@@ -91,6 +98,15 @@ const CustomerDetails = () => {
                   className='form-control'
                   readOnly
                 />
+              </div>
+               <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <button
+                  onClick={() => close()}
+                  className="btn btn-primary"
+                  style={{ width: '50%' }}
+                >
+                  Close
+                </button>
               </div>
             </form>
           </div>

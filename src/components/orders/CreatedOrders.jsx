@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { listCreatedOrders, removeOrder } from '../../services/OrderSrvice';
 import Swal from 'sweetalert2';
+import { useAuth } from '../hooks/useAuth';
 
 const CreatedOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -18,9 +19,14 @@ const CreatedOrders = () => {
     }
   }, [location.state]);
 
+  const { token, loading } = useAuth();
+
   useEffect(() => {
-    getAllCreatedOrders();
-  }, []);
+    if (!loading && token) {
+      getAllCreatedOrders();
+    }
+  }, [loading, token]);
+
 
   function getAllCreatedOrders() {
     listCreatedOrders()
@@ -124,10 +130,10 @@ const CreatedOrders = () => {
               setCurrentPage(1);
             }}
           >
-           
+
             <option value={10}>10</option>
             <option value={20}>20</option>
-             <option value={40}>40</option>
+            <option value={40}>40</option>
           </select>
           entries
         </div>
@@ -176,17 +182,17 @@ const CreatedOrders = () => {
                           <i className="bi bi-eye"></i>
                         </button>
                       </td>
-                      
+
                     </>
                   )}
                   <td >
-                        <button
-                          className="btn btn-outline-danger btn-sm"
-                          onClick={() => cancelOrder(order.order.orderIdEvent)}
-                        >
-                          <i className="bi bi-x-circle"></i>
-                        </button>
-                      </td>
+                    <button
+                      className="btn btn-outline-danger btn-sm"
+                      onClick={() => cancelOrder(order.order.orderIdEvent)}
+                    >
+                      <i className="bi bi-x-circle"></i>
+                    </button>
+                  </td>
                 </tr>
               ))
             )
@@ -227,9 +233,8 @@ const CreatedOrders = () => {
               </span>
             </li>
             <li
-              className={`page-item ${
-                currentPage === totalPages ? 'disabled' : ''
-              }`}
+              className={`page-item ${currentPage === totalPages ? 'disabled' : ''
+                }`}
             >
               <button
                 className="page-link"
@@ -240,9 +245,8 @@ const CreatedOrders = () => {
               </button>
             </li>
             <li
-              className={`page-item ${
-                currentPage === totalPages ? 'disabled' : ''
-              }`}
+              className={`page-item ${currentPage === totalPages ? 'disabled' : ''
+                }`}
             >
               <button
                 className="page-link"

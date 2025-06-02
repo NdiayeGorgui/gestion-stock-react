@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getBill } from '../../services/BillingService';
+import { useAuth } from '../hooks/useAuth';
 
 const Bill = () => {
   const [billData, setBillData] = useState(null);
   const { id } = useParams();
+  const navigator = useNavigate();
+
+  const { token, loading } = useAuth();
 
   useEffect(() => {
-    if (id) {
+     if (!loading && token && id) {
       getBill(id)
         .then((response) => {
           setBillData(response.data);
@@ -16,7 +20,11 @@ const Bill = () => {
           console.error(error);
         });
     }
-  }, [id]);
+ }, [loading, token, id]);
+
+       function close() {
+    navigator('/admin/bills');
+  }
 
   if (!billData) return <div className="text-center mt-5">Loading...</div>;
 
@@ -92,6 +100,15 @@ const Bill = () => {
                     <input type='text' value={billData.status} className='form-control' readOnly />
                   </div>
                 </div>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <button
+                  onClick={() => close()}
+                  className="btn btn-primary"
+                  style={{ width: '50%' }}
+                >
+                  Close
+                </button>
               </div>
             </form>
           </div>

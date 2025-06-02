@@ -4,6 +4,7 @@ import { getAmountByCustomerId, getCustomer } from '../../services/OrderSrvice';
 import { createPayment } from '../../services/PaymentService';
 import Swal from 'sweetalert2';
 import { printInvoice } from '../../services/BillingService';
+import { useAuth } from '../hooks/useAuth';
 
 
 const CreatePayment = () => {
@@ -19,12 +20,13 @@ const CreatePayment = () => {
     { id: 2, name: 'CHEQUE' },
     { id: 3, name: 'VIREMENT' },
   ];
+  const { token, loading } = useAuth();
 
   useEffect(() => {
-    if (id) {
+  if (!loading && token && id) {
       fetchData(id);
     }
-  }, [id]);
+  }, [loading, token, id]);
 
   const fetchData = async (customerId) => {
     try {

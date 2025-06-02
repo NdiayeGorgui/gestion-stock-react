@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { createOrder, listCustomers, listProducts } from '../../services/OrderSrvice';
 import Swal from 'sweetalert2';
 import Select from 'react-select';
+import { useAuth } from '../hooks/useAuth';
 
 
 
@@ -33,11 +34,15 @@ const CreateOrder = () => {
     label: `${product.name} - ${product.price} $`,
   }));
 
+  const { token, loading } = useAuth();
 
   useEffect(() => {
-    getAllCustomers();
-    getAllProducts();
-  }, []);
+    if (!loading && token) {
+      getAllCustomers();
+      getAllProducts();
+    }
+  }, [loading, token]);
+
 
   const getAllCustomers = () => {
     listCustomers()

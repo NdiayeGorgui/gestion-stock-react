@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Table } from 'react-bootstrap';
 import { getCreatedOrdersByCustomer, getAmountByCustomerId, getCustomer } from '../../services/OrderSrvice';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
 
 const OrderCreatedDetails = () => {
   const { id } = useParams();
@@ -9,37 +10,43 @@ const OrderCreatedDetails = () => {
   const [customer, setCustomer] = useState({});
   const [amountDto, setAmountDto] = useState({ amount: 0, totalAmount: 0, tax: 0, discount: 0 });
 
+  const navigator = useNavigate();
+  const { token, loading } = useAuth();
+
   useEffect(() => {
-    if (id) {
+    if (!loading && token && id) {
       fetchCustomerAndOrders();
     }
-  }, [id]);
+  }, [loading, token, id]);
 
-const fetchCustomerAndOrders = async () => {
-  try {
-    const customerRes = await getCustomer(id);
-    const orderRes = await getCreatedOrdersByCustomer(id);
-    const amountRes = await getAmountByCustomerId(id);
+  const fetchCustomerAndOrders = async () => {
+    try {
+      const customerRes = await getCustomer(id);
+      const orderRes = await getCreatedOrdersByCustomer(id);
+      const amountRes = await getAmountByCustomerId(id);
 
-    console.log("✅ getCustomer:", customerRes);
-    console.log("✅ getCreatedOrdersByCustomer:", orderRes);
-    console.log("✅ getAmountByCustomerId:", amountRes);
+      console.log("✅ getCustomer:", customerRes);
+      console.log("✅ getCreatedOrdersByCustomer:", orderRes);
+      console.log("✅ getAmountByCustomerId:", amountRes);
 
-    const customerData = customerRes?.data;
-    const orderData = orderRes?.data;
-    const amountData = amountRes?.data;
+      const customerData = customerRes?.data;
+      const orderData = orderRes?.data;
+      const amountData = amountRes?.data;
 
-    if (customerData) setCustomer(customerData);
-    if (Array.isArray(orderData)) setOrders(orderData);
-    if (amountData) setAmountDto(amountData);
-  } catch (error) {
-    console.error("❌ fetchCustomerAndOrders error:", error);
-    if (error.response) {
-      console.error("📡 Backend response error:", error.response.data);
+      if (customerData) setCustomer(customerData);
+      if (Array.isArray(orderData)) setOrders(orderData);
+      if (amountData) setAmountDto(amountData);
+    } catch (error) {
+      console.error("❌ fetchCustomerAndOrders error:", error);
+      if (error.response) {
+        console.error("📡 Backend response error:", error.response.data);
+      }
     }
-  }
-};
+  };
 
+  function close() {
+    navigator('/admin/created-orders');
+  }
 
   return (
     <div className="container mt-3">
@@ -87,14 +94,25 @@ const fetchCustomerAndOrders = async () => {
               )}
             </tbody>
           </Table>
-          <div className="mt-3">
-            <label><b>Total Amount</b></label>
-            <input
-              className="form-control"
-              value={amountDto.totalAmount?.toFixed(2) || "0.00"}
-              readOnly
-            />
+          <div className="mt-3 d-flex align-items-end gap-3">
+            <div className="flex-grow-1">
+              <label><b>Total Amount</b></label>
+              <input
+                className="form-control"
+                value={amountDto.totalAmount?.toFixed(2) || "0.00"}
+                readOnly
+              />
+            </div>
+
+            <button
+              onClick={close}
+              className="btn btn-primary"
+              style={{ height: '38px' }} // même hauteur que l'input pour l’alignement
+            >
+              Close
+            </button>
           </div>
+
         </Card.Body>
       </Card>
     </div>

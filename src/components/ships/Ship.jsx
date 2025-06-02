@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { createShip, getShip } from '../../services/ShippingService';
 import Swal from 'sweetalert2';
+import { useAuth } from '../hooks/useAuth';
 
 const Ship = () => {
 
@@ -17,9 +18,10 @@ const Ship = () => {
 
   const { id } = useParams();
   const navigator = useNavigate();
+  const { token, loading } = useAuth();
 
   useEffect(() => {
-    if (id) {
+   if (!loading && token && id) {
       getShip(id)
         .then((response) => {
           setOrderId(response.data.orderId);
@@ -35,7 +37,7 @@ const Ship = () => {
           console.error(error);
         });
     }
-  }, [id]);
+}, [loading, token, id]);
 
   const handleShip = (e) => {
   e.preventDefault();

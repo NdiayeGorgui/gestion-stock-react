@@ -10,6 +10,15 @@ const Products = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [searchTerm, setSearchTerm] = useState('')
 
+  const { token, loading } = useAuth();
+
+  useEffect(() => {
+    if (!loading && token) {
+      getAllProducts();
+    }
+  }, [loading, token]);
+
+
   const navigator = useNavigate()
 
   const { roles } = useAuth()
@@ -17,10 +26,6 @@ const Products = () => {
   // Supposons que le rôle admin est la string 'ADMIN'
   const isAdmin = roles && roles.includes('ADMIN')
 
-
-  useEffect(() => {
-    getAllProducts()
-  }, [])
 
   function getAllProducts() {
     listProducts()

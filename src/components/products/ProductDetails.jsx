@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getProduct } from '../../services/ProductService'; // ✅ Assure-toi que ce chemin est correct
+import { useAuth } from '../hooks/useAuth';
 
 const ProductDetails = () => {
   const [name, setName] = useState('');
@@ -10,10 +11,12 @@ const ProductDetails = () => {
   const [qtyStatus, setQtyStatus] = useState('');
 
   const { id } = useParams();
-   const navigator = useNavigate();
+  const navigator = useNavigate();
+
+  const { token, loading } = useAuth();
 
   useEffect(() => {
-    if (id) {
+    if (!loading && token && id) {
       getProduct(id)
         .then((response) => {
           setName(response.data.name);
@@ -26,10 +29,11 @@ const ProductDetails = () => {
           console.error(error);
         });
     }
-  }, [id]);
-   function close() {
-     navigator('/admin/products', { state: { refresh: true } });
-   }
+  }, [loading, token, id]);
+
+  function close() {
+    navigator('/admin/products');
+  }
 
   return (
     <div className='container'>
@@ -93,7 +97,18 @@ const ProductDetails = () => {
                   readOnly
                 />
               </div>
-              
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <button
+                  onClick={() => close()}
+                  className="btn btn-primary"
+                  style={{ width: '50%' }}
+                >
+                  Close
+                </button>
+              </div>
+
+
+
             </form>
           </div>
         </div>

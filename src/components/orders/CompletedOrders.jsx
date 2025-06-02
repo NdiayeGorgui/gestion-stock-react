@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { listCompletedOrders } from '../../services/OrderSrvice'
+import { useAuth } from '../hooks/useAuth'
 
 const CompletedOrders = () => {
   const [orders, setOrders] = useState([])
@@ -10,9 +11,13 @@ const CompletedOrders = () => {
 
   const navigator = useNavigate()
 
+  const { token, loading } = useAuth();
+
   useEffect(() => {
-    getAllCompletedOrders()
-  }, [])
+    if (!loading && token) {
+      getAllCompletedOrders();
+    }
+  }, [loading, token]);
 
   function getAllCompletedOrders() {
     listCompletedOrders()
@@ -81,7 +86,7 @@ const CompletedOrders = () => {
               setCurrentPage(1)
             }}
           >
-           
+
             <option value={10}>10</option>
             <option value={20}>20</option>
             <option value={40}>40</option>

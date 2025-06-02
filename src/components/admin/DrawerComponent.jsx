@@ -61,7 +61,7 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
   const firstname = user?.given_name || 'UserName';
 
   const { roles } = useAuth()
-  
+
   // Supposons que le rôle admin est la string 'ADMIN'
   const isAdmin = roles && roles.includes('ADMIN')
 
@@ -162,7 +162,7 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
                 Home
               </Button>
               <Divider orientation="vertical" flexItem sx={{ mx: 2, bgcolor: 'gray' }} />
-               <Button color="inherit" onClick={handleOrdersClick}>
+              <Button color="inherit" onClick={handleOrdersClick}>
                 <Box display="flex" alignItems="center">
                   Orders List
                   <ExpandMoreIcon sx={{ ml: 1 }} />
@@ -173,33 +173,33 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
               </Button>
               <Divider orientation="vertical" flexItem sx={{ mx: 2, bgcolor: 'gray' }} />
               {/* Username dropdown menu */}
-<Box sx={{ ml: 2 }}>
-  <Button
-    color="inherit"
-    startIcon={<PersonPinCircleOutlined />}
-    endIcon={<ExpandMoreIcon />}
-    onClick={(e) => setAnchorElMobileMenu(e.currentTarget)}
-  >
-    {firstname}
-  </Button>
-  <Menu
-    anchorEl={anchorElMobileMenu}
-    open={Boolean(anchorElMobileMenu)}
-    onClose={handleMobileMenuClose}
-  >
-    <MenuItem component={Link} to="/admin/profile" onClick={handleMobileMenuClose}>
-      <AccountCircleIcon sx={{ mr: 1 }} /> Profile
-    </MenuItem>
-    <MenuItem
-      onClick={() => {
-        handleMobileMenuClose();
-        keycloak.logout({ redirectUri: window.location.origin });
-      }}
-    >
-      <ExitToAppIcon sx={{ mr: 1 }} /> Logout
-    </MenuItem>
-  </Menu>
-</Box>
+              <Box sx={{ ml: 2 }}>
+                <Button
+                  color="inherit"
+                  startIcon={<PersonPinCircleOutlined />}
+                  endIcon={<ExpandMoreIcon />}
+                  onClick={(e) => setAnchorElMobileMenu(e.currentTarget)}
+                >
+                  {firstname}
+                </Button>
+                <Menu
+                  anchorEl={anchorElMobileMenu}
+                  open={Boolean(anchorElMobileMenu)}
+                  onClose={handleMobileMenuClose}
+                >
+                  <MenuItem component={Link} to="/admin/profile" onClick={handleMobileMenuClose}>
+                    <AccountCircleIcon sx={{ mr: 1 }} /> Profile
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      handleMobileMenuClose();
+                      keycloak.logout({ redirectUri: window.location.origin });
+                    }}
+                  >
+                    <ExitToAppIcon sx={{ mr: 1 }} /> Logout
+                  </MenuItem>
+                </Menu>
+              </Box>
 
 
             </>
@@ -272,10 +272,10 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
         <Divider />
         <List>
           {isAdmin && (
-          <ListItem button component={Link} to="/admin/dashboard" onClick={handleLinkClick}>
-            <ListItemIcon><DashboardIcon /></ListItemIcon>
-            <ListItemText primary="Dashboard" />
-          </ListItem>
+            <ListItem button component={Link} to="/admin/dashboard" onClick={handleLinkClick}>
+              <ListItemIcon><DashboardIcon /></ListItemIcon>
+              <ListItemText primary="Dashboard" />
+            </ListItem>
           )}
 
           <ListItem button component={Link} to="/admin/products" onClick={handleLinkClick}>

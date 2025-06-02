@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { listBills } from '../../services/BillingService'
+import { useAuth } from '../hooks/useAuth'
 
 const Bills = () => {
 
@@ -11,9 +12,15 @@ const Bills = () => {
 
   const navigator = useNavigate()
 
+  const { token, loading } = useAuth();
+
   useEffect(() => {
-    getAllBills()
-  }, [])
+    if (!loading && token) {
+      getAllBills();
+    }
+  }, [loading, token]);
+
+
 
   function getAllBills() {
     listBills()

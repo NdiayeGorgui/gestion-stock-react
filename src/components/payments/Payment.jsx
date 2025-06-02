@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getPayment } from '../../services/PaymentService';
+import { useAuth } from '../hooks/useAuth';
 
 const Payment = () => {
   const [paymentData, setPaymentData] = useState(null);
   const { id } = useParams();
+  const { token, loading } = useAuth();
+  const navigator = useNavigate();
 
   useEffect(() => {
-    if (id) {
+    if (!loading && token && id) {
       getPayment(id)
         .then((response) => {
           console.log('Payment response:', response.data);
@@ -17,7 +20,11 @@ const Payment = () => {
           console.error(error);
         });
     }
-  }, [id]);
+  }, [loading, token, id]);
+
+   function close() {
+    navigator('/admin/payments');
+   }
 
   if (!paymentData) return <div className="text-center mt-5">Loading...</div>;
 
@@ -69,6 +76,15 @@ const Payment = () => {
                     <input type='text' value={paymentData.paymentStatus} className='form-control' readOnly />
                   </div>
                 </div>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <button
+                  onClick={() => close()}
+                  className="btn btn-primary"
+                  style={{ width: '50%' }}
+                >
+                  Close
+                </button>
               </div>
             </form>
           </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { createProduct, getProduct, updateProduct } from '../../services/ProductService';
 import Swal from 'sweetalert2';
+import { useAuth } from '../hooks/useAuth';
 
 const Product = () => {
     const [name, setName] = useState('');
@@ -19,9 +20,10 @@ const Product = () => {
     });
 
     const navigator = useNavigate();
+    const { token, loading } = useAuth();
 
     useEffect(() => {
-        if (id) {
+         if (!loading && token && id) {
             getProduct(id).then((response) => {
                 setName(response.data.name);
                 setCategory(response.data.category);
@@ -32,7 +34,7 @@ const Product = () => {
                 console.error(error);
             });
         }
-    }, [id]);
+  }, [loading, token, id]);
 
 
     useEffect(() => {

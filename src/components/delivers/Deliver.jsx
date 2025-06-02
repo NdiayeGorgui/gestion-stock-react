@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createDeliver, getDeliver } from '../../services/DeliverService';
 import Swal from 'sweetalert2';
+import { useAuth } from '../hooks/useAuth';
 
 const Deliver = () => {
   const [orderId, setOrderId] = useState('');
@@ -14,9 +15,10 @@ const Deliver = () => {
 
   const { id } = useParams();
   const navigator = useNavigate();
+  const { token, loading } = useAuth();
 
   useEffect(() => {
-    if (id) {
+   if (!loading && token && id) {
       getDeliver(id)
         .then((response) => {
           setOrderId(response.data.orderId);
@@ -31,7 +33,7 @@ const Deliver = () => {
           console.error(error);
         });
     }
-  }, [id]);
+ }, [loading, token, id]);
 
   const handleDeliver = (e) => {
     e.preventDefault();
@@ -69,6 +71,10 @@ const Deliver = () => {
       }
     });
   };
+
+      function close() {
+    navigator('/admin/customers', { state: { refresh: true } });
+  }
 
   return (
     <div className='container'>
