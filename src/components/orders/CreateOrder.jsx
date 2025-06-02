@@ -99,10 +99,11 @@ const CreateOrder = () => {
 
 
   const addProductToOrder = () => {
-    if (!selectedProduct || itemQty <= 0) {
+    if (!selectedProduct || !itemQty || isNaN(itemQty) || itemQty <= 0) {
       Swal.fire('Warning', 'Please select a product and enter a valid quantity.', 'warning');
       return;
     }
+
 
     const alreadyInOrder = orderItems.some(
       item => item.productIdEvent === selectedProduct.productIdEvent
@@ -125,10 +126,12 @@ const CreateOrder = () => {
     const newItem = {
       ...selectedProduct,
       qty: itemQty,
+      qtyStock: selectedProduct.qty, // Stock initial
       amount,
       tax,
       discount,
     };
+
 
     setOrderItems([...orderItems, newItem]);
     setSelectedProductId('');
@@ -157,12 +160,29 @@ const CreateOrder = () => {
     const updatedItems = [...orderItems];
     const item = updatedItems[index];
 
-    if (newQty <= 0 || newQty > item.qtyStock) {
-      Swal.fire('Invalid Quantity', 'Please enter a valid quantity within available stock.', 'warning');
+    if (newQty === null || newQty === '') {
+      // Temporairement vide, on ne calcule rien
+      item.qty = newQty;
+      setOrderItems(updatedItems);
       return;
     }
 
-    const totalHT = item.price * newQty;
+    const qty = parseInt(newQty);
+    if (isNaN(qty) || qty <= 0) {
+      Swal.fire('Invalid Quantity', 'Quantity must be greater than zero.', 'warning');
+      return;
+    }
+
+    if (qty > item.qtyStock) {
+      Swal.fire(
+        'Insufficient Stock',
+        `Only ${item.qtyStock} item(s) available for "${item.name}".`,
+        'error'
+      );
+      return;
+    }
+
+    const totalHT = item.price * qty;
     const newTax = totalHT * 0.2;
     let newDiscount = 0;
     if (totalHT >= 200) newDiscount = totalHT * 0.01;
@@ -170,7 +190,7 @@ const CreateOrder = () => {
 
     updatedItems[index] = {
       ...item,
-      qty: newQty,
+      qty,
       tax: newTax,
       discount: newDiscount,
       amount: totalHT + newTax - newDiscount,
@@ -178,6 +198,8 @@ const CreateOrder = () => {
 
     setOrderItems(updatedItems);
   };
+
+
 
   return (
     <Container className="mt-4">
@@ -313,9 +335,27 @@ const CreateOrder = () => {
                       type="number"
                       min={1}
                       max={item.qtyStock}
-                      value={item.qty}
-                      onChange={(e) => handleQtyChange(idx, parseInt(e.target.value))}
+                      value={item.qty === null ? '' : item.qty}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        // Permet d'effacer : on enregistre null temporairement
+                        handleQtyChange(idx, val === '' ? null : parseInt(val));
+                      }}
+                      onBlur={(e) => {
+                        const val = parseInt(e.target.value);
+                        if (isNaN(val) || val < 1) {
+                          Swal.fire({
+                            icon: 'info',
+                            title: 'Quantity reset',
+                            text: 'Quantity cannot be empty or less than 1. Reset to 1.',
+                            timer: 2000,
+                            showConfirmButton: false
+                          });
+                          handleQtyChange(idx, 1);
+                        }
+                      }}
                     />
+
                   </td>
                   <td>{(item.price * item.qty).toFixed(2)} $</td>
                   <td>{item.tax.toFixed(2)} $</td>
