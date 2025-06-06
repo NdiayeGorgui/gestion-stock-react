@@ -1,0 +1,98 @@
+body.light {
+  --bg: #ffffff;
+  --text: #111;
+  --card: #f5f5f5;
+}
+
+body.dark {
+  --bg: #121212;
+  --text: #f0f0f0;
+  --card: #1e1e1e;
+}
+
+/* Font sizes */
+body.small-font {
+  font-size: 14px;
+}
+
+body.medium-font {
+  font-size: 16px;
+}
+
+body.large-font {
+  font-size: 18px;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', sans-serif;
+  transition: all 0.3s ease;
+}
+
+.settings-page {
+  max-width: 500px;
+  margin: 2rem auto;
+  background-color: var(--card);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.setting-item {
+  margin-bottom: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.setting-item label {
+  font-size: 1rem;
+}
+
+.setting-item select {
+  padding: 0.4rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.reset-button {
+  margin-top: 2rem;
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #e53935;
+  color: white;
+  border: none;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.reset-button:hover {
+  background-color: #c62828;
+}
+
+
+
+
+.settings-page select {
+  padding: 6px 10px;
+  font-size: inherit;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: white;
+  color: #333;
+  outline: none;
+}
+
+.settings-page select:focus {
+  border-color: #3f51b5;
+  box-shadow: 0 0 5px rgba(63, 81, 181, 0.5);
+}

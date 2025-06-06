@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { createShip, getShip } from '../../services/ShippingService';
 import Swal from 'sweetalert2';
 import { useAuth } from '../hooks/useAuth';
+import { useTranslation } from 'react-i18next';
 
 const Ship = () => {
 
@@ -15,7 +16,7 @@ const Ship = () => {
   const [paymentId, setPaymentId] = useState('');
   const [details, setDetails] = useState('');
 
-
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigator = useNavigate();
   const { token, loading } = useAuth();
@@ -54,25 +55,25 @@ const Ship = () => {
   };
 
   Swal.fire({
-    title: 'Confirm shipment?',
-    text: 'Are you sure you want to create this shipment?',
+    title: t('title_ship', { ns: 'ships' }),
+    text: t('text_ship', { ns: 'ships' }),
     icon: 'warning',
     showCancelButton: true,
-    confirmButtonText: 'Yes, ship',
-    cancelButtonText: 'Cancel',
+    confirmButtonText:  t('confirm_ship', { ns: 'ships' }),
+    cancelButtonText: t('cancel', { ns: 'ships' }),
   }).then((result) => {
     if (result.isConfirmed) {
       createShip(ship)
         .then((response) => {
           console.log(response.data);
-          Swal.fire('Success', 'The expedition has been created.', 'success').then(() => {
+          Swal.fire(t('success_title', { ns: 'ships' }), t('success_message', { ns: 'ships' }), 'success').then(() => {
             navigator('/admin/ships');
            // window.location.reload();
           });
         })
         .catch((error) => {
           console.error(error);
-          Swal.fire('Error', "Creation failed.", 'error');
+          Swal.fire(t('error_title', { ns: 'ships' }), t('error_message', { ns: 'ships' }), 'error');
         });
     }
   });
@@ -85,22 +86,22 @@ const Ship = () => {
   <br /><br />
   <div className='row'>
     <div className='card col-md-8 offset-md-2'>
-      <h2 className='text-center'>Ship Order</h2>
+      <h2 className='text-center'>{t('Ship_Order', { ns: 'ships' })}</h2>
       <div className='card-body'>
         <form>
           <div className='row'>
             {/* Colonne 1 */}
             <div className='col-md-6'>
               <div className='form-group mb-3'>
-                <label className='form-label fw-bold'>Order Id:</label>
+                <label className='form-label fw-bold'>{t('Order_Id', { ns: 'ships' })}:</label>
                 <input type='text' name='orderId' value={orderId} className='form-control' readOnly />
               </div>
               <div className='form-group mb-3'>
-                <label className='form-label fw-bold'>Date:</label>
+                <label className='form-label fw-bold'>{t('Date', { ns: 'ships' })}:</label>
                 <input type='text' name='eventTimeStamp' value={eventTimeStamp} className='form-control' readOnly />
               </div>
               <div className='form-group mb-3'>
-                <label className='form-label fw-bold'>Status:</label>
+                <label className='form-label fw-bold'>{t('Status', { ns: 'ships' })}:</label>
                 <input type='text' name='status' value={status} className='form-control' readOnly />
               </div>
             </div>
@@ -108,15 +109,15 @@ const Ship = () => {
             {/* Colonne 2 */}
             <div className='col-md-6'>
               <div className='form-group mb-3'>
-                <label className='form-label fw-bold'>Customer Id:</label>
+                <label className='form-label fw-bold'>{t('Customer_Id', { ns: 'ships' })}:</label>
                 <input type='text' name='customerId' value={customerId} className='form-control' readOnly />
               </div>
               <div className='form-group mb-3'>
-                <label className='form-label fw-bold'>Customer Name:</label>
+                <label className='form-label fw-bold'>{t('Customer_Name', { ns: 'ships' })}:</label>
                 <input type='text' name='customerName' value={customerName} className='form-control' readOnly />
               </div>
               <div className='form-group mb-3'>
-                <label className='form-label fw-bold'>Customer Email:</label>
+                <label className='form-label fw-bold'>{t('Customer_Email', { ns: 'ships' })}:</label>
                 <input type='text' name='customerMail' value={customerMail} className='form-control' readOnly />
               </div>
             </div>
@@ -128,7 +129,7 @@ const Ship = () => {
               onClick={handleShip}
               disabled={status !== 'SHIPPING'}
             >
-              Ship
+              {t('Ship', { ns: 'ships' })}
             </button>
           </div>
         </form>

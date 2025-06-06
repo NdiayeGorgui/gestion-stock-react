@@ -1,0 +1,33 @@
+   {
+      "List_Of_Bills": "La liste des factures",
+      "Search_By": "🔍 Rechercher par...",
+      "Show": "Afficher:",
+      "Entries": "entrées",
+      "Customer": "Client",
+      "Product": "Produit",
+      "Date": "Date",
+      "Discount": "Remise",
+      "Quantity": "Quantité",
+      "Details": "Détails",
+      "Status": "Statut",
+      "Price": "Prix",
+      "First": "Premier ",
+      "Previous": "Précédent",
+      "Next": "Suivant",
+      "Last": "Dernier",
+      "No_Bills": "Aucune facture trouvée",
+      "Bill": "Facture",
+      "Id": "Id",
+       "Product_Id": "Numéro du Produit",
+       "Product_Name": "Nom du Produit",
+       "Order_Ref": "Réf Commande",
+       "Customer_Id": "Numéro du Client",
+       "Customer_Name": "Nom du Client",
+       "Customer_Email": "Email du Client",
+       "Billing_Date": "Date de Facturation",
+       "Customer_Phone": "Téléhone du Client",
+       "Close": "Fermer",
+        "Order_Id": "Numéro de Commande"
+       
+
+    }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getProduct } from '../../services/ProductService'; // ✅ Assure-toi que ce chemin est correct
 import { useAuth } from '../hooks/useAuth';
+import { useTranslation } from 'react-i18next';
 
 const ProductDetails = () => {
   const [name, setName] = useState('');
@@ -12,6 +13,7 @@ const ProductDetails = () => {
 
   const { id } = useParams();
   const navigator = useNavigate();
+  const { t } = useTranslation();
 
   const { token, loading } = useAuth();
 
@@ -40,11 +42,11 @@ const ProductDetails = () => {
       <br /> <br />
       <div className='row'>
         <div className='card col-md-6 offset-md-3'>
-          <h2 className='text-center'>Product Details</h2>
+          <h2 className='text-center'>{t('Product_Details', { ns: 'products' })}</h2>
           <div className='card-body'>
             <form>
               <div className='form-group mb-2'>
-                <label className='form-label'>Name:</label>
+                <label className='form-label'>{t('Name', { ns: 'products' })}:</label>
                 <input
                   type='text'
                   name='name'
@@ -55,7 +57,7 @@ const ProductDetails = () => {
               </div>
 
               <div className='form-group mb-2'>
-                <label className='form-label'>Category:</label>
+                <label className='form-label'>{t('Category', { ns: 'products' })}:</label>
                 <input
                   type='text'
                   name='category'
@@ -66,7 +68,7 @@ const ProductDetails = () => {
               </div>
 
               <div className='form-group mb-2'>
-                <label className='form-label'>Price:</label>
+                <label className='form-label'>{t('Price', { ns: 'products' })}:</label>
                 <input
                   type='text'
                   name='price'
@@ -77,7 +79,7 @@ const ProductDetails = () => {
               </div>
 
               <div className='form-group mb-2'>
-                <label className='form-label'>Quantity:</label>
+                <label className='form-label'>{t('Quantity', { ns: 'products' })}:</label>
                 <input
                   type='text'
                   name='qty'
@@ -88,7 +90,7 @@ const ProductDetails = () => {
               </div>
 
               <div className='form-group mb-2'>
-                <label className='form-label'>Quantity Status:</label>
+                <label className='form-label'>{t('Quantity_Status', { ns: 'products' })}:</label>
                 <input
                   type='text'
                   name='qtyStatus'
@@ -103,12 +105,9 @@ const ProductDetails = () => {
                   className="btn btn-primary"
                   style={{ width: '50%' }}
                 >
-                  Close
+                  {t('Close', { ns: 'products' })}
                 </button>
               </div>
-
-
-
             </form>
           </div>
         </div>

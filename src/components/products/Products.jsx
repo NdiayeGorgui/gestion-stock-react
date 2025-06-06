@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { listProducts, deleteProduct } from '../../services/ProductService'
 import Swal from 'sweetalert2';
 import { useAuth } from '../hooks/useAuth';
+import { useTranslation } from 'react-i18next';
 
 const Products = () => {
   const [products, setProducts] = useState([])
@@ -18,7 +19,7 @@ const Products = () => {
     }
   }, [loading, token]);
 
-
+  const { t } = useTranslation();
   const navigator = useNavigate()
 
   const { roles } = useAuth()
@@ -52,14 +53,14 @@ const Products = () => {
 
   function removeProduct(productIdEvent) {
     Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
+      title: t('title_delete', { ns: 'products' }),
+      text: t('text_delete', { ns: 'products' }),
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
       cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel'
+      confirmButtonText: t('confirm_delete', { ns: 'products' }),
+      cancelButtonText: t('cancel', { ns: 'products' })
     }).then((result) => {
       if (result.isConfirmed) {
         deleteProduct(productIdEvent)
@@ -67,11 +68,11 @@ const Products = () => {
             setProducts((prevProducts) =>
               prevProducts.filter((product) => product.productIdEvent !== productIdEvent)
             );
-            Swal.fire('Deleted!', 'The product has been deleted.', 'success');
+            Swal.fire( t('success_title', { ns: 'products' }), t('success_message', { ns: 'products' }), 'success');
           })
           .catch((error) => {
             console.error(error);
-            Swal.fire('Error!', 'Failed to delete the product.', 'error');
+            Swal.fire(t('error_title', { ns: 'products' }), t('error_message', { ns: 'products' }), 'error');
           });
       }
     });
@@ -102,19 +103,19 @@ const Products = () => {
 
   return (
     <div className="container">
-      <h2 className="text-center">List of products</h2>
+      <h2 className="text-center">{t('List_Of_Products', { ns: 'products' })}</h2>
 
       <div className="d-flex justify-content-between align-items-center mb-3">
         {isAdmin && (
           <button className="btn btn-primary" onClick={addNewProduct}>
-            Add Product
+            {t('Add_Product', { ns: 'products' })}
           </button>
         )}
 
         <input
           type="text"
           className="form-control w-25"
-          placeholder="🔍 Search by ..."
+          placeholder= {t('Search_By', { ns: 'products' })}
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value)
@@ -123,7 +124,7 @@ const Products = () => {
         />
 
         <div>
-          Show:
+          {t('Show', { ns: 'products' })}
           <select
             className="form-select d-inline-block w-auto ms-2"
             value={itemsPerPage}
@@ -137,15 +138,15 @@ const Products = () => {
             <option value={20}>20</option>
             <option value={40}>40</option>
           </select>
-          entries
+          {t('Entries', { ns: 'products' })}
         </div>
       </div>
 
       <table className="table table-striped table-bordered">
         <thead>
           <tr>
-            <th>Name</th><th>Category</th><th>Price</th><th>Quantity</th>
-            <th>Quantity status</th><th>Status</th><th>Actions</th>
+            <th>{t('Name', { ns: 'products' })}</th><th>{t('Category', { ns: 'products' })}</th><th>{t('Price', { ns: 'products' })}</th><th>{t('Quantity', { ns: 'products' })}</th>
+            <th>{t('Quantity_Status', { ns: 'products' })}</th><th>{t('Status', { ns: 'products' })}</th><th>{t('Actions', { ns: 'products' })}</th>
           </tr>
         </thead>
         <tbody>
@@ -194,7 +195,7 @@ const Products = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="7" className="text-center">No products found</td>
+              <td colSpan="7" className="text-center"> {t('No_Product', { ns: 'products' })}</td>
             </tr>
           )}
         </tbody>
@@ -206,29 +207,29 @@ const Products = () => {
           <ul className="pagination justify-content-center">
             <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(1)} disabled={currentPage === 1}>
-                ⏮ First
+                ⏮  {t('First', { ns: 'products' })}
               </button>
             </li>
             <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
-                ← Previous
+                ←  {t('Previous', { ns: 'products' })}
               </button>
             </li>
 
             <li className="page-item disabled">
               <span className="page-link">
-                Page {currentPage} sur {totalPages}
+                Page {currentPage} / {totalPages}
               </span>
             </li>
 
             <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages}>
-                Next →
+                 {t('Next', { ns: 'products' })} →
               </button>
             </li>
             <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(totalPages)} disabled={currentPage === totalPages}>
-                Last ⏭
+                 {t('Last', { ns: 'products' })} ⏭
               </button>
             </li>
           </ul>

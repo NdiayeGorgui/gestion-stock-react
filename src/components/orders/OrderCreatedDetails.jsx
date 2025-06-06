@@ -3,6 +3,7 @@ import { Card, Table } from 'react-bootstrap';
 import { getCreatedOrdersByCustomer, getAmountByCustomerId, getCustomer } from '../../services/OrderSrvice';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import { useTranslation } from 'react-i18next';
 
 const OrderCreatedDetails = () => {
   const { id } = useParams();
@@ -11,6 +12,7 @@ const OrderCreatedDetails = () => {
   const [amountDto, setAmountDto] = useState({ amount: 0, totalAmount: 0, tax: 0, discount: 0 });
 
   const navigator = useNavigate();
+  const { t } = useTranslation();
   const { token, loading } = useAuth();
 
   useEffect(() => {
@@ -51,28 +53,28 @@ const OrderCreatedDetails = () => {
   return (
     <div className="container mt-3">
       <Card>
-        <Card.Header><strong>Order Details</strong></Card.Header>
+        <Card.Header><strong>{t('Order_Details', { ns: 'createdorders' })}</strong></Card.Header>
         <ul className="list-group list-group-flush">
-          <li className="list-group-item"><b>Customer Id:</b> {customer.id || 'N/A'}</li>
-          <li className="list-group-item"><b>Customer Name:</b> {customer.name || 'N/A'}</li>
-          <li className="list-group-item"><b>Customer Phone:</b> {customer.phone || 'N/A'}</li>
-          <li className="list-group-item"><b>Customer Address:</b> {customer.address || 'N/A'}</li>
-          <li className="list-group-item"><b>Customer Email:</b> {customer.email || 'N/A'}</li>
-          <li className="list-group-item"><b>Total Tax:</b> {amountDto.tax?.toFixed(2) || '0.00'}</li>
+          <li className="list-group-item"><b>{t('Customer_Id', { ns: 'createdorders' })}:</b> {customer.id || 'N/A'}</li>
+          <li className="list-group-item"><b>{t('Customer_Name_Name', { ns: 'createdorders' })}:</b> {customer.name || 'N/A'}</li>
+          <li className="list-group-item"><b>{t('Customer_Phone', { ns: 'createdorders' })}:</b> {customer.phone || 'N/A'}</li>
+          <li className="list-group-item"><b>{t('Customer_Address', { ns: 'createdorders' })}:</b> {customer.address || 'N/A'}</li>
+          <li className="list-group-item"><b>{t('Customer_Email', { ns: 'createdorders' })}:</b> {customer.email || 'N/A'}</li>
+          <li className="list-group-item"><b>{t('Total_Tax', { ns: 'createdorders' })}:</b> {amountDto.tax?.toFixed(2) || '0.00'}</li>
         </ul>
 
         <Card.Body>
           <Table striped bordered hover>
             <thead>
               <tr>
-                <th>Product Id</th>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Discount</th>
-                <th>Amount</th>
-                <th>Status</th>
+                <th>{t('Product_Id', { ns: 'createdorders' })}</th>
+                <th>{t('Product_Name', { ns: 'createdorders' })}</th>
+                <th>{t('Category', { ns: 'createdorders' })}</th>
+                <th>{t('Price', { ns: 'createdorders' })}</th>
+                <th>{t('Quantity', { ns: 'createdorders' })}</th>
+                <th>{t('Discount', { ns: 'createdorders' })}</th>
+                <th>{t('Amount', { ns: 'createdorders' })}</th>
+                <th>{t('Status', { ns: 'createdorders' })}</th>
               </tr>
             </thead>
             <tbody>
@@ -90,13 +92,13 @@ const OrderCreatedDetails = () => {
                   </tr>
                 ))
               ) : (
-                <tr><td colSpan="8" className="text-center">Aucune commande</td></tr>
+                <tr><td colSpan="8" className="text-center">{t('No_Orders', { ns: 'createdorders' })}</td></tr>
               )}
             </tbody>
           </Table>
           <div className="mt-3 d-flex align-items-end gap-3">
             <div className="flex-grow-1">
-              <label><b>Total Amount</b></label>
+              <label><b>{t('Total_Amount', { ns: 'createdorders' })}</b></label>
               <input
                 className="form-control"
                 value={amountDto.totalAmount?.toFixed(2) || "0.00"}
@@ -109,7 +111,7 @@ const OrderCreatedDetails = () => {
               className="btn btn-primary"
               style={{ height: '38px' }} // même hauteur que l'input pour l’alignement
             >
-              Close
+              {t('Close', { ns: 'createdorders' })}
             </button>
           </div>
 

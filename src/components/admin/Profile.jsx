@@ -1,57 +1,82 @@
 import React from 'react';
 import { useKeycloak } from '@react-keycloak/web';
-import { Button, Typography, Box } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Grid,
+  Avatar,
+  Box,
+  Chip,
+  Divider
+} from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useTranslation } from 'react-i18next';
 
 const Profile = () => {
+  const { t } = useTranslation();
   const { keycloak } = useKeycloak();
- 
 
-  // Liste blanche des rôles à afficher
   const allowedRoles = ['ADMIN', 'USER'];
-
-  // Récupération des rôles depuis le token
   const allRoles = keycloak.tokenParsed?.realm_access?.roles || [];
-
-  // Filtrage
   const displayedRoles = allRoles.filter(role => allowedRoles.includes(role));
 
   const handleManageAccount = () => {
-  keycloak.accountManagement();
-};
-
+    keycloak.accountManagement();
+  };
 
   return (
-    <Box p={3}>
-  <Typography variant="h5" gutterBottom>
-    Profile Details
-  </Typography>
-  
-  <Typography>
-    <strong>First Name:</strong> {keycloak.tokenParsed?.given_name}
-  </Typography>
+    <Box p={3} display="flex" justifyContent="center">
+      <Card sx={{ maxWidth: 600, width: '100%', boxShadow: 4 }}>
+        <CardContent>
+          <Box display="flex" alignItems="center" gap={2} mb={3}>
+            <Avatar sx={{ width: 64, height: 64 }}>
+              <AccountCircleIcon fontSize="large" />
+            </Avatar>
+            <Box>
+              <Typography variant="h5">
+                {keycloak.tokenParsed?.given_name} {keycloak.tokenParsed?.family_name}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {keycloak.tokenParsed?.email}
+              </Typography>
+            </Box>
+          </Box>
 
-  <Typography>
-    <strong>Last Name:</strong> {keycloak.tokenParsed?.family_name}
-  </Typography>
+          <Divider sx={{ mb: 2 }} />
 
-  <Typography>
-    <strong>Email:</strong> {keycloak.tokenParsed?.email}
-  </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <Typography variant="subtitle2" color="text.secondary">{t('First_Name', { ns: 'profile' })}</Typography>
+              <Typography>{keycloak.tokenParsed?.given_name}</Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography variant="subtitle2" color="text.secondary">{t('Last_Name', { ns: 'profile' })}</Typography>
+              <Typography>{keycloak.tokenParsed?.family_name}</Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="subtitle2" color="text.secondary">{t('Email', { ns: 'profile' })}</Typography>
+              <Typography>{keycloak.tokenParsed?.email}</Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="subtitle2" color="text.secondary">{t('Roles', { ns: 'profile' })}</Typography>
+              <Box display="flex" gap={1} mt={1} flexWrap="wrap">
+                {displayedRoles.map((role, index) => (
+                  <Chip key={index} label={role} color="primary" variant="outlined" />
+                ))}
+              </Box>
+            </Grid>
+          </Grid>
 
-  <Typography>
-    <strong>Roles:</strong> {displayedRoles.join(', ')}
-  </Typography>
-
-  <Button
-    variant="contained"
-    color="primary"
-    sx={{ mt: 2 }}
-    onClick={handleManageAccount}
-  >
-    Update my profile
-  </Button>
-</Box>
-
+          <Box mt={4} display="flex" justifyContent="flex-end">
+            <Button variant="contained" onClick={handleManageAccount}>
+              {t('Update_My_Profile', { ns: 'profile' })}
+            </Button>
+          </Box>
+        </CardContent>
+      </Card>
+    </Box>
   );
 };
 

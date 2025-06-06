@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { createCustomer, customerExistByEmail, getCustomer, updateCustomer } from '../../services/CustomerService'
 import Swal from 'sweetalert2'
 import { useAuth } from '../hooks/useAuth'
+import { useTranslation } from 'react-i18next'
 
 const Customer = () => {
 
@@ -20,6 +21,7 @@ const Customer = () => {
         email: ''
     })
 
+    const { t } = useTranslation();
     const navigator = useNavigate();
     const { token, loading } = useAuth();
 
@@ -47,14 +49,14 @@ const Customer = () => {
         }
 
         Swal.fire({
-            title: id ? 'Confirm update' : 'Confirm add',
-            text: id ? 'Are you sure you want to update this customer ?' : 'Do you really want to save this customer ?',
+            title: id ? t('title_update', { ns: 'customers' }) : t('title_add', { ns: 'customers' }),
+            text: id ? t('text_update', { ns: 'customers' }) : t('text_add', { ns: 'customers' }),
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#28a745',
             cancelButtonColor: '#d33',
-            confirmButtonText: id ? 'Yes, update' : 'Yes, save',
-            cancelButtonText: 'Cancel'
+            confirmButtonText: id ? t('confirm_update', { ns: 'customers' }) : t('confirm_add', { ns: 'customers' }),
+            cancelButtonText: t('cancel', { ns: 'customers' })
         }).then((result) => {
             if (result.isConfirmed) {
                 saveOrUpdateCustomer(e);
@@ -78,7 +80,7 @@ const Customer = () => {
                 if (exists) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Customer exists',
+                        title: t('warning_title', { ns: 'customers' }),
                         text: response.data.message,
                         confirmButtonColor: '#d33'
                     });
@@ -88,8 +90,8 @@ const Customer = () => {
                 console.error('Error verifying email:', error);
                 Swal.fire({
                     icon: 'error',
-                    title: 'Server Error',
-                    text: 'Unable to verify email. Please try again later.',
+                    title: t('title_server_error', { ns: 'customers' }),
+                    text: t('server_error', { ns: 'customers' }),
                     confirmButtonColor: '#d33'
                 });
                 return;
@@ -108,8 +110,8 @@ const Customer = () => {
                 console.error(error);
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error',
-                    text: 'An error occurred while saving.',
+                    title: t('error_title', { ns: 'customers' }),
+                    text:  t('server_error_text', { ns: 'customers' }),
                     confirmButtonColor: '#d33'
                 });
             });
@@ -123,28 +125,28 @@ const Customer = () => {
         if (name.trim()) {
             errorsCopy.name = '';
         } else {
-            errorsCopy.name = 'Customer name is required';
+            errorsCopy.name = t('Customer_Name_Required', { ns: 'customers' });
             valid = false;
         }
 
         if (address.trim()) {
             errorsCopy.address = '';
         } else {
-            errorsCopy.address = 'Customer address is required';
+            errorsCopy.address = t('Customer_Address_Required', { ns: 'customers' });
             valid = false;
         }
 
         if (phone.trim()) {
             errorsCopy.phone = '';
         } else {
-            errorsCopy.phone = 'Customer phone is required';
+            errorsCopy.phone = t('Customer_Phone_Required', { ns: 'customers' });
             valid = false;
         }
 
         if (email.trim()) {
             errorsCopy.email = '';
         } else {
-            errorsCopy.email = 'Customer email is required';
+            errorsCopy.email = t('Customer_Email_Required', { ns: 'customers' });
             valid = false;
         }
 
@@ -155,9 +157,9 @@ const Customer = () => {
     }
     function pageTitle() {
         if (id) {
-            return <h2 className='text-center'>Update Customer</h2>
+            return <h2 className='text-center'> {t('Update_Customer', { ns: 'customers' })}</h2>
         } else {
-            return <h2 className='text-center'>Add Customer</h2>
+            return <h2 className='text-center'> {t('Add_Customer', { ns: 'customers' })}</h2>
         }
     }
 
@@ -172,10 +174,10 @@ const Customer = () => {
                     <div className='card-body'>
                         <form>
                             <div className='form-group mb-2'>
-                                <label className='form-label'>Name:</label>
+                                <label className='form-label'>{t('Name', { ns: 'customers' })}:</label>
                                 <input
                                     type='text'
-                                    placeholder='Enter Customer Name'
+                                    placeholder={t('Customer_Name', { ns: 'customers' })}
                                     name='name'
                                     value={name}
                                     className={`form-control ${errors.name ? 'is-invalid' : ''}`}
@@ -186,10 +188,10 @@ const Customer = () => {
                             </div>
 
                             <div className='form-group mb-2'>
-                                <label className='form-label'>Address:</label>
+                                <label className='form-label'>{t('Address', { ns: 'customers' })}:</label>
                                 <input
                                     type='text'
-                                    placeholder='Enter Customer address'
+                                    placeholder={t('Customer_Address', { ns: 'customers' })}
                                     name='address'
                                     value={address}
                                     className={`form-control ${errors.address ? 'is-invalid' : ''}`}
@@ -200,10 +202,10 @@ const Customer = () => {
                             </div>
 
                             <div className='form-group mb-2'>
-                                <label className='form-label'>Phone:</label>
+                                <label className='form-label'>{t('Phone', { ns: 'customers' })}:</label>
                                 <input
                                     type='text'
-                                    placeholder='Enter Customer phone'
+                                    placeholder={t('Customer_Phone', { ns: 'customers' })}
                                     name='phone'
                                     value={phone}
                                     className={`form-control ${errors.phone ? 'is-invalid' : ''}`}
@@ -214,10 +216,10 @@ const Customer = () => {
                             </div>
 
                             <div className='form-group mb-2'>
-                                <label className='form-label'>Email:</label>
+                                <label className='form-label'>{t('Email', { ns: 'customers' })}:</label>
                                 <input
                                     type='text'
-                                    placeholder='Enter Customer email'
+                                    placeholder={t('Customer_Email', { ns: 'customers' })}
                                     name='email'
                                     value={email}
                                     className={`form-control ${errors.email ? 'is-invalid' : ''}`}
@@ -226,7 +228,7 @@ const Customer = () => {
                                 </input>
                                 {errors.email && <div className='invalid-feedback'> {errors.email} </div>}
                             </div>
-                            <button className='btn btn-success' onClick={confirmSaveOrUpdate}>Submit</button>
+                            <button className='btn btn-success' onClick={confirmSaveOrUpdate}>{t('Submit', { ns: 'customers' })}</button>
                         </form>
 
                     </div>

@@ -1,0 +1,17 @@
+   {
+      "List_Of_Order_Events": "La liste des événements de commande",
+      "Search_By": "🔍 Rechercher par...",
+      "Show": "Afficher:",
+      "Entries": "entrées",
+      "Customer_Id": "Numéro du Client",
+      "Order_Id": "Numéro de Commande",
+      "Date": "Date",
+      "Details": "Détails",
+      "Status": "Statut",
+      "First": "Premier ",
+      "Previous": "Précédent",
+      "Next": "Suivant",
+      "Last": "Dernier",
+      "No_Order_Events": "Aucune commande trouvée"
+
+    }

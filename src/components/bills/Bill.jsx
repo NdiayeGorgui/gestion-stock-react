@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getBill } from '../../services/BillingService';
 import { useAuth } from '../hooks/useAuth';
+import { useTranslation } from 'react-i18next';
 
 const Bill = () => {
   const [billData, setBillData] = useState(null);
   const { id } = useParams();
   const navigator = useNavigate();
+  const { t } = useTranslation();
 
   const { token, loading } = useAuth();
 
@@ -33,38 +35,38 @@ const Bill = () => {
       <br /><br />
       <div className='row'>
         <div className='card col-md-8 offset-md-2'>
-          <h2 className='text-center mt-3'>Bill</h2>
+          <h2 className='text-center mt-3'> {t('Bill', { ns: 'bills' })}</h2>
           <div className='card-body'>
             <form>
               <div className="row">
                 {/* Colonne gauche */}
                 <div className="col-md-6">
                   <div className='form-group mb-2'>
-                    <label className='form-label fw-bold'>Id:</label>
+                    <label className='form-label fw-bold'> {t('Id', { ns: 'bills' })}:</label>
                     <input type='text' value={billData.id} className='form-control' readOnly />
                   </div>
                   <div className='form-group mb-2'>
-                    <label className='form-label fw-bold'>Order Id:</label>
+                    <label className='form-label fw-bold'> {t('Order_Id', { ns: 'bills' })}:</label>
                     <input type='text' value={billData.orderId} className='form-control' readOnly />
                   </div>
                   <div className='form-group mb-2'>
-                    <label className='form-label fw-bold'>Order Ref:</label>
+                    <label className='form-label fw-bold'> {t('Order_Ref', { ns: 'bills' })}:</label>
                     <input type='text' value={billData.orderRef} className='form-control' readOnly />
                   </div>
                   <div className='form-group mb-2'>
-                    <label className='form-label fw-bold'>Customer Id:</label>
+                    <label className='form-label fw-bold'> {t('Customer_Id', { ns: 'bills' })}:</label>
                     <input type='text' value={billData.customerIdEvent} className='form-control' readOnly />
                   </div>
                   <div className='form-group mb-2'>
-                    <label className='form-label fw-bold'>Customer Name:</label>
+                    <label className='form-label fw-bold'> {t('Customer_Name', { ns: 'bills' })}:</label>
                     <input type='text' value={billData.customerName} className='form-control' readOnly />
                   </div>
                   <div className='form-group mb-2'>
-                    <label className='form-label fw-bold'>Customer Email:</label>
+                    <label className='form-label fw-bold'> {t('Customer_Email', { ns: 'bills' })}:</label>
                     <input type='text' value={billData.customerMail} className='form-control' readOnly />
                   </div>
                   <div className='form-group mb-2'>
-                    <label className='form-label fw-bold'>Customer Phone:</label>
+                    <label className='form-label fw-bold'> {t('Customer_Phone', { ns: 'bills' })}:</label>
                     <input type='text' value={billData.customerPhone} className='form-control' readOnly />
                   </div>
                 </div>
@@ -72,31 +74,31 @@ const Bill = () => {
                 {/* Colonne droite */}
                 <div className="col-md-6">
                   <div className='form-group mb-2'>
-                    <label className='form-label fw-bold'>Product Id:</label>
+                    <label className='form-label fw-bold'> {t('Product_Id', { ns: 'bills' })}:</label>
                     <input type='text' value={billData.productIdEvent} className='form-control' readOnly />
                   </div>
                   <div className='form-group mb-2'>
-                    <label className='form-label fw-bold'>Product Name:</label>
+                    <label className='form-label fw-bold'> {t('Product_Name', { ns: 'bills' })}:</label>
                     <input type='text' value={billData.productName} className='form-control' readOnly />
                   </div>
                   <div className='form-group mb-2'>
-                    <label className='form-label fw-bold'>Quantity:</label>
+                    <label className='form-label fw-bold'> {t('Quantity', { ns: 'bills' })}:</label>
                     <input type='text' value={billData.quantity} className='form-control' readOnly />
                   </div>
                   <div className='form-group mb-2'>
-                    <label className='form-label fw-bold'>Price:</label>
+                    <label className='form-label fw-bold'> {t('Price', { ns: 'bills' })}:</label>
                     <input type='text' value={billData.price} className='form-control' readOnly />
                   </div>
                   <div className='form-group mb-2'>
-                    <label className='form-label fw-bold'>Discount:</label>
+                    <label className='form-label fw-bold'> {t('Discount', { ns: 'bills' })}:</label>
                     <input type='text' value={billData.discount} className='form-control' readOnly />
                   </div>
                   <div className='form-group mb-2'>
-                    <label className='form-label fw-bold'>Billing Date:</label>
+                    <label className='form-label fw-bold'> {t('Billing_Date', { ns: 'bills' })}:</label>
                     <input type='text' value={billData.billingDate} className='form-control' readOnly />
                   </div>
                   <div className='form-group mb-2'>
-                    <label className='form-label fw-bold'>Status:</label>
+                    <label className='form-label fw-bold'> {t('Status', { ns: 'bills' })}:</label>
                     <input type='text' value={billData.status} className='form-control' readOnly />
                   </div>
                 </div>
@@ -107,7 +109,7 @@ const Bill = () => {
                   className="btn btn-primary"
                   style={{ width: '50%' }}
                 >
-                  Close
+                   {t('Close', { ns: 'bills' })}
                 </button>
               </div>
             </form>

@@ -5,6 +5,7 @@ import { createOrder, listCustomers, listProducts } from '../../services/OrderSr
 import Swal from 'sweetalert2';
 import Select from 'react-select';
 import { useAuth } from '../hooks/useAuth';
+import { useTranslation } from 'react-i18next';
 
 
 
@@ -23,6 +24,8 @@ const CreateOrder = () => {
   const [showCart, setShowCart] = useState(false);
   const [showPaymentButton, setShowPaymentButton] = useState(false);
   const navigator = useNavigate();
+
+  const { t } = useTranslation();
 
   const customerOptions = customers.map((client) => ({
     value: client.customerIdEvent,
@@ -105,7 +108,12 @@ const CreateOrder = () => {
 
   const addProductToOrder = () => {
     if (!selectedProduct || !itemQty || isNaN(itemQty) || itemQty <= 0) {
-      Swal.fire('Warning', 'Please select a product and enter a valid quantity.', 'warning');
+      Swal.fire(
+        t('warning_title', { ns: 'createorder' }),
+        t('valid_quantity', { ns: 'createorder' }),
+        'warning'
+      );
+
       return;
     }
 
@@ -115,14 +123,19 @@ const CreateOrder = () => {
     );
 
     if (alreadyInOrder) {
-      Swal.fire('Warning', 'This product is already in the cart, please update the quantity.', 'warning');
+      Swal.fire(
+        t('warning_title', { ns: 'createorder' }),
+        t('product_exist', { ns: 'createorder' }),
+        'warning'
+      );
+
       return;
     }
 
     if (itemQty > selectedProduct.qty) {
       Swal.fire(
-        'Insufficient Stock',
-        `Only ${selectedProduct.qty} item(s) left in stock.`,
+        t('insufficient_stock_title', { ns: 'createorder' }),
+        t('insufficient_stock_text', { count: selectedProduct.qty, ns: 'createorder' }),
         'error'
       );
       return;
@@ -174,18 +187,23 @@ const CreateOrder = () => {
 
     const qty = parseInt(newQty);
     if (isNaN(qty) || qty <= 0) {
-      Swal.fire('Invalid Quantity', 'Quantity must be greater than zero.', 'warning');
+      Swal.fire(t('invalid_quantity_title', { ns: 'createorder' }), t('invalid_quantity_text', { ns: 'createorder' }), 'warning');
       return;
     }
 
     if (qty > item.qtyStock) {
       Swal.fire(
-        'Insufficient Stock',
-        `Only ${item.qtyStock} item(s) available for "${item.name}".`,
+        t('insufficient_stock_title', { ns: 'createorder' }),
+        t('insufficient_stock_item_text', {
+          ns: 'createorder',
+          count: item.qtyStock,
+          name: item.name
+        }),
         'error'
       );
       return;
     }
+
 
     const totalHT = item.price * qty;
     const newTax = totalHT * 0.2;
@@ -209,12 +227,12 @@ const CreateOrder = () => {
   return (
     <Container className="mt-4">
       <Row className="justify-content-between align-items-center mb-3">
-        <Col><h2>New Order</h2></Col>
+        <Col><h2> {t('New_Order', { ns: 'createorder' })}</h2></Col>
         <Col>
           {showPaymentButton && (
             <div className="text-center mt-4">
               <Button variant="success" size="lg" onClick={() => navigator('/admin/created-orders')}>
-                💳 Proceed to Payment
+                💳  {t('Proceed_To_Payment', { ns: 'createorder' })}
               </Button>
             </div>
           )}
@@ -225,7 +243,7 @@ const CreateOrder = () => {
             className="position-relative"
             onClick={() => setShowCart(true)}
           >
-            🛒 Cart
+            🛒 {t('Cart', { ns: 'createorder' })}
             <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
               {orderItems.reduce((sum, item) => sum + item.qty, 0)}
             </span>
@@ -239,24 +257,24 @@ const CreateOrder = () => {
         {/* Select Customer */}
         <Row className="mb-3">
           <Col md={4}>
-            <Form.Label><b>Customer</b></Form.Label>
+            <Form.Label><b>{t('Customer', { ns: 'createorder' })}</b></Form.Label>
             <Select
               options={customerOptions}
               value={customerOptions.find(opt => opt.value === selectedClientId)}
               onChange={(selected) => setSelectedClientId(selected.value)}
-              placeholder="Search or select customer..."
+              placeholder={t('Search_Customer', { ns: 'createorder' })}
             />
 
           </Col>
           <Col md={4}>
             <Form.Group>
-              <Form.Label><b>Address</b></Form.Label>
+              <Form.Label><b>{t('Address', { ns: 'createorder' })}</b></Form.Label>
               <Form.Control value={selectedClient?.address || ''} readOnly />
             </Form.Group>
           </Col>
           <Col md={4}>
             <Form.Group>
-              <Form.Label><b>Email</b></Form.Label>
+              <Form.Label><b>{t('Email', { ns: 'createorder' })}</b></Form.Label>
               <Form.Control value={selectedClient?.email || ''} readOnly />
             </Form.Group>
           </Col>
@@ -267,23 +285,23 @@ const CreateOrder = () => {
         {/* Select Product */}
         <Row className="mb-3">
           <Col md={4}>
-            <Form.Label><b>Product</b></Form.Label>
+            <Form.Label><b>{t('Product', { ns: 'createorder' })}</b></Form.Label>
             <Select
               options={productOptions}
               value={productOptions.find(opt => opt.value === selectedProductId) || null}
               onChange={(selected) => setSelectedProductId(selected.value)}
-              placeholder="Search or select product..."
+              placeholder={t('Search_Product', { ns: 'createorder' })}
               isClearable
             />
 
 
           </Col>
           <Col md={4}>
-            <Form.Label><b>Category</b></Form.Label>
+            <Form.Label><b>{t('Category', { ns: 'createorder' })}</b></Form.Label>
             <Form.Control value={selectedProduct?.category || ''} readOnly />
           </Col>
           <Col md={4}>
-            <Form.Label><b>Price ($)</b></Form.Label>
+            <Form.Label><b>{t('Price', { ns: 'createorder' })} ($)</b></Form.Label>
             <Form.Control value={selectedProduct?.price || ''} readOnly />
           </Col>
         </Row>
@@ -292,7 +310,7 @@ const CreateOrder = () => {
         {selectedProduct && (
           <Row className="mb-3">
             <Col md={2}>
-              <Form.Label><b>Quantity</b></Form.Label>
+              <Form.Label><b>{t('Quantity', { ns: 'createorder' })}</b></Form.Label>
               <Form.Control
                 type="number"
                 value={itemQty}
@@ -301,19 +319,19 @@ const CreateOrder = () => {
               />
             </Col>
             <Col md={2}>
-              <Form.Label><b>Amount ($)</b></Form.Label>
+              <Form.Label><b>{t('Amount', { ns: 'createorder' })} ($)</b></Form.Label>
               <Form.Control value={amount.toFixed(2)} readOnly />
             </Col>
             <Col md={2}>
-              <Form.Label><b>Tax ($)</b></Form.Label>
+              <Form.Label><b>{t('Tax', { ns: 'createorder' })} ($)</b></Form.Label>
               <Form.Control value={tax.toFixed(2)} readOnly />
             </Col>
             <Col md={2}>
-              <Form.Label><b>Discount ($)</b></Form.Label>
+              <Form.Label><b>{t('Discount', { ns: 'createorder' })} ($)</b></Form.Label>
               <Form.Control value={discount.toFixed(2)} readOnly />
             </Col>
             <Col md={2} className="d-flex align-items-end">
-              <Button onClick={addProductToOrder}>Add order</Button>
+              <Button onClick={addProductToOrder}>{t('Add_Order', { ns: 'createorder' })}</Button>
             </Col>
           </Row>
         )}
@@ -323,12 +341,12 @@ const CreateOrder = () => {
           <Table striped bordered hover>
             <thead>
               <tr>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Amount</th>
-                <th>Tax</th>
-                <th>Discount</th>
-                <th>Remove</th>
+                <th>{t('Product', { ns: 'createorder' })}</th>
+                <th>{t('Quantity', { ns: 'createorder' })}</th>
+                <th>{t('Amount', { ns: 'createorder' })}</th>
+                <th>{t('Tax', { ns: 'createorder' })}</th>
+                <th>{t('Discount', { ns: 'createorder' })}</th>
+                <th>{t('Remove', { ns: 'createorder' })}</th>
               </tr>
             </thead>
             <tbody>
@@ -351,8 +369,8 @@ const CreateOrder = () => {
                         if (isNaN(val) || val < 1) {
                           Swal.fire({
                             icon: 'info',
-                            title: 'Quantity reset',
-                            text: 'Quantity cannot be empty or less than 1. Reset to 1.',
+                            title: t('quantity_reset_title', { ns: 'createorder' }),
+                            text: t('quantity_reset_text', { ns: 'createorder' }),
                             timer: 2000,
                             showConfirmButton: false
                           });
@@ -367,7 +385,7 @@ const CreateOrder = () => {
                   <td>{item.discount.toFixed(2)} $</td>
                   <td>
                     <Button variant="danger" size="sm" onClick={() => handleRemoveItem(idx)}>
-                      Remove
+                      {t('Remove', { ns: 'createorder' })}
                     </Button>
                   </td>
                 </tr>
@@ -381,10 +399,10 @@ const CreateOrder = () => {
         {orderItems.length > 0 && (
           <Row>
             <Col className="text-end">
-              <h6>Total Amount HT: {totalPrice.toFixed(2)} $</h6>
-              <h6>Total Tax : {totalTax.toFixed(2)} $</h6>
-              <h6>Total Discount: {totalDiscount.toFixed(2)} $</h6>
-              <h5>Amount : {totalAmount.toFixed(2)} $</h5>
+              <h6>{t('Total_Amount_Ht', { ns: 'createorder' })}: {totalPrice.toFixed(2)} $</h6>
+              <h6>{t('Total_Tax', { ns: 'createorder' })} : {totalTax.toFixed(2)} $</h6>
+              <h6>{t('Total_Discount', { ns: 'createorder' })}: {totalDiscount.toFixed(2)} $</h6>
+              <h5>{t('Total_Amount', { ns: 'createorder' })} : {totalAmount.toFixed(2)} $</h5>
             </Col>
           </Row>
         )}
@@ -394,21 +412,21 @@ const CreateOrder = () => {
       {/* 🛒 Cart Modal */}
       <Modal show={showCart} onHide={() => setShowCart(false)} size="lg" style={{ marginTop: '80px' }}>
         <Modal.Header closeButton>
-          <Modal.Title>🛒 Order Summary</Modal.Title>
+          <Modal.Title>🛒 {t('Order_Summary', { ns: 'createorder' })}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {orderItems.length === 0 ? (
-            <p>No products added.</p>
+            <p>{t('No_Products_Added', { ns: 'createorder' })}.</p>
           ) : (
             <>
               <Table striped bordered hover>
                 <thead>
                   <tr>
-                    <th>Product</th>
-                    <th>Qty</th>
-                    <th>Amount</th>
-                    <th>Tax</th>
-                    <th>Discount</th>
+                    <th>{t('Product', { ns: 'createorder' })}</th>
+                    <th>{t('Quantity', { ns: 'createorder' })}</th>
+                    <th>{t('Amount', { ns: 'createorder' })}</th>
+                    <th>{t('Tax', { ns: 'createorder' })}</th>
+                    <th>{t('Discount', { ns: 'createorder' })}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -423,30 +441,31 @@ const CreateOrder = () => {
                   ))}
                 </tbody>
               </Table>
-              <h6>Total Amount HT: {totalPrice.toFixed(2)} $</h6>
-              <h6>Total Tax: {totalTax.toFixed(2)} $</h6>
-              <h6>Total Discount: {totalDiscount.toFixed(2)} $</h6>
-              <h6>Total Amount: {totalAmount.toFixed(2)} $</h6>
+              <h6>{t('Total_Amount_Ht', { ns: 'createorder' })}: {totalPrice.toFixed(2)} $</h6>
+              <h6>{t('Total_Tax', { ns: 'createorder' })}: {totalTax.toFixed(2)} $</h6>
+              <h6>{t('Total_Discount', { ns: 'createorder' })}: {totalDiscount.toFixed(2)} $</h6>
+              <h6>{t('Total_Amount', { ns: 'createorder' })}: {totalAmount.toFixed(2)} $</h6>
 
             </>
           )}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowCart(false)}>
-            Close
+            {t('Close', { ns: 'createorder' })}
           </Button>
           <Button
             variant="success"
             disabled={orderItems.length === 0 || !selectedClient}
             onClick={() => {
               Swal.fire({
-                title: 'Confirm Order',
-                text: 'Are you sure you want to submit this order?',
+                title: t('title_order', { ns: 'createorder' }),
+                text: t('text_order', { ns: 'createorder' }),
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#28a745',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, submit it!',
+                confirmButtonText: t('confirm_order', { ns: 'createorder' }),
+                cancelButtonText: t('cancel', { ns: 'createorder' }),
                 heightAuto: false,
                 width: '400px',
               }).then(async (result) => {
@@ -469,7 +488,7 @@ const CreateOrder = () => {
                       await new Promise((resolve) => setTimeout(resolve, 300)); // ⏱️ Délai entre chaque commande
                     }
 
-                    Swal.fire('Success!', 'Order(s) successfully created.', 'success');
+                    Swal.fire(t('success_title', { ns: 'createorder' }), t('order_success', { ns: 'createorder' }), 'success');
                     setOrderItems([]);
                     setSelectedClientId('');
                     setSelectedClient(null);
@@ -484,14 +503,15 @@ const CreateOrder = () => {
                     setShowPaymentButton(true);
                   } catch (error) {
                     console.error("Failed to create order(s):", error);
-                    Swal.fire('Error', 'An error occurred while creating the order(s).', 'error');
+                    Swal.fire(t('error_title', { ns: 'createorder' }), t('error_message', { ns: 'createorder' }), 'error');
                   }
                 }
               });
             }}
           >
-            ✅ Place Order
+            ✅ {t('Place_Order', { ns: 'createorder' })}
           </Button>
+
 
         </Modal.Footer>
       </Modal>

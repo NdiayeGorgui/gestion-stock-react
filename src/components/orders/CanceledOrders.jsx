@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { listCanceledOrders } from '../../services/OrderSrvice'
 import { useAuth } from '../hooks/useAuth'
+import { useTranslation } from 'react-i18next'
 
 const CanceledOrders = () => {
   const [orders, setOrders] = useState([])
@@ -10,6 +11,7 @@ const CanceledOrders = () => {
   const [searchTerm, setSearchTerm] = useState('')
 
   const navigator = useNavigate()
+  const { t } = useTranslation();
 
   const { token, loading } = useAuth();
 
@@ -63,7 +65,7 @@ const CanceledOrders = () => {
 
   return (
     <div className="container">
-      <h2 className="text-center">List of canceled orders</h2>
+      <h2 className="text-center">{t('List_Of_Canceled_Orders', { ns: 'createdorders' })}</h2>
 
       <div className="d-flex justify-content-between align-items-center mb-3">
 
@@ -71,7 +73,7 @@ const CanceledOrders = () => {
         <input
           type="text"
           className="form-control w-25"
-          placeholder="🔍 Search by ..."
+          placeholder={t('Search_By', { ns: 'createdorders' })}
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value)
@@ -80,7 +82,7 @@ const CanceledOrders = () => {
         />
 
         <div>
-          Show:
+          {t('Show', { ns: 'createdorders' })}
           <select
             className="form-select d-inline-block w-auto ms-2"
             value={itemsPerPage}
@@ -94,14 +96,14 @@ const CanceledOrders = () => {
             <option value={20}>20</option>
             <option value={40}>40</option>
           </select>
-          entries
+           {t('Entries', { ns: 'createdorders' })}
         </div>
       </div>
 
       <table className="table table-striped table-bordered">
         <thead>
           <tr>
-            <th>Customer</th><th>Product</th><th>Quantity</th><th>Price</th><th>Details</th>
+            <th> {t('Customer', { ns: 'createdorders' })}</th><th> {t('Product', { ns: 'createdorders' })}</th><th> {t('Quantity', { ns: 'createdorders' })}</th><th> {t('Price', { ns: 'createdorders' })}</th><th> {t('Details', { ns: 'createdorders' })}</th>
           </tr>
         </thead>
         <tbody>
@@ -121,7 +123,7 @@ const CanceledOrders = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="8" className="text-center">No orders found</td>
+              <td colSpan="8" className="text-center"> {t('No_Orders', { ns: 'createdorders' })}</td>
             </tr>
           )}
         </tbody>
@@ -133,29 +135,29 @@ const CanceledOrders = () => {
           <ul className="pagination justify-content-center">
             <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(1)} disabled={currentPage === 1}>
-                ⏮ First
+                ⏮  {t('First', { ns: 'createdorders' })}
               </button>
             </li>
             <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
-                ← Previous
+                ←  {t('Previous', { ns: 'createdorders' })}
               </button>
             </li>
 
             <li className="page-item disabled">
               <span className="page-link">
-                Page {currentPage} sur {totalPages}
+                Page {currentPage} / {totalPages}
               </span>
             </li>
 
             <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages}>
-                Next →
+                 {t('Next', { ns: 'createdorders' })} →
               </button>
             </li>
             <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(totalPages)} disabled={currentPage === totalPages}>
-                Last ⏭
+                 {t('Last', { ns: 'createdorders' })} ⏭
               </button>
             </li>
           </ul>

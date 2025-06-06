@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { getCustomer } from '../../services/CustomerService'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
+import { useTranslation } from 'react-i18next'
 
 const CustomerDetails = () => {
 
@@ -12,6 +13,7 @@ const CustomerDetails = () => {
     const [status, setStatus] = useState('')
 
      const navigator = useNavigate();
+     const { t } = useTranslation();
     
     const {id} = useParams();
     const { token, loading } = useAuth();
@@ -42,11 +44,11 @@ const CustomerDetails = () => {
       <br /> <br />
       <div className='row'>
         <div className='card col-md-6 offset-md-3'>
-          <h2 className='text-center'>Customer Details</h2>
+          <h2 className='text-center'> {t('Customer_Details', { ns: 'customers' })}</h2>
           <div className='card-body'>
             <form>
               <div className='form-group mb-2'>
-                <label className='form-label'>Name:</label>
+                <label className='form-label'>{t('Name', { ns: 'customers' })}:</label>
                 <input
                   type='text'
                   name='name'
@@ -57,7 +59,7 @@ const CustomerDetails = () => {
               </div>
 
               <div className='form-group mb-2'>
-                <label className='form-label'>Address:</label>
+                <label className='form-label'>{t('Address', { ns: 'customers' })}:</label>
                 <input
                   type='text'
                   name='address'
@@ -68,7 +70,7 @@ const CustomerDetails = () => {
               </div>
 
               <div className='form-group mb-2'>
-                <label className='form-label'>Phone:</label>
+                <label className='form-label'>{t('Phone', { ns: 'customers' })}:</label>
                 <input
                   type='text'
                   name='phone'
@@ -79,7 +81,7 @@ const CustomerDetails = () => {
               </div>
 
               <div className='form-group mb-2'>
-                <label className='form-label'>Email:</label>
+                <label className='form-label'>{t('Email', { ns: 'customers' })}:</label>
                 <input
                   type='text'
                   name='email'
@@ -90,7 +92,7 @@ const CustomerDetails = () => {
               </div>
 
               <div className='form-group mb-2'>
-                <label className='form-label'>Status:</label>
+                <label className='form-label'>{t('Status', { ns: 'customers' })}:</label>
                 <input
                   type='text'
                   name='status'
@@ -105,7 +107,7 @@ const CustomerDetails = () => {
                   className="btn btn-primary"
                   style={{ width: '50%' }}
                 >
-                  Close
+                  {t('Close', { ns: 'customers' })}
                 </button>
               </div>
             </form>

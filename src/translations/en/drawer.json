@@ -1,0 +1,21 @@
+{
+      "Dashboard": "Dashboard",
+      "Manage_Products": "Manage Products",
+      "Manage_Customers": "Manage Customers",
+      "Create_Orders": "Create Orders",
+      "Ship_Orders": "Ship Orders",
+      "Deliver_Orders": "Deliver Orders",
+      "View_Bills": "View Bills",
+      "View_Payments": "View Payments",
+      "View_Order_Events": "View Order Events",
+      "Home": "Home",
+      "Orders_List": "Orders List",
+      "Chat_Bot_Zone": "Chat Bot Zone",
+      "Profile": "Profile",
+      "Settings": "Settings",
+      "Logout": "Logout",
+      "Created_Orders": "Created Orders",
+      "Completed_Orders": "Completed Orders",
+      "Canceled_Orders": "Canceled Orders",
+      "Trocady_Management_System": "Trocady Management System"
+    }

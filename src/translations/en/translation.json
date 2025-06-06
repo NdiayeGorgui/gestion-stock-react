@@ -1,0 +1,28 @@
+{
+  "dashboard_title": "Dashboard",
+  "search_product": "Search product",
+  "total_products": "Total Products",
+  "categories": "Categories",
+  "orders": "Orders",
+  "suppliers": "Suppliers",
+  "new_card_1": "New Products",
+  "new_card_2": "New Customers",
+  "recent_products": "Recent Products",
+  "name": "Name",
+  "category": "Category",
+  "stock": "Stock",
+  "price": "Price",
+  "status": "Status",
+  "in_stock": "In Stock",
+  "low_stock": "Low Stock",
+  "out": "Out of Stock",
+  "best_selling_products": "Best Selling Products",
+  "top_10_customers": "Top 10 Customers",
+  "products_remaining": "Products Remaining",
+  "Welcom": "Welcome to Trocady Store",
+  "Smart_Toy": "Smart Toy",
+  "Chat": "Chat Bot",
+  "Message": "Write your message",
+  "Send": "send"
+
+}

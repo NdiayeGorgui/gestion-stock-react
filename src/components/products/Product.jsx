@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { createProduct, getProduct, updateProduct } from '../../services/ProductService';
 import Swal from 'sweetalert2';
 import { useAuth } from '../hooks/useAuth';
+import { useTranslation } from 'react-i18next';
 
 const Product = () => {
     const [name, setName] = useState('');
@@ -20,6 +21,7 @@ const Product = () => {
     });
 
     const navigator = useNavigate();
+    const { t } = useTranslation();
     const { token, loading } = useAuth();
 
     useEffect(() => {
@@ -59,14 +61,14 @@ const Product = () => {
     }
 
     Swal.fire({
-        title: id ? 'Confirm update' : 'Confirm add',
-        text: id ? 'Are you sure you want to update this product ?' : 'Do you really want to save this product ?',
+        title: id ? t('title_update', { ns: 'products' }) : t('title_add', { ns: 'products' }),
+        text: id ? t('text_update', { ns: 'products' }) : t('text_add', { ns: 'products' }),
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#28a745',
         cancelButtonColor: '#d33',
-        confirmButtonText: id ? 'Yes, update' : 'Yes, save',
-        cancelButtonText: 'Cancel'
+        confirmButtonText: id ? t('confirm_update', { ns: 'products' }) : t('confirm_add', { ns: 'products' }),
+        cancelButtonText: t('cancel', { ns: 'products' })
     }).then((result) => {
         if (result.isConfirmed) {
             saveOrUpdateProduct(e);
@@ -122,28 +124,28 @@ const Product = () => {
         if (name.trim()) {
             errorsCopy.name = '';
         } else {
-            errorsCopy.name = 'Product name is required';
+            errorsCopy.name = t('Product_Name_Required', { ns: 'products' });
             valid = false;
         }
 
         if (category.trim()) {
             errorsCopy.category = '';
         } else {
-            errorsCopy.category = 'Product category is required';
+            errorsCopy.category = t('Product_Category_Required', { ns: 'products' });
             valid = false;
         }
 
         if (String(price).trim() && !isNaN(price)) {
             errorsCopy.price = '';
         } else {
-            errorsCopy.price = 'Product price is required';
+            errorsCopy.price = t('Product_Price_Required', { ns: 'products' });
             valid = false;
         }
 
         if (String(qty).trim() && !isNaN(qty)) {
             errorsCopy.qty = '';
         } else {
-            errorsCopy.qty = 'Product quantity is required';
+            errorsCopy.qty = t('Product_Quantity_Required', { ns: 'products' });
             valid = false;
         }
 
@@ -152,7 +154,7 @@ const Product = () => {
     }
 
     function pageTitle() {
-        return <h2 className='text-center'>{id ? 'Update Product' : 'Add Product'}</h2>;
+        return <h2 className='text-center'>{id ? t('Update_Product', { ns: 'products' }) : t('Add_Product', { ns: 'products' })}</h2>;
     }
 
     return (
@@ -164,10 +166,10 @@ const Product = () => {
                     <div className='card-body'>
                         <form>
                             <div className='form-group mb-2'>
-                                <label className='form-label'>Name:</label>
+                                <label className='form-label'>{t('Name', { ns: 'products' })}:</label>
                                 <input
                                     type='text'
-                                    placeholder='Enter Product Name'
+                                    placeholder={t('Product_Name', { ns: 'products' })}
                                     name='name'
                                     value={name}
                                     className={`form-control ${errors.name ? 'is-invalid' : ''}`}
@@ -177,10 +179,10 @@ const Product = () => {
                             </div>
 
                             <div className='form-group mb-2'>
-                                <label className='form-label'>Category:</label>
+                                <label className='form-label'>{t('Category', { ns: 'products' })}:</label>
                                 <input
                                     type='text'
-                                    placeholder='Enter Product category'
+                                    placeholder={t('Product_Category', { ns: 'products' })}
                                     name='category'
                                     value={category}
                                     className={`form-control ${errors.category ? 'is-invalid' : ''}`}
@@ -190,10 +192,10 @@ const Product = () => {
                             </div>
 
                             <div className='form-group mb-2'>
-                                <label className='form-label'>Price:</label>
+                                <label className='form-label'>{t('Price', { ns: 'products' })}:</label>
                                 <input
                                     type='text'
-                                    placeholder='Enter Product price'
+                                    placeholder={t('Product_Price', { ns: 'products' })}
                                     name='price'
                                     value={price}
                                     className={`form-control ${errors.price ? 'is-invalid' : ''}`}
@@ -203,10 +205,10 @@ const Product = () => {
                             </div>
 
                             <div className='form-group mb-2'>
-                                <label className='form-label'>Quantity:</label>
+                                <label className='form-label'>{t('Quantity', { ns: 'products' })}:</label>
                                 <input
                                     type='text'
-                                    placeholder='Enter Product quantity'
+                                    placeholder={t('Product_Quantity', { ns: 'products' })}
                                     name='qty'
                                     value={qty}
                                     className={`form-control ${errors.qty ? 'is-invalid' : ''}`}
@@ -216,7 +218,7 @@ const Product = () => {
                             </div>
 
                             <div className='form-group mb-2'>
-                                <label className='form-label'>Quantity Status:</label>
+                                <label className='form-label'>{t('Quantity_Status', { ns: 'products' })}:</label>
                                 <input
                                     type='text'
                                     className='form-control'
@@ -225,7 +227,7 @@ const Product = () => {
                                 />
                             </div>
 
-                            <button className='btn btn-success' onClick={confirmSaveOrUpdate}>Submit</button>
+                            <button className='btn btn-success' onClick={confirmSaveOrUpdate}>{t('Submit', { ns: 'products' })}</button>
                         </form>
                     </div>
                 </div>

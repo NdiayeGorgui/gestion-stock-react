@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { listCreatedOrders, removeOrder } from '../../services/OrderSrvice';
 import Swal from 'sweetalert2';
 import { useAuth } from '../hooks/useAuth';
+import { useTranslation } from 'react-i18next';
 
 const CreatedOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -12,6 +13,7 @@ const CreatedOrders = () => {
 
   const navigator = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (location.state?.refresh) {
@@ -44,14 +46,14 @@ const CreatedOrders = () => {
 
   function cancelOrder(orderIdEvent) {
     Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
+      title: t('title_order', { ns: 'createdorders' }),
+      text: t('text_order', { ns: 'createdorders' }),
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
       cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Yes, remove it!',
-      cancelButtonText: 'Cancel',
+      confirmButtonText: t('confirm_cancel', { ns: 'createdorders' }),
+      cancelButtonText: t('cancel', { ns: 'createdorders' }),
     }).then((result) => {
       if (result.isConfirmed) {
         removeOrder(orderIdEvent)
@@ -59,11 +61,11 @@ const CreatedOrders = () => {
             setOrders((prevOrders) =>
               prevOrders.filter((order) => order.orderIdEvent !== orderIdEvent)
             );
-            Swal.fire('Removed!', 'The order has been removed.', 'success');
+            Swal.fire(t('title_remove', { ns: 'createdorders' }), t('text_remove', { ns: 'createdorders' }), 'success');
           })
           .catch((error) => {
             console.error(error);
-            Swal.fire('Error!', 'Failed to remove the order.', 'error');
+            Swal.fire(t('error_title', { ns: 'createdorders' }), t('error_message', { ns: 'createdorders' }), 'error');
           });
       }
     });
@@ -106,13 +108,13 @@ const CreatedOrders = () => {
 
   return (
     <div className="container">
-      <h2 className="text-center">List of created orders</h2>
+      <h2 className="text-center">{t('List_Of_Created_Orders', { ns: 'createdorders' })}</h2>
 
       <div className="d-flex justify-content-between align-items-center mb-3">
         <input
           type="text"
           className="form-control w-25"
-          placeholder="🔍 Search by ..."
+          placeholder={t('Search_By', { ns: 'createdorders' })}
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value);
@@ -121,7 +123,7 @@ const CreatedOrders = () => {
         />
 
         <div>
-          Show:
+         {t('Show', { ns: 'createdorders' })}
           <select
             className="form-select d-inline-block w-auto ms-2"
             value={itemsPerPage}
@@ -135,20 +137,20 @@ const CreatedOrders = () => {
             <option value={20}>20</option>
             <option value={40}>40</option>
           </select>
-          entries
+          {t('Entries', { ns: 'createdorders' })}
         </div>
       </div>
 
       <table className="table table-striped table-bordered">
         <thead>
           <tr>
-            <th>Customer</th>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Payment</th>
-            <th>Details</th>
-            <th>Cancel</th>
+            <th>{t('Customer', { ns: 'createdorders' })}</th>
+            <th>{t('Product', { ns: 'createdorders' })}</th>
+            <th>{t('Quantity', { ns: 'createdorders' })}</th>
+            <th>{t('Price', { ns: 'createdorders' })}</th>
+            <th>{t('Payment', { ns: 'createdorders' })}</th>
+            <th>{t('Details', { ns: 'createdorders' })}</th>
+            <th>{t('Cancel', { ns: 'createdorders' })}</th>
           </tr>
         </thead>
         <tbody>
@@ -199,7 +201,7 @@ const CreatedOrders = () => {
           ) : (
             <tr>
               <td colSpan="7" className="text-center">
-                No orders found
+                {t('No_Orders', { ns: 'createdorders' })}
               </td>
             </tr>
           )}
@@ -215,7 +217,7 @@ const CreatedOrders = () => {
                 onClick={() => setCurrentPage(1)}
                 disabled={currentPage === 1}
               >
-                ⏮ First
+                ⏮ {t('First', { ns: 'createdorders' })}
               </button>
             </li>
             <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
@@ -224,12 +226,12 @@ const CreatedOrders = () => {
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
               >
-                ← Previous
+                ← {t('Previous', { ns: 'createdorders' })}
               </button>
             </li>
             <li className="page-item disabled">
               <span className="page-link">
-                Page {currentPage} of {totalPages}
+                Page {currentPage} / {totalPages}
               </span>
             </li>
             <li
@@ -241,7 +243,7 @@ const CreatedOrders = () => {
                 onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages}
               >
-                Next →
+                {t('Next', { ns: 'createdorders' })} →
               </button>
             </li>
             <li
@@ -253,7 +255,7 @@ const CreatedOrders = () => {
                 onClick={() => setCurrentPage(totalPages)}
                 disabled={currentPage === totalPages}
               >
-                Last ⏭
+                {t('Last', { ns: 'createdorders' })} ⏭
               </button>
             </li>
           </ul>

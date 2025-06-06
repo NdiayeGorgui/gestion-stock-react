@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { listPayments } from '../../services/PaymentService'
 import { useAuth } from '../hooks/useAuth'
+import { useTranslation } from 'react-i18next'
 
 const Payments = () => {
 
@@ -10,6 +11,7 @@ const Payments = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [searchTerm, setSearchTerm] = useState('')
 
+  const { t } = useTranslation();
   const { token, loading } = useAuth();
 
   useEffect(() => {
@@ -63,7 +65,7 @@ const Payments = () => {
 
   return (
     <div className="container">
-      <h2 className="text-center">List of Payments</h2>
+      <h2 className="text-center">{t('List_Of_Payments', { ns: 'payments' })}</h2>
 
       <div className="d-flex justify-content-between align-items-center mb-3">
 
@@ -71,7 +73,7 @@ const Payments = () => {
         <input
           type="text"
           className="form-control w-25"
-          placeholder="🔍 Search by ..."
+          placeholder={t('Search_By', { ns: 'payments' })}
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value)
@@ -80,7 +82,7 @@ const Payments = () => {
         />
 
         <div>
-          Show:
+          {t('Show', { ns: 'payments' })}
           <select
             className="form-select d-inline-block w-auto ms-2"
             value={itemsPerPage}
@@ -94,15 +96,15 @@ const Payments = () => {
             <option value={20}>20</option>
             <option value={40}>40</option>
           </select>
-          entries
+          {t('Entries', { ns: 'payments' })}
         </div>
       </div>
 
       <table className="table table-striped table-bordered">
         <thead>
           <tr>
-            <th>Customer</th><th>Payment Mode</th><th>Amount</th>
-            <th>Date</th><th>Status</th><th>Details</th>
+            <th>{t('Customer', { ns: 'payments' })}</th><th>{t('Payment_Mode', { ns: 'payments' })}</th><th>{t('Amount', { ns: 'payments' })}</th>
+            <th>{t('Date', { ns: 'payments' })}</th><th>{t('Status', { ns: 'payments' })}</th><th>{t('Details', { ns: 'payments' })}</th>
           </tr>
         </thead>
         <tbody>
@@ -126,7 +128,7 @@ const Payments = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="6" className="text-center">No payments found</td>
+              <td colSpan="6" className="text-center">{t('No_Payments', { ns: 'payments' })}</td>
             </tr>
           )}
         </tbody>
@@ -138,29 +140,29 @@ const Payments = () => {
           <ul className="pagination justify-content-center">
             <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(1)} disabled={currentPage === 1}>
-                ⏮ First
+                ⏮ {t('First', { ns: 'payments' })}
               </button>
             </li>
             <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
-                ← Previous
+                ← {t('Previous', { ns: 'payments' })}
               </button>
             </li>
 
             <li className="page-item disabled">
               <span className="page-link">
-                Page {currentPage} sur {totalPages}
+                Page {currentPage} / {totalPages}
               </span>
             </li>
 
             <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages}>
-                Next →
+                {t('Next', { ns: 'payments' })} →
               </button>
             </li>
             <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(totalPages)} disabled={currentPage === totalPages}>
-                Last ⏭
+                {t('Last', { ns: 'payments' })} ⏭
               </button>
             </li>
           </ul>

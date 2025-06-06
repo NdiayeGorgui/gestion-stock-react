@@ -1,0 +1,28 @@
+{
+  "dashboard_title": "Tableau de bord",
+  "search_product": "Rechercher un produit",
+  "total_products": "Produits totaux",
+  "categories": "Catégories",
+  "orders": "Commandes",
+  "suppliers": "Fournisseurs",
+  "new_card_1": "Nouveaux produits",
+  "new_card_2": "Nouveaux clients",
+  "recent_products": "Produits récents",
+  "name": "Nom",
+  "category": "Catégorie",
+  "stock": "Stock",
+  "price": "Prix",
+  "status": "Statut",
+  "in_stock": "En stock",
+  "low_stock": "Stock faible",
+  "out": "Rupture",
+  "best_selling_products": "Produits les plus vendus",
+  "top_10_customers": "Top 10 des clients",
+  "products_remaining": "Stock restant",
+  "Smart_Toy": "Jouet intelligent",
+  "Welcom": "Bienvenue au magasin Trocady",
+  "Chat": "Chat Bot",
+  "Message": "Écrire votre message...",
+  "Send": "envoyer"
+  
+}

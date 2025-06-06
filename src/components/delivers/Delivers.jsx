@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { listDelivers } from '../../services/DeliverService'
 import { useAuth } from '../hooks/useAuth'
+import { useTranslation } from 'react-i18next'
 
 const Delivers = () => {
 
@@ -11,6 +12,7 @@ const Delivers = () => {
   const [searchTerm, setSearchTerm] = useState('')
 
   const navigator = useNavigate()
+  const { t } = useTranslation();
 
   const { token, loading } = useAuth();
 
@@ -64,7 +66,7 @@ const Delivers = () => {
 
   return (
     <div className="container">
-      <h2 className="text-center">List of delivered orders</h2>
+      <h2 className="text-center">{t('List_Of_Deliveries_Orders', { ns: 'delivers' })}</h2>
 
       <div className="d-flex justify-content-between align-items-center mb-3">
 
@@ -72,7 +74,7 @@ const Delivers = () => {
         <input
           type="text"
           className="form-control w-25"
-          placeholder="🔍 Search by ..."
+          placeholder={t('Search_By', { ns: 'delivers' })}
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value)
@@ -81,7 +83,7 @@ const Delivers = () => {
         />
 
         <div>
-          Show:
+          {t('Show', { ns: 'delivers' })}
           <select
             className="form-select d-inline-block w-auto ms-2"
             value={itemsPerPage}
@@ -95,15 +97,15 @@ const Delivers = () => {
             <option value={20}>20</option>
             <option value={40}>40</option>
           </select>
-          entries
+          {t('Entries', { ns: 'delivers' })}
         </div>
       </div>
 
       <table className="table table-striped table-bordered">
         <thead>
           <tr>
-            <th>Order Id</th><th>Customer Name</th><th>Email</th><th>Date</th>
-            <th>Status</th><th>Deliver order</th>
+            <th>{t('Order_Id', { ns: 'delivers' })}</th><th>{t('Customer_Name', { ns: 'delivers' })}</th><th>{t('Email', { ns: 'delivers' })}</th><th>{t('Date', { ns: 'delivers' })}</th>
+            <th>{t('Status', { ns: 'delivers' })}</th><th>{t('Deliver_Order', { ns: 'delivers' })}</th>
           </tr>
         </thead>
         <tbody>
@@ -127,7 +129,7 @@ const Delivers = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="7" className="text-center">No delivers found</td>
+              <td colSpan="7" className="text-center">{t('No_Delivers', { ns: 'delivers' })}</td>
             </tr>
           )}
         </tbody>
@@ -139,29 +141,29 @@ const Delivers = () => {
           <ul className="pagination justify-content-center">
             <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(1)} disabled={currentPage === 1}>
-                ⏮ First
+                ⏮ {t('First', { ns: 'delivers' })}
               </button>
             </li>
             <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
-                ← Previous
+                ← {t('Previous', { ns: 'delivers' })}
               </button>
             </li>
 
             <li className="page-item disabled">
               <span className="page-link">
-                Page {currentPage} sur {totalPages}
+                Page {currentPage} / {totalPages}
               </span>
             </li>
 
             <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages}>
-                Next →
+                {t('Next', { ns: 'delivers' })} →
               </button>
             </li>
             <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(totalPages)} disabled={currentPage === totalPages}>
-                Last ⏭
+                {t('Last', { ns: 'delivers' })} ⏭
               </button>
             </li>
           </ul>

@@ -34,6 +34,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './App.css';
 import KeycloakProviderWrapper from './components/Keycloack/KeycloakProviderWrapper';
 import AdminRoute from './components/admin/AdminRoute';
+import Settings from './Settings';
 
 
 function App() {
@@ -79,6 +80,7 @@ function App() {
               <Route path="ship/:id" element={<Ship />} />
               <Route path="delivers" element={<Delivers />} />
               <Route path="deliver/:id" element={<Deliver />} />
+              <Route path="settings" element={<Settings />} />
             </Route>
           </Routes>
 

@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { createDeliver, getDeliver } from '../../services/DeliverService';
 import Swal from 'sweetalert2';
 import { useAuth } from '../hooks/useAuth';
+import { useTranslation } from 'react-i18next';
 
 const Deliver = () => {
   const [orderId, setOrderId] = useState('');
@@ -13,6 +14,7 @@ const Deliver = () => {
   const [status, setStatus] = useState('');
   const [paymentId, setPaymentId] = useState('');
 
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigator = useNavigate();
   const { token, loading } = useAuth();
@@ -49,24 +51,24 @@ const Deliver = () => {
     };
 
     Swal.fire({
-      title: 'Confirm delivery ?',
-      text: 'Are you sure you want to create this delivery ?',
+      title: t('title_delivery', { ns: 'delivers' }),
+      text: t('text_delivery', { ns: 'delivers' }),
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, deliver',
-      cancelButtonText: 'Cancel',
+      confirmButtonText: t('confirm_delivery', { ns: 'delivers' }),
+      cancelButtonText: t('cancel', { ns: 'delivers' }),
     }).then((result) => {
       if (result.isConfirmed) {
         createDeliver(deliver)
           .then(() => {
-            Swal.fire('Success', 'The delivery has been created.', 'success').then(() => {
+            Swal.fire(t('success_title', { ns: 'delivers' }), t('success_message', { ns: 'delivers' }), 'success').then(() => {
               navigator('/admin/delivers');
              // window.location.reload();
             });
           })
           .catch((error) => {
             console.error(error);
-            Swal.fire('Error', 'Creation failed.', 'error');
+            Swal.fire(t('error_title', { ns: 'delivers' }), t('error_message', { ns: 'delivers' }), 'error');
           });
       }
     });
@@ -81,23 +83,23 @@ const Deliver = () => {
       <br /><br />
       <div className='row justify-content-center'>
         <div className='card col-md-10'>
-          <h2 className='text-center mt-3'>Deliver Order</h2>
+          <h2 className='text-center mt-3'> {t('Deliver_Order', { ns: 'delivers' })}</h2>
           <div className='card-body'>
             <form onSubmit={handleDeliver}>
               <div className='row'>
                 {/* Colonne 1 */}
                 <div className='col-md-6'>
                   <div className='form-group mb-3'>
-                    <label className='form-label fw-bold'>Order Id:</label>
+                    <label className='form-label fw-bold'> {t('Order_Id', { ns: 'delivers' })}:</label>
                     <input type='text' value={orderId} className='form-control' readOnly />
                   </div>
                   
                   <div className='form-group mb-3'>
-                    <label className='form-label fw-bold'>Date:</label>
+                    <label className='form-label fw-bold'> {t('Date', { ns: 'delivers' })}:</label>
                     <input type='text' value={eventTimeStamp} className='form-control' readOnly />
                   </div>
                   <div className='form-group mb-3'>
-                    <label className='form-label fw-bold'>Status:</label>
+                    <label className='form-label fw-bold'> {t('Status', { ns: 'delivers' })}:</label>
                     <input type='text' value={status} className='form-control' readOnly />
                   </div>
                 </div>
@@ -105,15 +107,15 @@ const Deliver = () => {
                 {/* Colonne 2 */}
                 <div className='col-md-6'>
                   <div className='form-group mb-3'>
-                    <label className='form-label fw-bold'>Customer Id:</label>
+                    <label className='form-label fw-bold'> {t('Customer_Id', { ns: 'delivers' })}:</label>
                     <input type='text' value={customerId} className='form-control' readOnly />
                   </div>
                   <div className='form-group mb-3'>
-                    <label className='form-label fw-bold'>Customer Name:</label>
+                    <label className='form-label fw-bold'> {t('Customer_Name', { ns: 'delivers' })}:</label>
                     <input type='text' value={customerName} className='form-control' readOnly />
                   </div>
                   <div className='form-group mb-3'>
-                    <label className='form-label fw-bold'>Customer Email:</label>
+                    <label className='form-label fw-bold'> {t('Customer_Email', { ns: 'delivers' })}:</label>
                     <input type='text' value={customerMail} className='form-control' readOnly />
                   </div>
                   
@@ -127,7 +129,7 @@ const Deliver = () => {
                   className='btn btn-success w-50'
                   disabled={status !== 'DELIVERING'}
                 >
-                  Deliver
+                   {t('Deliver', { ns: 'delivers' })}
                 </button>
               </div>
             </form>

@@ -4,7 +4,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useKeycloak } from '@react-keycloak/web';
-
+import SettingsIcon from '@mui/icons-material/Settings';
 
 import {
   AppBar,
@@ -45,9 +45,7 @@ import ReceiptIcon from '@mui/icons-material/Receipt';
 import PaymentIcon from '@mui/icons-material/Payment';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import { useAuth } from '../hooks/useAuth';
-
-
-
+import { useTranslation } from 'react-i18next';
 
 const drawerWidth = 250;
 
@@ -57,23 +55,23 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
   const [anchorElMobileMenu, setAnchorElMobileMenu] = React.useState(null);
   const isSmallScreen = useMediaQuery('(max-width:768px)');
 
+  const { t } = useTranslation();
+
   const user = keycloak?.tokenParsed;
   const firstname = user?.given_name || 'UserName';
 
-  const { roles } = useAuth()
+  const { roles } = useAuth();
 
   // Supposons que le rôle admin est la string 'ADMIN'
-  const isAdmin = roles && roles.includes('ADMIN')
-
+  const isAdmin = roles && roles.includes('ADMIN');
 
   React.useEffect(() => {
     if (isSmallScreen) {
-      setIsDrawerOpen(false); // 👈 ferme automatiquement le drawer sur mobile
+      setIsDrawerOpen(false); // ferme automatiquement le drawer sur mobile
     } else {
-      setIsDrawerOpen(true); // 👈 ouvre automatiquement sur écran large
+      setIsDrawerOpen(true); // ouvre automatiquement sur écran large
     }
-  }, [isSmallScreen]);
-
+  }, [isSmallScreen, setIsDrawerOpen]);
 
   const handleOrdersClick = (event) => {
     setAnchorElOrders(event.currentTarget);
@@ -97,7 +95,6 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
     }
   };
 
-
   return (
     <>
       {/* HEADER */}
@@ -113,7 +110,8 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            Trocady Management System
+            {t('Trocady_Management_System', { ns: 'drawer' })}
+
           </Typography>
 
           {isSmallScreen ? (
@@ -127,20 +125,23 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
                 onClose={handleMobileMenuClose}
               >
                 <MenuItem component={Link} to="/admin/home" onClick={handleMobileMenuClose}>
-                  <HomeIcon sx={{ mr: 1 }} /> Home
+                  <HomeIcon sx={{ mr: 1 }} />  {t('Home', { ns: 'drawer' })}
                 </MenuItem>
                 <MenuItem onClick={handleOrdersClick}>
                   <Box display="flex" alignItems="center" width="100%">
                     <InboxIcon sx={{ mr: 1 }} />
-                    <Box flexGrow={1}>Orders List</Box>
+                    <Box flexGrow={1}>{t('Orders_List', { ns: 'drawer' })} </Box>
                     <ExpandMoreIcon />
                   </Box>
                 </MenuItem>
                 <MenuItem component={Link} to="/admin/chat-bot" onClick={handleMobileMenuClose}>
-                  <ChatIcon sx={{ mr: 1 }} /> Chat Bot Zone
+                  <ChatIcon sx={{ mr: 1 }} /> {t('Chat_Bot_Zone', { ns: 'drawer' })}
                 </MenuItem>
                 <MenuItem component={Link} to="/admin/profile" onClick={handleMobileMenuClose}>
-                  <AccountCircleIcon sx={{ mr: 1 }} /> Profile
+                  <AccountCircleIcon sx={{ mr: 1 }} /> {t('Profile', { ns: 'drawer' })}
+                </MenuItem>
+                <MenuItem component={Link} to="/admin/settings" onClick={handleMobileMenuClose}>
+                  <SettingsIcon sx={{ mr: 1 }} /> {t('Settings', { ns: 'drawer' })}
                 </MenuItem>
                 <MenuItem component={Link} onClick={handleMobileMenuClose}>
                   <AccountCircleIcon sx={{ mr: 1 }} /> {firstname}
@@ -151,25 +152,24 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
                     keycloak.logout({ redirectUri: window.location.origin });
                   }}
                 >
-                  <ExitToAppIcon sx={{ mr: 1 }} /> Logout
+                  <ExitToAppIcon sx={{ mr: 1 }} /> {t('Logout', { ns: 'drawer' })}
                 </MenuItem>
-
               </Menu>
             </>
           ) : (
             <>
               <Button color="inherit" component={Link} to="/admin/home" startIcon={<HomeIcon />}>
-                Home
+                {t('Home', { ns: 'drawer' })}
               </Button>
               <Divider orientation="vertical" flexItem sx={{ mx: 2, bgcolor: 'gray' }} />
               <Button color="inherit" onClick={handleOrdersClick}>
                 <Box display="flex" alignItems="center">
-                  Orders List
+                  {t('Orders_List', { ns: 'drawer' })}
                   <ExpandMoreIcon sx={{ ml: 1 }} />
                 </Box>
               </Button>
               <Button color="inherit" component={Link} to="/admin/chat-bot" startIcon={<ChatIcon />}>
-                Chat Bot Zone
+                {t('Chat_Bot_Zone', { ns: 'drawer' })}
               </Button>
               <Divider orientation="vertical" flexItem sx={{ mx: 2, bgcolor: 'gray' }} />
               {/* Username dropdown menu */}
@@ -188,7 +188,10 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
                   onClose={handleMobileMenuClose}
                 >
                   <MenuItem component={Link} to="/admin/profile" onClick={handleMobileMenuClose}>
-                    <AccountCircleIcon sx={{ mr: 1 }} /> Profile
+                    <AccountCircleIcon sx={{ mr: 1 }} /> {t('Profile', { ns: 'drawer' })}
+                  </MenuItem>
+                  <MenuItem component={Link} to="/admin/settings" onClick={handleMobileMenuClose}>
+                    <SettingsIcon sx={{ mr: 1 }} /> {t('Settings', { ns: 'drawer' })}
                   </MenuItem>
                   <MenuItem
                     onClick={() => {
@@ -196,20 +199,15 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
                       keycloak.logout({ redirectUri: window.location.origin });
                     }}
                   >
-                    <ExitToAppIcon sx={{ mr: 1 }} /> Logout
+                    <ExitToAppIcon sx={{ mr: 1 }} /> {t('Logout', { ns: 'drawer' })}
                   </MenuItem>
                 </Menu>
               </Box>
-
-
             </>
-          )}   {/*  */}
+          )}
 
-          <Menu
-            anchorEl={anchorElOrders}
-            open={Boolean(anchorElOrders)}
-            onClose={handleOrdersClose}
-          >
+          {/* Orders submenu */}
+          <Menu anchorEl={anchorElOrders} open={Boolean(anchorElOrders)} onClose={handleOrdersClose}>
             <MenuItem
               component={Link}
               to="/admin/created-orders"
@@ -218,7 +216,7 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
                 handleMobileMenuClose();
               }}
             >
-              📋 Created Orders
+              📋 {t('Created_Orders', { ns: 'drawer' })}
             </MenuItem>
             <MenuItem
               component={Link}
@@ -228,7 +226,7 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
                 handleMobileMenuClose();
               }}
             >
-              ✅ Completed Orders
+              ✅ {t('Completed_Orders', { ns: 'drawer' })}
             </MenuItem>
             <MenuItem
               component={Link}
@@ -238,10 +236,9 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
                 handleMobileMenuClose();
               }}
             >
-              ❌ Canceled Orders
+              ❌ {t('Canceled_Orders', { ns: 'drawer' })}
             </MenuItem>
           </Menu>
-
         </Toolbar>
       </AppBar>
 
@@ -253,70 +250,141 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
         sx={{
           width: drawerWidth,
           flexShrink: 0,
-          display: isDrawerOpen ? 'block' : 'none', // 👈 ajoute cette ligne
+          display: isDrawerOpen ? 'block' : 'none',
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             marginTop: '64px',
             height: 'calc(100% - 64px)',
-
           },
         }}
       >
-        {/*
-        <Box display="flex" justifyContent="flex-end" p={1}>
-          <IconButton onClick={() => setIsDrawerOpen(false)}>
-            Admin Panel <ChevronLeftIcon />
-          </IconButton>
-        </Box>
-        */}
         <Divider />
         <List>
           {isAdmin && (
             <ListItem button component={Link} to="/admin/dashboard" onClick={handleLinkClick}>
-              <ListItemIcon><DashboardIcon /></ListItemIcon>
-              <ListItemText primary="Dashboard" />
+              <ListItemIcon>
+                <DashboardIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  <Typography fontWeight="bold">
+                    {t('Dashboard', { ns: 'drawer' })}
+                  </Typography>
+                }
+              />
             </ListItem>
           )}
 
           <ListItem button component={Link} to="/admin/products" onClick={handleLinkClick}>
-            <ListItemIcon><InventoryIcon /></ListItemIcon>
-            <ListItemText primary="Manage Products" />
-          </ListItem>
-          <ListItem button component={Link} to="/admin/customers" onClick={handleLinkClick}>
-            <ListItemIcon><PeopleIcon /></ListItemIcon>
-            <ListItemText primary="Manage Customers" />
-          </ListItem>
-          <ListItem button component={Link} to="/admin/create-order" onClick={handleLinkClick}>
-            <ListItemIcon><AddShoppingCartIcon /></ListItemIcon>
-            <ListItemText primary="Create Orders" />
-          </ListItem>
-          <ListItem button component={Link} to="/admin/ships" onClick={handleLinkClick}>
-            <ListItemIcon><LocalShippingIcon /></ListItemIcon>
-            <ListItemText primary="Ship Orders" />
-          </ListItem>
-          <ListItem button component={Link} to="/admin/delivers" onClick={handleLinkClick}>
-            <ListItemIcon><DeliveryDiningIcon /></ListItemIcon>
-            <ListItemText primary="Deliver Orders" />
-          </ListItem>
-          <ListItem button component={Link} to="/admin/bills" onClick={handleLinkClick}>
-            <ListItemIcon><ReceiptIcon /></ListItemIcon>
-            <ListItemText primary="View Bills" />
-          </ListItem>
-          <ListItem button component={Link} to="/admin/payments" onClick={handleLinkClick}>
-            <ListItemIcon><PaymentIcon /></ListItemIcon>
-            <ListItemText primary="View Payments" />
-          </ListItem>
-          <ListItem button component={Link} to="/admin/order-events" onClick={handleLinkClick}>
-            <ListItemIcon><EventNoteIcon /></ListItemIcon>
-            <ListItemText primary="View Order Events" />
+            <ListItemIcon>
+              <InventoryIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                <Typography fontWeight="bold">
+                  {t('Manage_Products', { ns: 'drawer' })}
+                </Typography>
+              }
+            />
           </ListItem>
 
+          <ListItem button component={Link} to="/admin/customers" onClick={handleLinkClick}>
+            <ListItemIcon>
+              <PeopleIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                <Typography fontWeight="bold">
+                  {t('Manage_Customers', { ns: 'drawer' })}
+                </Typography>
+              }
+            />
+          </ListItem>
+
+          <ListItem button component={Link} to="/admin/create-order" onClick={handleLinkClick}>
+            <ListItemIcon>
+              <AddShoppingCartIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                <Typography fontWeight="bold">
+                  {t('Create_Orders', { ns: 'drawer' })}
+                </Typography>
+              }
+            />
+          </ListItem>
+
+          <ListItem button component={Link} to="/admin/ships" onClick={handleLinkClick}>
+            <ListItemIcon>
+              <LocalShippingIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                <Typography fontWeight="bold">
+                  {t('Ship_Orders', { ns: 'drawer' })}
+                </Typography>
+              }
+            />
+          </ListItem>
+
+          <ListItem button component={Link} to="/admin/delivers" onClick={handleLinkClick}>
+            <ListItemIcon>
+              <DeliveryDiningIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                <Typography fontWeight="bold">
+                  {t('Deliver_Orders', { ns: 'drawer' })}
+                </Typography>
+              }
+            />
+          </ListItem>
+
+          <ListItem button component={Link} to="/admin/bills" onClick={handleLinkClick}>
+            <ListItemIcon>
+              <ReceiptIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                <Typography fontWeight="bold">
+                  {t('View_Bills', { ns: 'drawer' })}
+                </Typography>
+              }
+            />
+          </ListItem>
+
+          <ListItem button component={Link} to="/admin/payments" onClick={handleLinkClick}>
+            <ListItemIcon>
+              <PaymentIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                <Typography fontWeight="bold">
+                  {t('View_Payments', { ns: 'drawer' })}
+                </Typography>
+              }
+            />
+          </ListItem>
+
+          <ListItem button component={Link} to="/admin/order-events" onClick={handleLinkClick}>
+            <ListItemIcon>
+              <EventNoteIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                <Typography fontWeight="bold">
+                  {t('View_Order_Events', { ns: 'drawer' })}
+                </Typography>
+              }
+            />
+          </ListItem>
         </List>
 
       </Drawer>
 
-      {/* BOUTON RÉOUVRIR DRAWER */}
-      {/* {!isDrawerOpen && (
+      {/* Bouton pour rouvrir le drawer (commenté) */}
+      {/*
+      {!isDrawerOpen && (
         <IconButton
           onClick={() => setIsDrawerOpen(true)}
           sx={{
@@ -331,7 +399,8 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
         >
           <ChevronRightIcon />
         </IconButton>
-      )}*/}
+      )}
+      */}
     </>
   );
 };

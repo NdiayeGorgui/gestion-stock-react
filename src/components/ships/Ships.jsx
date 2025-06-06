@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { listShips } from '../../services/ShippingService'
 import { useAuth } from '../hooks/useAuth'
+import { useTranslation } from 'react-i18next'
 
 const Ships = () => {
 
@@ -11,6 +12,7 @@ const Ships = () => {
   const [searchTerm, setSearchTerm] = useState('')
 
   const navigator = useNavigate()
+  const { t } = useTranslation();
 
   const { token, loading } = useAuth();
 
@@ -64,7 +66,7 @@ const Ships = () => {
 
   return (
     <div className="container">
-      <h2 className="text-center">List of shipping orders</h2>
+      <h2 className="text-center">{t('List_Of_Shipping_Orders', { ns: 'ships' })}</h2>
 
       <div className="d-flex justify-content-between align-items-center mb-3">
 
@@ -72,7 +74,7 @@ const Ships = () => {
         <input
           type="text"
           className="form-control w-25"
-          placeholder="🔍 Search by ..."
+          placeholder={t('Search_By', { ns: 'ships' })}
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value)
@@ -81,7 +83,7 @@ const Ships = () => {
         />
 
         <div>
-          Show:
+          {t('Show', { ns: 'ships' })}
           <select
             className="form-select d-inline-block w-auto ms-2"
             value={itemsPerPage}
@@ -95,15 +97,15 @@ const Ships = () => {
             <option value={20}>20</option>
             <option value={40}>40</option>
           </select>
-          entries
+          {t('Entries', { ns: 'ships' })}
         </div>
       </div>
 
       <table className="table table-striped table-bordered">
         <thead>
           <tr>
-            <th>Order Id</th><th>Customer Name</th><th>Email</th><th>Date</th>
-            <th>Status</th><th>Ship order</th>
+            <th>{t('Order_Id', { ns: 'ships' })}</th><th>{t('Customer_Name', { ns: 'ships' })}</th><th>{t('Email', { ns: 'ships' })}</th><th>{t('Date', { ns: 'ships' })}</th>
+            <th>{t('Status', { ns: 'ships' })}</th><th>{t('Ship_Order', { ns: 'ships' })}</th>
           </tr>
         </thead>
         <tbody>
@@ -127,7 +129,7 @@ const Ships = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="7" className="text-center">No shippings found</td>
+              <td colSpan="7" className="text-center">{t('No_Shipping', { ns: 'ships' })}</td>
             </tr>
           )}
         </tbody>
@@ -139,29 +141,29 @@ const Ships = () => {
           <ul className="pagination justify-content-center">
             <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(1)} disabled={currentPage === 1}>
-                ⏮ First
+                ⏮ {t('First', { ns: 'ships' })}
               </button>
             </li>
             <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
-                ← Previous
+                ← {t('Previous', { ns: 'ships' })}
               </button>
             </li>
 
             <li className="page-item disabled">
               <span className="page-link">
-                Page {currentPage} sur {totalPages}
+                Page {currentPage} / {totalPages}
               </span>
             </li>
 
             <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages}>
-                Next →
+                {t('Next', { ns: 'ships' })} →
               </button>
             </li>
             <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(totalPages)} disabled={currentPage === totalPages}>
-                Last ⏭
+                {t('Last', { ns: 'ships' })} ⏭
               </button>
             </li>
           </ul>

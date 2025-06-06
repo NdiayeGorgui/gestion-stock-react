@@ -1,0 +1,30 @@
+   {
+      "List_Of_Deliveries_Orders": "La liste des livraisons",
+      "Search_By": "🔍 Rechercher par...",
+      "Show": "Afficher:",
+      "Entries": "entrées",
+      "Customer_Name": "Nom du Client",
+      "Order_Id": "Numéro de commande",
+      "Date": "Date",
+      "Email": "Email",
+      "Status": "Statut",
+      "Deliver_Order": "Livrer commande",
+      "First": "Premier ",
+      "Previous": "Précédent",
+      "Next": "Suivant",
+      "Last": "Dernier",
+      "No_Delivers": "Aucune livraison trouvée",
+      "Customer_Id": "Numéro du client",
+      "Customer_Email": "Email du client",
+      "Deliver": "Livrer",
+      "title_delivery": "Confirmer la livraison ?",
+      "text_delivery": "Etes-vous sûr de vouloir créer cette livraison ?",
+      "confirm_delivery": "Oui, livrer",
+      "cancel": "Annuler",
+      "success_title": "Succés!",
+      "success_message": "La livraison a été créée.",
+      "error_title": "Erreur!",
+      "error_message": "Erreur de livraison."
+
+
+    }

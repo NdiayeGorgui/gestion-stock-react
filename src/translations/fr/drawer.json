@@ -1,0 +1,23 @@
+{
+ 
+    "Dashboard": "Tableau de bord",
+    "Manage_Products": "Gérer les produits",
+    "Manage_Customers": "Gérer les clients",
+    "Create_Orders": "Créer des commandes",
+    "Ship_Orders": "Expédier les commandes",
+    "Deliver_Orders": "Livrer les commandes",
+    "View_Bills": "Voir les factures",
+    "View_Payments": "Voir les paiements",
+    "View_Order_Events": "Voir les événements de commande",
+    "Home": "Accueil",
+    "Orders_List": "Liste des commandes",
+    "Chat_Bot_Zone": "Zone Chat Bot",
+    "Profile": "Profil",
+    "Settings": "Paramètres",
+    "Logout": "Déconnexion",
+    "Created_Orders": "Commandes créées",
+    "Completed_Orders": "Commandes terminées",
+    "Canceled_Orders": "Commandes annulées",
+    "Trocady_Management_System": "Système de gestion Trocady"
+
+}

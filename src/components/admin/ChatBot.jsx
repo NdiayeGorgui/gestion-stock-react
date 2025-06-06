@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const ChatBot = () => {
   const [messages, setMessages] = useState([]);
   const [userMessage, setUserMessage] = useState('');
   const [isListening, setIsListening] = useState(false);
+  const { t } = useTranslation();
 
   const chatWindowRef = useRef(null);
   const recognitionRef = useRef(null);
@@ -57,7 +59,7 @@ const ChatBot = () => {
     <div className="container mt-4">
       <div className="card shadow">
         <div className="card-header bg-primary text-white">
-          <i className="material-icons me-2">smart_toy</i> Chat Bot
+          <i className="material-icons me-2">{t('Smart_Toy')}</i> {t('Chat')}
         </div>
         <div className="card-body">
           {/* Zone des messages */}
@@ -89,13 +91,13 @@ const ChatBot = () => {
             <input
               type="text"
               className="form-control me-2"
-              placeholder="Write your message..."
+              placeholder={t('Message')}
               value={userMessage}
               onChange={(e) => setUserMessage(e.target.value)}
               required
             />
             <button type="submit" className="btn btn-primary me-2">
-              <i className="material-icons">send</i>
+              <i className="material-icons">{t('Send')}</i>
             </button>
             <button type="button" className="btn btn-outline-danger" onClick={startVoiceInput} disabled={isListening}>
               <i className="material-icons">{isListening ? 'mic_off' : 'mic'}</i>

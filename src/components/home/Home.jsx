@@ -1,11 +1,13 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next';
 
 const Home = () => {
+   const { t } = useTranslation();
   return (
     <div className="container py-4">
     
     <div className="text-center mb-5">
-      <h1 className="display-4 fw-bold">✨ Welcome to Trocady Store ✨</h1>
+      <h1 className="display-4 fw-bold">✨ {t('Welcom')}✨</h1>
       <hr />
     </div>
   

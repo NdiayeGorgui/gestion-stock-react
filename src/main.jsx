@@ -4,6 +4,7 @@ import './index.css';
 import App from './App.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import './i18n'; 
 
 // Vérifie si tu es en mode développement (Vite)
 const isDev = import.meta.env.DEV;

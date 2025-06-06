@@ -3,6 +3,7 @@ import { deleteCustomer, listCustomers } from '../../services/CustomerService'
 import Swal from 'sweetalert2'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
+import { useTranslation } from 'react-i18next'
 
 const Customers = () => {
 
@@ -22,7 +23,7 @@ const Customers = () => {
 
 
   const navigator = useNavigate()
-
+  const { t } = useTranslation();
 
   function getAllCustomers() {
     listCustomers()
@@ -49,14 +50,14 @@ const Customers = () => {
 
   function removeCustomer(customerIdEvent) {
     Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
+      title: t('title_delete', { ns: 'customers' }),
+      text: t('text_delete', { ns: 'customers' }),
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
       cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel'
+      confirmButtonText: t('confirm_delete', { ns: 'customers' }),
+      cancelButtonText: t('cancel', { ns: 'customers' })
     }).then((result) => {
       if (result.isConfirmed) {
         deleteCustomer(customerIdEvent)
@@ -64,11 +65,11 @@ const Customers = () => {
             setCustomers((prevCustomers) =>
               prevCustomers.filter((customer) => customer.customerIdEvent !== customerIdEvent)
             );
-            Swal.fire('Deleted!', 'The customer has been deleted.', 'success');
+            Swal.fire(t('success_title', { ns: 'customers' }), t('success_message', { ns: 'customers' }), 'success');
           })
           .catch((error) => {
             console.error(error);
-            Swal.fire('Error!', 'Failed to delete the customer.', 'error');
+            Swal.fire(t('error_title', { ns: 'customers' }), t('error_message', { ns: 'customers' }), 'error');
           });
       }
     });
@@ -101,17 +102,17 @@ const Customers = () => {
 
   return (
     <div className="container">
-      <h2 className="text-center">List of customers</h2>
+      <h2 className="text-center">{t('List_Of_Customers', { ns: 'customers' })}</h2>
 
       <div className="d-flex justify-content-between align-items-center mb-3">
         <button className="btn btn-primary" onClick={addNewCustomer}>
-          Add Customer
+         {t('Add_Customer', { ns: 'customers' })}
         </button>
 
         <input
           type="text"
           className="form-control w-25"
-          placeholder="🔍 Search by ..."
+          placeholder={t('Search_By', { ns: 'customers' })}
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value)
@@ -120,7 +121,7 @@ const Customers = () => {
         />
 
         <div>
-          Show:
+          {t('Show', { ns: 'customers' })}
           <select
             className="form-select d-inline-block w-auto ms-2"
             value={itemsPerPage}
@@ -133,15 +134,15 @@ const Customers = () => {
             <option value={20}>20</option>
             <option value={40}>40</option>
           </select>
-          entries
+          {t('Entries', { ns: 'customers' })}
         </div>
       </div>
 
       <table className="table table-striped table-bordered">
         <thead>
           <tr>
-            <th>Name</th><th>Adresse</th><th>Phone</th><th>Email</th>
-            <th>Status</th><th>Actions</th>
+            <th>{t('Name', { ns: 'customers' })}</th><th>{t('Address', { ns: 'customers' })}</th><th>{t('Phone', { ns: 'customers' })}</th><th>{t('Email', { ns: 'customers' })}</th>
+            <th>{t('Status', { ns: 'customers' })}</th><th>{t('Actions', { ns: 'customers' })}</th>
           </tr>
         </thead>
         <tbody>
@@ -171,7 +172,7 @@ const Customers = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="7" className="text-center">No customers found</td>
+              <td colSpan="7" className="text-center"> {t('No_Customer', { ns: 'customers' })}</td>
             </tr>
           )}
         </tbody>
@@ -183,29 +184,29 @@ const Customers = () => {
           <ul className="pagination justify-content-center">
             <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(1)} disabled={currentPage === 1}>
-                ⏮ First
+                ⏮ {t('First', { ns: 'customers' })}
               </button>
             </li>
             <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
-                ← Previous
+                ← {t('Previous', { ns: 'customers' })}
               </button>
             </li>
 
             <li className="page-item disabled">
               <span className="page-link">
-                Page {currentPage} sur {totalPages}
+                Page {currentPage} / {totalPages}
               </span>
             </li>
 
             <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages}>
-                Next →
+                {t('Next', { ns: 'customers' })} →
               </button>
             </li>
             <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(totalPages)} disabled={currentPage === totalPages}>
-                Last ⏭
+                {t('Last', { ns: 'customers' })} ⏭
               </button>
             </li>
           </ul>

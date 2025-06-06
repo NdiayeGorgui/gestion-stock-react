@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { getOrder } from '../../services/OrderSrvice'
 import { useAuth } from '../hooks/useAuth'
+import { useTranslation } from 'react-i18next'
 
 const OrderDetails = () => {
   const [orderDetails, setOrderDetails] = useState(null)
   const { id } = useParams();
   const navigator = useNavigate();
+  const { t } = useTranslation();
   const { token, loading } = useAuth();
 
   useEffect(() => {
@@ -31,7 +33,7 @@ function close() {
 
 
   if (!orderDetails) {
-    return <div className='container mt-5'>Chargement des détails de la commande...</div>
+    return <div className='container mt-5'>Loading...</div>
   }
 
   const {
@@ -47,80 +49,80 @@ function close() {
 
   return (
     <div className='container mt-5'>
-      <h2 className='text-center mb-4'>Order Details</h2>
+      <h2 className='text-center mb-4'>{t('Order_Details', { ns: 'createdorders' })}</h2>
       <div className='row'>
 
         {/* Colonne 1 - Commande */}
         <div className='col-md-4'>
-          <h5 className='text-primary'>Order</h5>
+          <h5 className='text-primary'>{t('Order', { ns: 'createdorders' })}</h5>
           <div className='form-group mb-3'>
-            <label className='fw-bold'>Order IdEvent:</label>
+            <label className='fw-bold'>{t('Order_IdEvent', { ns: 'createdorders' })}:</label>
             <input type='text' value={order?.orderIdEvent || ''} className='form-control' readOnly />
           </div>
           <div className='form-group mb-3'>
-            <label className='fw-bold'>Order Id:</label>
+            <label className='fw-bold'>{t('Order_Id', { ns: 'createdorders' })}:</label>
             <input type='text' value={order?.id || ''} className='form-control' readOnly />
           </div>
           <div className='form-group mb-3'>
-            <label className='fw-bold'>Date:</label>
+            <label className='fw-bold'>{t('Date', { ns: 'createdorders' })}:</label>
             <input type='text' value={order?.date || ''} className='form-control' readOnly />
           </div>
           <div className='form-group mb-3'>
-            <label className='fw-bold'>Status:</label>
+            <label className='fw-bold'>{t('Status', { ns: 'createdorders' })}:</label>
             <input type='text' value={order?.orderStatus || ''} className='form-control' readOnly />
           </div>
           <div className='form-group mb-3'>
-            <label className='fw-bold'>Discount:</label>
+            <label className='fw-bold'>{t('Discount', { ns: 'createdorders' })}:</label>
             <input type='text' value={discount} className='form-control' readOnly />
           </div>
         </div>
 
         {/* Colonne 2 - Client */}
         <div className='col-md-4'>
-          <h5 className='text-success'>Customer</h5>
+          <h5 className='text-success'>{t('Customer', { ns: 'createdorders' })}</h5>
           <div className='form-group mb-3'>
-            <label className='fw-bold'>Customer Id:</label>
+            <label className='fw-bold'>{t('Customer_idEvent', { ns: 'createdorders' })}:</label>
             <input type='text' value={customer?.customerIdEvent || ''} className='form-control' readOnly />
           </div>
           <div className='form-group mb-3'>
-            <label className='fw-bold'>Name:</label>
+            <label className='fw-bold'>{t('Customer_Name', { ns: 'createdorders' })}:</label>
             <input type='text' value={customer?.name || ''} className='form-control' readOnly />
           </div>
           <div className='form-group mb-3'>
-            <label className='fw-bold'>Email:</label>
+            <label className='fw-bold'>{t('Email', { ns: 'createdorders' })}:</label>
             <input type='text' value={customer?.email || ''} className='form-control' readOnly />
           </div>
           <div className='form-group mb-3'>
-            <label className='fw-bold'>Phone:</label>
+            <label className='fw-bold'>{t('Phone', { ns: 'createdorders' })}:</label>
             <input type='text' value={customer?.phone || ''} className='form-control' readOnly />
           </div>
           <div className='form-group mb-3'>
-            <label className='fw-bold'>Address:</label>
+            <label className='fw-bold'>{t('Address', { ns: 'createdorders' })}:</label>
             <input type='text' value={customer?.address || ''} className='form-control' readOnly />
           </div>
         </div>
 
         {/* Colonne 3 - Produit */}
         <div className='col-md-4'>
-          <h5 className='text-danger'>Product</h5>
+          <h5 className='text-danger'>{t('Product', { ns: 'createdorders' })}</h5>
           <div className='form-group mb-3'>
-            <label className='fw-bold'>Product IdEvent:</label>
+            <label className='fw-bold'>{t('Product_IdEvent', { ns: 'createdorders' })}:</label>
             <input type='text' value={productIdEvent} className='form-control' readOnly />
           </div>
           <div className='form-group mb-3'>
-            <label className='fw-bold'>Name:</label>
+            <label className='fw-bold'>{t('Product_Name', { ns: 'createdorders' })}:</label>
             <input type='text' value={product?.name || ''} className='form-control' readOnly />
           </div>
           <div className='form-group mb-3'>
-            <label className='fw-bold'>Category:</label>
+            <label className='fw-bold'>{t('Category', { ns: 'createdorders' })}:</label>
             <input type='text' value={product?.category || ''} className='form-control' readOnly />
           </div>
           <div className='form-group mb-3'>
-            <label className='fw-bold'>Quantity:</label>
+            <label className='fw-bold'>{t('Quantity', { ns: 'createdorders' })}:</label>
             <input type='text' value={quantity} className='form-control' readOnly />
           </div>
           <div className='form-group mb-3'>
-            <label className='fw-bold'>Price:</label>
+            <label className='fw-bold'>{t('Price', { ns: 'createdorders' })}:</label>
             <input type='text' value={price} className='form-control' readOnly />
           </div>
         </div>
@@ -132,7 +134,7 @@ function close() {
                   className="btn btn-primary"
                   style={{ width: '50%' }}
                 >
-                  Close
+                  {t('Close', { ns: 'createdorders' })}
                 </button>
               </div>
     </div>
