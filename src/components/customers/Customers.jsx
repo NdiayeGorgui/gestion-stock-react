@@ -4,6 +4,8 @@ import Swal from 'sweetalert2'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { useTranslation } from 'react-i18next'
+import AddIcon from '@mui/icons-material/Add';
+
 
 const Customers = () => {
 
@@ -105,9 +107,11 @@ const Customers = () => {
       <h2 className="text-center">{t('List_Of_Customers', { ns: 'customers' })}</h2>
 
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <button className="btn btn-primary" onClick={addNewCustomer}>
-         {t('Add_Customer', { ns: 'customers' })}
+        <button className="btn btn-primary d-flex align-items-center gap-2" onClick={addNewCustomer}>
+          <AddIcon />
+          {t('Add_Customer', { ns: 'customers' })}
         </button>
+
 
         <input
           type="text"
@@ -142,7 +146,10 @@ const Customers = () => {
         <thead>
           <tr>
             <th>{t('Name', { ns: 'customers' })}</th><th>{t('Address', { ns: 'customers' })}</th><th>{t('Phone', { ns: 'customers' })}</th><th>{t('Email', { ns: 'customers' })}</th>
-            <th>{t('Status', { ns: 'customers' })}</th><th>{t('Actions', { ns: 'customers' })}</th>
+            <th>{t('Status', { ns: 'customers' })}</th><th style={{ textAlign: 'center' }}>
+              {t('Actions', { ns: 'customers' })}
+            </th>
+
           </tr>
         </thead>
         <tbody>
@@ -154,7 +161,7 @@ const Customers = () => {
                 <td>{customer.phone}</td>
                 <td>{customer.email}</td>
                 <td>{customer.status}</td>
-                <td>
+                <td className="text-center">
                   <button className="btn btn-outline-info btn-sm me-2" onClick={() => updateCustomer(customer.customerIdEvent)}>
                     <i className="bi bi-pencil-square"></i>
                   </button>

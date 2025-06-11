@@ -105,7 +105,7 @@ const Delivers = () => {
         <thead>
           <tr>
             <th>{t('Order_Id', { ns: 'delivers' })}</th><th>{t('Customer_Name', { ns: 'delivers' })}</th><th>{t('Email', { ns: 'delivers' })}</th><th>{t('Date', { ns: 'delivers' })}</th>
-            <th>{t('Status', { ns: 'delivers' })}</th><th>{t('Deliver_Order', { ns: 'delivers' })}</th>
+            <th>{t('Status', { ns: 'delivers' })}</th><th className="text-center">{t('Deliver_Order', { ns: 'delivers' })}</th>
           </tr>
         </thead>
         <tbody>
@@ -117,11 +117,11 @@ const Delivers = () => {
                 <td>{delivered.customerMail}</td>
                 <td>{new Date(delivered.eventTimeStamp).toLocaleDateString('fr-FR')}</td>
                 <td>{delivered.status}</td>
-                <td>
+                <td className="text-center">
 
 
                   <button className="btn btn-outline-warning btn-sm" onClick={() => viewDeliver(delivered.orderId)}>
-                    <i class="bi bi-house-door"></i>
+                    <i className="bi bi-house-door"></i>
                   </button>
 
                 </td>

@@ -105,7 +105,7 @@ const Ships = () => {
         <thead>
           <tr>
             <th>{t('Order_Id', { ns: 'ships' })}</th><th>{t('Customer_Name', { ns: 'ships' })}</th><th>{t('Email', { ns: 'ships' })}</th><th>{t('Date', { ns: 'ships' })}</th>
-            <th>{t('Status', { ns: 'ships' })}</th><th>{t('Ship_Order', { ns: 'ships' })}</th>
+            <th>{t('Status', { ns: 'ships' })}</th><th className="text-center">{t('Ship_Order', { ns: 'ships' })}</th>
           </tr>
         </thead>
         <tbody>
@@ -117,11 +117,11 @@ const Ships = () => {
                 <td>{ship.customerMail}</td>
                 <td>{new Date(ship.eventTimeStamp).toLocaleDateString('fr-FR')}</td>
                 <td>{ship.status}</td>
-                <td>
+                <td className="text-center">
 
 
                   <button className="btn btn-outline-warning btn-sm" onClick={() => viewShip(ship.orderId)}>
-                    <i class="bi bi-truck"></i>
+                    <i className="bi bi-truck"></i>
                   </button>
 
                 </td>

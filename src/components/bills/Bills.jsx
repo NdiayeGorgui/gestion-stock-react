@@ -108,7 +108,7 @@ const Bills = () => {
         <thead>
           <tr>
             <th>{t('Customer', { ns: 'bills' })}</th><th>{t('Product', { ns: 'bills' })}</th><th>{t('Quantity', { ns: 'bills' })}</th><th>{t('Price', { ns: 'bills' })}</th>
-            <th>{t('Discount', { ns: 'bills' })}</th><th>{t('Date', { ns: 'bills' })}</th><th>{t('Status', { ns: 'bills' })}</th><th>{t('Details', { ns: 'bills' })}</th>
+            <th>{t('Discount', { ns: 'bills' })}</th><th>{t('Date', { ns: 'bills' })}</th><th>{t('Status', { ns: 'bills' })}</th><th className="text-center">{t('Details', { ns: 'bills' })}</th>
           </tr>
         </thead>
         <tbody>
@@ -123,7 +123,7 @@ const Bills = () => {
 
                 <td>{new Date(bill.billingDate).toLocaleDateString('fr-FR')}</td>
                 <td>{bill.status}</td>
-                <td>
+                <td className="text-center">
 
 
                   <button className="btn btn-outline-warning btn-sm" onClick={() => viewBill(bill.orderRef)}>

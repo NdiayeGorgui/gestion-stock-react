@@ -101,7 +101,7 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
       <AppBar
         position="fixed"
         sx={{
-          backgroundColor: '#000000',
+          backgroundColor: '#6a5acd',
           zIndex: (theme) => theme.zIndex.drawer + 1,
         }}
       >
@@ -267,7 +267,7 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
               </ListItemIcon>
               <ListItemText
                 primary={
-                  <Typography fontWeight="bold">
+                  <Typography fontWeight="bold" color="black">
                     {t('Dashboard', { ns: 'drawer' })}
                   </Typography>
                 }
@@ -281,7 +281,7 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
             </ListItemIcon>
             <ListItemText
               primary={
-                <Typography fontWeight="bold">
+                <Typography fontWeight="bold" color="black">
                   {t('Manage_Products', { ns: 'drawer' })}
                 </Typography>
               }
@@ -294,7 +294,7 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
             </ListItemIcon>
             <ListItemText
               primary={
-                <Typography fontWeight="bold">
+                <Typography fontWeight="bold" color="black">
                   {t('Manage_Customers', { ns: 'drawer' })}
                 </Typography>
               }
@@ -307,7 +307,7 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
             </ListItemIcon>
             <ListItemText
               primary={
-                <Typography fontWeight="bold">
+                <Typography fontWeight="bold" color="black">
                   {t('Create_Orders', { ns: 'drawer' })}
                 </Typography>
               }
@@ -320,7 +320,7 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
             </ListItemIcon>
             <ListItemText
               primary={
-                <Typography fontWeight="bold">
+                <Typography fontWeight="bold" color="black">
                   {t('Ship_Orders', { ns: 'drawer' })}
                 </Typography>
               }
@@ -333,7 +333,7 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
             </ListItemIcon>
             <ListItemText
               primary={
-                <Typography fontWeight="bold">
+                <Typography fontWeight="bold" color="black">
                   {t('Deliver_Orders', { ns: 'drawer' })}
                 </Typography>
               }
@@ -346,7 +346,7 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
             </ListItemIcon>
             <ListItemText
               primary={
-                <Typography fontWeight="bold">
+                <Typography fontWeight="bold" color="black">
                   {t('View_Bills', { ns: 'drawer' })}
                 </Typography>
               }
@@ -359,7 +359,7 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
             </ListItemIcon>
             <ListItemText
               primary={
-                <Typography fontWeight="bold">
+                <Typography fontWeight="bold" color="black">
                   {t('View_Payments', { ns: 'drawer' })}
                 </Typography>
               }
@@ -372,7 +372,7 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
             </ListItemIcon>
             <ListItemText
               primary={
-                <Typography fontWeight="bold">
+                <Typography fontWeight="bold" color="black">
                   {t('View_Order_Events', { ns: 'drawer' })}
                 </Typography>
               }

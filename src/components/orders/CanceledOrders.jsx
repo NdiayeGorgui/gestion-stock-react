@@ -103,7 +103,7 @@ const CanceledOrders = () => {
       <table className="table table-striped table-bordered">
         <thead>
           <tr>
-            <th> {t('Customer', { ns: 'createdorders' })}</th><th> {t('Product', { ns: 'createdorders' })}</th><th> {t('Quantity', { ns: 'createdorders' })}</th><th> {t('Price', { ns: 'createdorders' })}</th><th> {t('Details', { ns: 'createdorders' })}</th>
+            <th> {t('Customer', { ns: 'createdorders' })}</th><th> {t('Product', { ns: 'createdorders' })}</th><th> {t('Quantity', { ns: 'createdorders' })}</th><th> {t('Price', { ns: 'createdorders' })}</th><th className="text-center"> {t('Details', { ns: 'createdorders' })}</th>
           </tr>
         </thead>
         <tbody>
@@ -114,7 +114,7 @@ const CanceledOrders = () => {
                 <td>{order?.product?.name}</td>
                 <td>{order?.quantity}</td>
                 <td>{order?.price.toFixed(2)}</td>
-                <td>
+                <td className="text-center">
                   <button className="btn btn-outline-warning btn-sm" onClick={() => viewOrder(order.order.orderIdEvent)}>
                     <i className="bi bi-eye"></i>
                   </button>

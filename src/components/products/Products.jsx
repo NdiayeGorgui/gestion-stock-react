@@ -4,6 +4,7 @@ import { listProducts, deleteProduct } from '../../services/ProductService'
 import Swal from 'sweetalert2';
 import { useAuth } from '../hooks/useAuth';
 import { useTranslation } from 'react-i18next';
+import AddIcon from '@mui/icons-material/Add';
 
 const Products = () => {
   const [products, setProducts] = useState([])
@@ -68,7 +69,7 @@ const Products = () => {
             setProducts((prevProducts) =>
               prevProducts.filter((product) => product.productIdEvent !== productIdEvent)
             );
-            Swal.fire( t('success_title', { ns: 'products' }), t('success_message', { ns: 'products' }), 'success');
+            Swal.fire(t('success_title', { ns: 'products' }), t('success_message', { ns: 'products' }), 'success');
           })
           .catch((error) => {
             console.error(error);
@@ -107,15 +108,17 @@ const Products = () => {
 
       <div className="d-flex justify-content-between align-items-center mb-3">
         {isAdmin && (
-          <button className="btn btn-primary" onClick={addNewProduct}>
+          <button className="btn btn-primary d-flex align-items-center gap-2" onClick={addNewProduct}>
+            <AddIcon />
             {t('Add_Product', { ns: 'products' })}
           </button>
+
         )}
 
         <input
           type="text"
           className="form-control w-25"
-          placeholder= {t('Search_By', { ns: 'products' })}
+          placeholder={t('Search_By', { ns: 'products' })}
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value)
@@ -146,7 +149,10 @@ const Products = () => {
         <thead>
           <tr>
             <th>{t('Name', { ns: 'products' })}</th><th>{t('Category', { ns: 'products' })}</th><th>{t('Price', { ns: 'products' })}</th><th>{t('Quantity', { ns: 'products' })}</th>
-            <th>{t('Quantity_Status', { ns: 'products' })}</th><th>{t('Status', { ns: 'products' })}</th><th>{t('Actions', { ns: 'products' })}</th>
+            <th>{t('Quantity_Status', { ns: 'products' })}</th><th>{t('Status', { ns: 'products' })}</th><th className="text-center">
+              {t('Actions', { ns: 'products' })}
+            </th>
+
           </tr>
         </thead>
         <tbody>
@@ -173,7 +179,7 @@ const Products = () => {
 
 
                 <td>{product.status}</td>
-                <td>
+                <td className="text-center">
                   {isAdmin && (
                     <>
                       <button className="btn btn-outline-info btn-sm me-2" onClick={() => updateProduct(product.productIdEvent)}>
@@ -224,12 +230,12 @@ const Products = () => {
 
             <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages}>
-                 {t('Next', { ns: 'products' })} →
+                {t('Next', { ns: 'products' })} →
               </button>
             </li>
             <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage(totalPages)} disabled={currentPage === totalPages}>
-                 {t('Last', { ns: 'products' })} ⏭
+                {t('Last', { ns: 'products' })} ⏭
               </button>
             </li>
           </ul>

@@ -150,7 +150,7 @@ const Dashboard = () => {
   return (
     <Box sx={{ px: 4, py: 3 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3, alignItems: 'center' }}>
-        <Typography variant="h4" sx={{ mb: 2, fontWeight: 'bold' }}>{t('dashboard_title')}</Typography>
+        <Typography variant="h5" sx={{ mb: 2 }}>{t('dashboard_title')}</Typography>
         <TextField variant="outlined" size="small" placeholder={t('search_product')} />
       </Box>
 

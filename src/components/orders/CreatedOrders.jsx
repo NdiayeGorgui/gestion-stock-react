@@ -123,7 +123,7 @@ const CreatedOrders = () => {
         />
 
         <div>
-         {t('Show', { ns: 'createdorders' })}
+          {t('Show', { ns: 'createdorders' })}
           <select
             className="form-select d-inline-block w-auto ms-2"
             value={itemsPerPage}
@@ -148,9 +148,9 @@ const CreatedOrders = () => {
             <th>{t('Product', { ns: 'createdorders' })}</th>
             <th>{t('Quantity', { ns: 'createdorders' })}</th>
             <th>{t('Price', { ns: 'createdorders' })}</th>
-            <th>{t('Payment', { ns: 'createdorders' })}</th>
-            <th>{t('Details', { ns: 'createdorders' })}</th>
-            <th>{t('Cancel', { ns: 'createdorders' })}</th>
+            <th className="text-center">{t('Payment', { ns: 'createdorders' })}</th>
+            <th className="text-center">{t('Details', { ns: 'createdorders' })}</th>
+            <th className="text-center">{t('Cancel', { ns: 'createdorders' })}</th>
           </tr>
         </thead>
         <tbody>
@@ -166,17 +166,16 @@ const CreatedOrders = () => {
                   <td>{order?.price.toFixed(2)}</td>
                   {index === 0 && (
                     <>
-                      <td className="align-middle " rowSpan={group.length}>
+                      <td className="text-center align-middle" rowSpan={group.length}>
                         <button
                           className="btn btn-outline-success btn-sm"
-                          onClick={() =>
-                            createPayment(order.order.customer.customerIdEvent)
-                          }
+                          onClick={() => createPayment(order.order.customer.customerIdEvent)}
                         >
                           <i className="bi bi-cash-coin"></i>
                         </button>
                       </td>
-                      <td className="align-middle " rowSpan={group.length}>
+
+                      <td className="align-middle text-center" rowSpan={group.length}>
                         <button
                           className="btn btn-outline-warning btn-sm"
                           onClick={() => viewOrder(order.order.customer.customerIdEvent)}
@@ -185,9 +184,10 @@ const CreatedOrders = () => {
                         </button>
                       </td>
 
+
                     </>
                   )}
-                  <td >
+                  <td className="text-center">
                     <button
                       className="btn btn-outline-danger btn-sm"
                       onClick={() => cancelOrder(order.order.orderIdEvent)}

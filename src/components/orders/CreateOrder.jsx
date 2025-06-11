@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import Select from 'react-select';
 import { useAuth } from '../hooks/useAuth';
 import { useTranslation } from 'react-i18next';
+import AddIcon from '@mui/icons-material/Add';
 
 
 
@@ -331,8 +332,16 @@ const CreateOrder = () => {
               <Form.Control value={discount.toFixed(2)} readOnly />
             </Col>
             <Col md={2} className="d-flex align-items-end">
-              <Button onClick={addProductToOrder}>{t('Add_Order', { ns: 'createorder' })}</Button>
+              <Button
+                variant="primary"
+                className="d-flex align-items-center gap-2"
+                onClick={addProductToOrder}
+              >
+                <AddIcon /> {t('Add_Order', { ns: 'createorder' })}
+              </Button>
             </Col>
+
+
           </Row>
         )}
 

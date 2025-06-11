@@ -7,7 +7,7 @@ const Home = () => {
     <div className="container py-4">
     
     <div className="text-center mb-5">
-      <h1 className="display-4 fw-bold">✨ {t('Welcom')}✨</h1>
+      <h2 >✨ {t('Welcom')}✨</h2>
       <hr />
     </div>
   

@@ -104,7 +104,7 @@ const Payments = () => {
         <thead>
           <tr>
             <th>{t('Customer', { ns: 'payments' })}</th><th>{t('Payment_Mode', { ns: 'payments' })}</th><th>{t('Amount', { ns: 'payments' })}</th>
-            <th>{t('Date', { ns: 'payments' })}</th><th>{t('Status', { ns: 'payments' })}</th><th>{t('Details', { ns: 'payments' })}</th>
+            <th>{t('Date', { ns: 'payments' })}</th><th>{t('Status', { ns: 'payments' })}</th><th className="text-center">{t('Details', { ns: 'payments' })}</th>
           </tr>
         </thead>
         <tbody>
@@ -116,7 +116,7 @@ const Payments = () => {
                 <td>{payment.amount.toFixed(2)}</td>
                 <td>{new Date(payment.timeStamp).toLocaleDateString('fr-FR')}</td>
                 <td>{payment.paymentStatus}</td>
-                <td>
+                <td className="text-center">
 
 
                   <button className="btn btn-outline-warning btn-sm" onClick={() => viewPayment(payment.paymentIdEvent)}>
