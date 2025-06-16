@@ -227,32 +227,37 @@ const CreateOrder = () => {
 
   return (
     <Container className="mt-4">
-      <Row className="justify-content-between align-items-center mb-3">
-        <Col><h2> {t('New_Order', { ns: 'createorder' })}</h2></Col>
-        <Col>
-          {showPaymentButton && (
-            <div className="text-center mt-4">
-              <Button variant="success" size="lg" onClick={() => navigator('/admin/created-orders')}>
-                💳  {t('Proceed_To_Payment', { ns: 'createorder' })}
-              </Button>
-            </div>
-          )}
-        </Col>
-        <Col className="text-end">
-          <Button
-            variant="outline-primary"
-            className="position-relative"
-            onClick={() => setShowCart(true)}
-          >
-            🛒 {t('Cart', { ns: 'createorder' })}
-            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-              {orderItems.reduce((sum, item) => sum + item.qty, 0)}
-            </span>
-          </Button>
+ <Row className="align-items-center mb-3">
+  <Col xs="auto">
+    <h4 className="mb-0">{t('New_Order', { ns: 'createorder' })}</h4>
+  </Col>
 
-        </Col>
+  <Col className="text-center">
+    {showPaymentButton && (
+      <Button
+        variant="success"
+        size="lg"
+        onClick={() => navigator('/admin/created-orders')}
+      >
+        💳 {t('Proceed_To_Payment', { ns: 'createorder' })}
+      </Button>
+    )}
+  </Col>
 
-      </Row>
+  <Col className="text-end">
+    <Button
+      variant="outline-primary"
+      className="position-relative"
+      onClick={() => setShowCart(true)}
+    >
+      🛒 {t('Cart', { ns: 'createorder' })}
+      <span className="position-absolute top-0 start-100 translate-middle badge-order rounded-pill bg-danger">
+        {orderItems.reduce((sum, item) => sum + item.qty, 0)}
+      </span>
+    </Button>
+  </Col>
+</Row>
+
 
       <Form>
         {/* Select Customer */}

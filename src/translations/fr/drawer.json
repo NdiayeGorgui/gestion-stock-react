@@ -8,7 +8,7 @@
     "Deliver_Orders": "Livrer Commandes",
     "View_Bills": "Voir Factures",
     "View_Payments": "Voir Paiements",
-    "View_Order_Events": "Voir Événements de Commande",
+    "View_Order_Events": "Voir Événements",
     "Home": "Accueil",
     "Orders_List": "Liste des commandes",
     "Chat_Bot_Zone": "Zone Chat Bot",
@@ -18,6 +18,7 @@
     "Created_Orders": "Commandes créées",
     "Completed_Orders": "Commandes terminées",
     "Canceled_Orders": "Commandes annulées",
-    "Trocady_Management_System": "Système de gestion Trocady"
+    "Trocady_Management_System": "Système de gestion Trocady",
+    "no_notification": "Aucune notification"
 
 }

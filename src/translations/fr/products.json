@@ -41,5 +41,10 @@
       "confirm_add": "Oui, sauvegarder",
       "title_update": "Confirmer la modification",
       "text_update": "Voulez-vous vraiment modifier ce produit ?",
-      "confirm_update": "Oui, modifier"
+      "confirm_update": "Oui, modifier",
+      "qtyStatus": {
+         "AVAILABLE": "En stock",
+         "UNAVAILABLE": "En rupture de stock",
+         "LOW": "Stock faible"
+    }
     }

@@ -39,6 +39,11 @@
       "confirm_add": "Yes, save",
       "title_update": "Confirm update",
       "text_update": "Do you really want to update this product ?",
-      "confirm_update": "Yes, update"
+      "confirm_update": "Yes, update",
+      "qtyStatus": {
+         "AVAILABLE": "In stock",
+         "UNAVAILABLE": "Out of stock",
+         "LOW": "Low stock"
+      }
      
     }

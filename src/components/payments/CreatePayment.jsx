@@ -18,9 +18,9 @@ const CreatePayment = () => {
   const [amountDto, setAmountDto] = useState({ amount: 0, totalAmount: 0, tax: 0, discount: 0 });
 
   const modes = [
-    { id: 1, name: 'COMPTANT' },
-    { id: 2, name: 'CHEQUE' },
-    { id: 3, name: 'VIREMENT' },
+    { id: 1, name: 'CASH' },
+    { id: 2, name: 'CHECK' },
+    { id: 3, name: 'TRANSFERT' },
   ];
   const { token, loading } = useAuth();
 

@@ -71,6 +71,15 @@ html, body, #root {
 
 .badge {
   padding: 4px 8px;
+  min-width: 80px;  
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: white;
+}
+
+.badge-order {
+  padding: 4px 8px; 
   border-radius: 6px;
   font-size: 0.75rem;
   font-weight: 500;
@@ -85,3 +94,5 @@ html, body, #root {
 .out-stock {
   background-color: #F44336;
 }
+
+

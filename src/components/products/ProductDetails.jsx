@@ -94,11 +94,12 @@ const ProductDetails = () => {
                 <input
                   type='text'
                   name='qtyStatus'
-                  value={qtyStatus}
+                  value={t(`qtyStatus.${qtyStatus}`, { ns: 'products' })}
                   className='form-control'
                   readOnly
                 />
               </div>
+
               <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <button
                   onClick={() => close()}

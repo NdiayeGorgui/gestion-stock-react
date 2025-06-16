@@ -15,14 +15,15 @@
   "status": "Statut",
   "in_stock": "En stock",
   "low_stock": "Stock faible",
-  "out": "Rupture",
+  "out": "En rupture",
   "best_selling_products": "Produits les plus vendus",
   "top_10_customers": "Top 10 des clients",
   "products_remaining": "Stock restant",
   "Smart_Toy": "Jouet intelligent",
-  "Welcom": "Bienvenue au magasin Trocady",
+  "Welcom": "Bienvenue chez Trocady Store",
   "Chat": "Chat Bot",
   "Message": "Écrire votre message...",
-  "Send": "envoyer"
+  "Send": "envoyer",
+  "created_date": "Date de création"
   
 }
