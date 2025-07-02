@@ -4,7 +4,18 @@
       "Show": "Afficher:",
       "Entries": " entrées",
       "Customer_Name": "Nom du Client",
-      "Order_Id": "Numéro de commande",
+      "Order_Id": "N° de commande",
+      "Delivery_Status": "Statut de livraison",
+      "Payment_Id": "Numéro de paiement",
+      "Amount": "Montant",
+      "Total_Tax": "Taxe totale",
+      "Total_Discount": "Remise totale",
+      "Product_Name": "Nom du produit",
+      "Quantity": "Quantité",
+      "Price": "Prix",
+      "Discount": "Remise",
+      "Tax": "Taxe",
+      "Product_Id": "N° du produit",
       "Date": "Date",
       "Email": "Email",
       "Status": "Statut",
@@ -14,9 +25,11 @@
       "Next": "Suivant",
       "Last": "Dernier",
       "No_Delivers": "Aucune livraison trouvée",
-      "Customer_Id": "Numéro du client",
+      "Order_Delivered": "Commande livrée",
+      "Customer_Id": "N° du client",
       "Customer_Email": "Email du client",
       "Deliver": "Livrer",
+       "Products": "Produits",
       "title_delivery": "Confirmer la livraison ?",
       "text_delivery": "Etes-vous sûr de vouloir créer cette livraison ?",
       "confirm_delivery": "Oui, livrer",
@@ -24,7 +37,13 @@
       "success_title": "Succés!",
       "success_message": "La livraison a été créée.",
       "error_title": "Erreur!",
-      "error_message": "Erreur de livraison."
+      "error_message": "Erreur de livraison.",
+       "delivers": {
+         "statusValues": {
+            "DELIVERING": "En cours de livraison",
+            "DELIVERED": "Livré"
+         }
+      }
 
 
     }

@@ -4,7 +4,18 @@
       "Show": "Afficher:",
       "Entries": " entrées",
       "Customer_Name": "Nom du Client",
-      "Order_Id": "Numéro de commande",
+      "Order_Shipped": "Commande expédiée",
+      "Order_Id": "N° de commande",
+      "Shipping_Status": "Statut d'expédition",
+      "Payment_Id": "Identifiant de paiement",
+      "Amount": "Montant",
+      "Total_Tax": "Taxe totale",
+      "Total_Discount": "Remise totale",
+      "Product_Name": "Nom du produit",
+      "Quantity": "Quantité",
+      "Price": "Prix",
+      "Discount": "Remise",
+      "Tax": "Taxe",
       "Date": "Date",
       "Email": "Email",
       "Status": "Statut",
@@ -14,9 +25,10 @@
       "Next": "Suivant",
       "Last": "Dernier",
       "No_Shipping": "Aucune expédition trouvée",
-       "Customer_Id": "Numéro du client",
+       "Customer_Id": "N° du client",
       "Customer_Email": "Email du client",
       "Ship": "Expédier",
+       "Products": "Produits",
       "title_ship": "Confirmer l'expédition ?",
       "text_ship": "Êtes-vous sûr de vouloir créer cette expédition ?",
       "confirm_ship": "Oui, expédier",
@@ -24,6 +36,12 @@
       "success_title": "Succès!",
       "success_message": "L'expédition a été créée.",
       "error_title": "Erreur!",
-      "error_message": "Erreur de création."
+      "error_message": "Erreur de création.",
+       "ships": {
+         "statusValues": {
+            "SHIPPING": "En cours d'expédition",
+            "SHIPPED": "Expédié"
+         }
+      }
 
     }

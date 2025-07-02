@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getCreatedOrdersByCustomer, getCreatedOrdersById } from '../../services/OrderSrvice';
+import { getCompletedOrdersById, getCreatedOrdersByCustomer, getCreatedOrdersById } from '../../services/OrderSrvice';
 import { useAuth } from '../hooks/useAuth';
 import { useTranslation } from 'react-i18next';
 
-const OrderCreatedDetails = () => {
+const OrderCompletedDetails = () => {
   const [order, setOrder] = useState({
     orderId: '',
     customerName: '',
@@ -23,7 +23,7 @@ const OrderCreatedDetails = () => {
 
   useEffect(() => {
     if (!loading && token && id) {
-      getCreatedOrdersById(id)
+      getCompletedOrdersById(id)
         .then((response) => {
           setOrder(response.data);
         })
@@ -44,11 +44,11 @@ const OrderCreatedDetails = () => {
     items,
   } = order;
 
-  const close = () => navigator('/admin/created-orders');
+  const close = () => navigator('/admin/completed-orders');
 
-  return (
+ return (
   <div className="container mt-5">
-    {/* Header avec bouton de fermeture */}
+    {/* Header avec bouton fermer */}
     <div className="d-flex justify-content-between align-items-center mb-4">
       <div></div>
       <h2 className="text-center flex-grow-1 m-0">{t('Order_Details', { ns: 'createdorders' })}</h2>
@@ -102,7 +102,7 @@ const OrderCreatedDetails = () => {
       </div>
     </div>
 
-    {/* Produits */}
+    {/* Table produits */}
     <table className="table table-bordered">
       <thead>
         <tr>
@@ -138,4 +138,4 @@ const OrderCreatedDetails = () => {
 
 };
 
-export default OrderCreatedDetails;
+export default OrderCompletedDetails;

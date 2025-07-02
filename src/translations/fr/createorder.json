@@ -8,6 +8,7 @@
       "Search_Product": "Rechercher ou sélectionner un produit...",
       "Address": "Adresse",
       "Phone": "Téléhone",
+        "OrderId": "N° de commande",
       "Email": "Email",
       "Discount": "Remise",
       "Cart": "Panier",

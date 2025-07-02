@@ -104,9 +104,10 @@ export default function Settings() {
         <select value={fontSize} onChange={(e) => handleFontSizeChange(e.target.value)}>
           {fontSizes.map((size) => (
             <option key={size} value={size}>
-              {size.charAt(0).toUpperCase() + size.slice(1)}
+              {t(`fontSizes.${size}`)}
             </option>
           ))}
+
         </select>
       </div>
 

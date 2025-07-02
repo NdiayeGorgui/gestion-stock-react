@@ -75,92 +75,107 @@ const CreateOrder = () => {
     setItemQty(1);
   }, [selectedProductId, products]);
 
-  useEffect(() => {
-    const calculateTotals = async () => {
-      if (selectedProduct && itemQty > 0) {
-        const price = Number(selectedProduct.price);
-        const qty = Number(itemQty);
-        const totalHT = price * qty;
+useEffect(() => {
+  const calculateTotals = () => {
+    if (selectedProduct && itemQty > 0) {
+      const price = Number(selectedProduct.price);
+      const qty = Number(itemQty);
+      const totalHT = price * qty;
 
-        const calculatedTax = totalHT * 0.2;
-
-        let calculatedDiscount = 0;
-        if (totalHT >= 200) {
-          calculatedDiscount = totalHT * 0.01;
-        } else if (totalHT >= 100) {
-          calculatedDiscount = totalHT * 0.005;
-        }
-
-        const calculatedAmount = totalHT + calculatedTax - calculatedDiscount;
-
-        setTax(calculatedTax);
-        setDiscount(calculatedDiscount);
-        setAmount(calculatedAmount);
-      } else {
-        setTax(0);
-        setDiscount(0);
-        setAmount(0);
+      // 1. Calcul du discount
+      let calculatedDiscount = 0;
+      if (totalHT >= 200) {
+        calculatedDiscount = totalHT * 0.01;
+      } else if (totalHT >= 100) {
+        calculatedDiscount = totalHT * 0.005;
       }
-    };
 
-    calculateTotals();
-  }, [selectedProduct, itemQty]);
+      // 2. Taxe sur le montant HT après remise
+      const taxable = totalHT - calculatedDiscount;
+      const calculatedTax = taxable * 0.2;
 
+      // ✅ 3. Total TTC : (HT - remise) + taxe
+      const calculatedAmount = taxable + calculatedTax;
 
-  const addProductToOrder = () => {
-    if (!selectedProduct || !itemQty || isNaN(itemQty) || itemQty <= 0) {
-      Swal.fire(
-        t('warning_title', { ns: 'createorder' }),
-        t('valid_quantity', { ns: 'createorder' }),
-        'warning'
-      );
-
-      return;
+      // Mise à jour des états
+      setDiscount(calculatedDiscount);
+      setTax(calculatedTax);
+      setAmount(calculatedAmount);
+    } else {
+      setDiscount(0);
+      setTax(0);
+      setAmount(0);
     }
-
-
-    const alreadyInOrder = orderItems.some(
-      item => item.productIdEvent === selectedProduct.productIdEvent
-    );
-
-    if (alreadyInOrder) {
-      Swal.fire(
-        t('warning_title', { ns: 'createorder' }),
-        t('product_exist', { ns: 'createorder' }),
-        'warning'
-      );
-
-      return;
-    }
-
-    if (itemQty > selectedProduct.qty) {
-      Swal.fire(
-        t('insufficient_stock_title', { ns: 'createorder' }),
-        t('insufficient_stock_text', { count: selectedProduct.qty, ns: 'createorder' }),
-        'error'
-      );
-      return;
-    }
-
-    const newItem = {
-      ...selectedProduct,
-      qty: itemQty,
-      qtyStock: selectedProduct.qty, // Stock initial
-      amount,
-      tax,
-      discount,
-    };
-
-
-    setOrderItems([...orderItems, newItem]);
-    setSelectedProductId('');
-    setSelectedProduct(null);
-    setItemQty(1);
-    setAmount(0);
-    setTax(0);
-    setDiscount(0);
-    setSelectedProductId(''); // ou null selon l'initialisation
   };
+
+  calculateTotals();
+}, [selectedProduct, itemQty]);
+
+
+
+
+const addProductToOrder = () => {
+  if (!selectedProduct || !itemQty || isNaN(itemQty) || itemQty <= 0) {
+    Swal.fire(
+      t('warning_title', { ns: 'createorder' }),
+      t('valid_quantity', { ns: 'createorder' }),
+      'warning'
+    );
+    return;
+  }
+
+  const alreadyInOrder = orderItems.some(
+    item => item.productIdEvent === selectedProduct.productIdEvent
+  );
+
+  if (alreadyInOrder) {
+    Swal.fire(
+      t('warning_title', { ns: 'createorder' }),
+      t('product_exist', { ns: 'createorder' }),
+      'warning'
+    );
+    return;
+  }
+
+  if (itemQty > selectedProduct.qty) {
+    Swal.fire(
+      t('insufficient_stock_title', { ns: 'createorder' }),
+      t('insufficient_stock_text', { count: selectedProduct.qty, ns: 'createorder' }),
+      'error'
+    );
+    return;
+  }
+
+  // 💡 Calcul aligné Angular
+  const totalHT = selectedProduct.price * itemQty;
+
+  let discount = 0;
+  if (totalHT >= 200) discount = totalHT * 0.01;
+  else if (totalHT >= 100) discount = totalHT * 0.005;
+
+  const tax = (totalHT - discount) * 0.2;
+  const amount = totalHT - discount + tax;
+
+  const newItem = {
+    ...selectedProduct,
+    qty: itemQty,
+    qtyStock: selectedProduct.qty,
+    price: selectedProduct.price, // ⚠️ important pour les calculs suivants
+    discount,
+    tax,
+    amount
+  };
+
+  setOrderItems([...orderItems, newItem]);
+
+  // 🔁 Reset
+  setSelectedProductId('');
+  setSelectedProduct(null);
+  setItemQty(1);
+  setAmount(0);
+  setTax(0);
+  setDiscount(0);
+};
 
 
   const handleRemoveItem = (index) => {
@@ -169,10 +184,19 @@ const CreateOrder = () => {
     setOrderItems(updatedItems);
   };
 
-  const totalAmount = orderItems.reduce((sum, item) => sum + item.amount, 0);
-  const totalTax = orderItems.reduce((sum, item) => sum + item.tax, 0);
-  const totalDiscount = orderItems.reduce((sum, item) => sum + item.discount, 0);
-  const totalPrice = orderItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
+const totalPrice = orderItems.reduce((sum, item) => sum + item.price * item.qty, 0);
+
+const totalDiscount = orderItems.reduce((sum, item) => {
+  const total = item.price * item.qty;
+  if (total >= 200) return sum + total * 0.01;
+  if (total >= 100) return sum + total * 0.005;
+  return sum;
+}, 0);
+
+const totalTax = (totalPrice - totalDiscount) * 0.2;
+
+const totalAmount = totalPrice - totalDiscount + totalTax;
+
 
 
   const handleQtyChange = (index, newQty) => {
@@ -497,10 +521,18 @@ const CreateOrder = () => {
                   }));
 
                   try {
-                    for (let i = 0; i < ordersToSend.length; i++) {
-                      await createOrder(ordersToSend[i]);
-                      await new Promise((resolve) => setTimeout(resolve, 300)); // ⏱️ Délai entre chaque commande
-                    }
+                   const finalOrder = {
+  customer: {
+    customerIdEvent: selectedClient.customerIdEvent
+  },
+  productItems: orderItems.map(item => ({
+    productIdEvent: item.productIdEvent,
+    productQty: item.qty
+  }))
+};
+
+await createOrder(finalOrder);
+
 
                     Swal.fire(t('success_title', { ns: 'createorder' }), t('order_success', { ns: 'createorder' }), 'success');
                     setOrderItems([]);

@@ -6,6 +6,8 @@
       "Entries": " entries",
       "Name": "Name",
       "Category": "Category",
+      "Description": "Description",
+      "Location": "Location",
       "Price": "Price",
       "Quantity": "Quantity",
       "Quantity_Status": "Quantity Status",
@@ -19,6 +21,8 @@
       "Submit": "Submit",
       "Product_Name": "Enter product name",
       "Product_Category": "Enter product category",
+      "Product_Description": "Enter product description",
+      "Product_Location": "Enter product location",
       "Product_Price": "Enter product price",
       "Product_Quantity": "Enter product quantity",
       "Product_Name_Required": "Product name is required",
@@ -38,12 +42,19 @@
       "text_add": "Do you really want to save this product ?",
       "confirm_add": "Yes, save",
       "title_update": "Confirm update",
+      "Product_ID_Event": "ID Product",
       "text_update": "Do you really want to update this product ?",
       "confirm_update": "Yes, update",
       "qtyStatus": {
          "AVAILABLE": "In stock",
          "UNAVAILABLE": "Out of stock",
          "LOW": "Low stock"
+      },
+       "products": {
+         "statusValues": {
+            "PENDING": "Pending",
+            "CREATED": "Created",
+            "FAILED": "Failed"
+         }
       }
-     
-    }
+   }

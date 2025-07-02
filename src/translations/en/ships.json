@@ -5,6 +5,17 @@
       "Entries": " entries",
       "Customer_Name": "Customer Name",
       "Order_Id": "Order Id",
+      "Shipping_Status": "Shipping Status",
+      "Payment_Id": "Payment Id",
+      "Amount": "Amount",
+      "Total_Tax": "Total Tax",
+      "Total_Discount": "Total Discount",
+      "Product_Name": "Product Name",
+      "Quantity": "Quantity",
+      "Price": "Price",
+      "Discount": "Discount",
+      "Tax": "Tax",
+      "Product_Id": "Product Id",
       "Date": "Date",
       "Email": "Email",
       "Status": "Status",
@@ -17,12 +28,21 @@
       "Customer_Id": "Customer Id",
       "Customer_Email": "Customer Email",
       "Ship": "Ships",
+      "Order_Shipped": "Order shipped",
       "title_ship": "Confirm shipping ?",
       "text_ship": "Are you sure you want to create this shipping ?",
       "confirm_ship": "Yes, ships",
       "cancel": "Cancel",
+      "Products": "Products",
       "success_title": "Success!",
       "success_message": "The shipping has been created.",
       "error_title": "Error!",
-      "error_message": "Creation failed."
+      "error_message": "Creation failed.",
+      "ships": {
+         "statusValues": {
+            "SHIPPING": "Pending",
+            "SHIPPED": "Shipped"
+         }
+      }
+
     }

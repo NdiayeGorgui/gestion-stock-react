@@ -55,6 +55,16 @@ const OrderEvents = () => {
     const currentItems = filteredOrders.slice(indexOfFirstItem, indexOfLastItem)
     const totalPages = Math.ceil(filteredOrders.length / itemsPerPage)
 
+    const getDetailsTranslationKey = (message) => {
+        const map = {
+            "Order created.": "ORDER_CREATED",
+            "Order confirmed after payment.": "ORDER_CONFIRMED",
+            "Order Shipped": "ORDER_SHIPPED",
+            "Order Delivered": "ORDER_DELIVERED",
+            "Order canceled.": "ORDER_CANCELED"
+        };
+        return map[message] || null;
+    };
 
 
     return (
@@ -106,8 +116,15 @@ const OrderEvents = () => {
                             <tr key={order?.id}>
                                 <td>{order?.orderId}</td>
                                 <td>{order?.customerId}</td>
-                                <td>{order?.status}</td>
-                                <td>{order?.details}</td>
+                                <td>{t(`orderevents.statusValues.${order?.status}`, { ns: 'orderevents' })}</td>
+                                <td>
+                                    {
+                                        getDetailsTranslationKey(order?.details)
+                                            ? t(`orderevents.detailsValues.${getDetailsTranslationKey(order.details)}`, { ns: 'orderevents' })
+                                            : order?.details // fallback si aucun mapping trouvé
+                                    }
+                                </td>
+
                                 <td>{new Date(order?.eventTimeStamp).toLocaleDateString('fr-FR')}</td>
                             </tr>
 

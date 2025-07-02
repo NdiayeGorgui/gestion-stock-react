@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { listCreatedOrders, removeOrder } from '../../services/OrderSrvice';
 import Swal from 'sweetalert2';
 import { useAuth } from '../hooks/useAuth';
@@ -10,41 +10,23 @@ const CreatedOrders = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState('');
-
-  const navigator = useNavigate();
-  const location = useLocation();
   const { t } = useTranslation();
-
-  useEffect(() => {
-    if (location.state?.refresh) {
-      getAllCreatedOrders();
-    }
-  }, [location.state]);
-
+  const navigator = useNavigate();
   const { token, loading } = useAuth();
 
   useEffect(() => {
     if (!loading && token) {
-      getAllCreatedOrders();
+      listCreatedOrders()
+        .then((response) => setOrders(response.data))
+        .catch((error) => console.error(error));
     }
   }, [loading, token]);
 
-
-  function getAllCreatedOrders() {
-    listCreatedOrders()
-      .then((response) => {
-        setOrders(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  function viewOrder(orderId) {
+    navigator(`/admin/created-order-details/${orderId}`);
   }
 
-  function viewOrder(customerId) {
-    navigator(`/admin/created-order-details/${customerId}`);
-  }
-
-  function cancelOrder(orderIdEvent) {
+  function cancelOrder(orderId) {
     Swal.fire({
       title: t('title_order', { ns: 'createdorders' }),
       text: t('text_order', { ns: 'createdorders' }),
@@ -56,11 +38,9 @@ const CreatedOrders = () => {
       cancelButtonText: t('cancel', { ns: 'createdorders' }),
     }).then((result) => {
       if (result.isConfirmed) {
-        removeOrder(orderIdEvent)
+        removeOrder(orderId)
           .then(() => {
-            setOrders((prevOrders) =>
-              prevOrders.filter((order) => order.orderIdEvent !== orderIdEvent)
-            );
+            setOrders((prev) => prev.filter((order) => order.orderId !== orderId));
             Swal.fire(t('title_remove', { ns: 'createdorders' }), t('text_remove', { ns: 'createdorders' }), 'success');
           })
           .catch((error) => {
@@ -71,44 +51,25 @@ const CreatedOrders = () => {
     });
   }
 
-  function createPayment(customerIdEvent) {
-    navigator(`/admin/create-payment/${customerIdEvent}`);
+  function createPayment(orderId) {
+    navigator(`/admin/create-payment/${orderId}`);
   }
 
-  // Filtering
-  const filteredOrders = orders.filter((order) => {
-    const term = searchTerm.toLowerCase();
-    return (
-      order?.order?.customer?.name?.toLowerCase().includes(term) ||
-      order?.product?.name?.toLowerCase().includes(term) ||
-      order?.price?.toString().toLowerCase().includes(term) ||
-      order?.quantity?.toString().toLowerCase().includes(term)
-    );
-  });
+  // Filtered + pagination
+  const filteredOrders = orders.filter((order) =>
+    [order.customerName, order.customerEmail, order.orderId]
+      .some((field) => field?.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
 
-  // Pagination logic
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredOrders.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  // Group by customer
-  const groupedOrders = {};
-  currentItems.forEach((order) => {
-    const customerId = order?.order?.customer?.customerIdEvent;
-    if (!groupedOrders[customerId]) {
-      groupedOrders[customerId] = [];
-    }
-    groupedOrders[customerId].push(order);
-  });
+  const currentItems = filteredOrders.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
-    <div className="container">
-      <h2 className="text-center">{t('List_Of_Created_Orders', { ns: 'createdorders' })}</h2>
+    <div className="container mt-4">
+      <h2 className="text-center mb-3">{t('List_Of_Created_Orders', { ns: 'createdorders' })}</h2>
 
       <div className="d-flex justify-content-between align-items-center mb-3">
         <input
@@ -121,7 +82,6 @@ const CreatedOrders = () => {
             setCurrentPage(1);
           }}
         />
-
         <div>
           {t('Show', { ns: 'createdorders' })}
           <select
@@ -132,7 +92,6 @@ const CreatedOrders = () => {
               setCurrentPage(1);
             }}
           >
-
             <option value={10}>10</option>
             <option value={20}>20</option>
             <option value={40}>40</option>
@@ -144,63 +103,56 @@ const CreatedOrders = () => {
       <table className="table table-striped table-bordered">
         <thead>
           <tr>
-            <th>{t('Customer', { ns: 'createdorders' })}</th>
-            <th>{t('Product', { ns: 'createdorders' })}</th>
-            <th>{t('Quantity', { ns: 'createdorders' })}</th>
-            <th>{t('Price', { ns: 'createdorders' })}</th>
+            <th>{t('OrderId', { ns: 'createdorders' })}</th>
+             <th>{t('Customer', { ns: 'createdorders' })}</th>
+            <th className="text-center">{t('Email', { ns: 'createdorders' })}</th>
+            <th className="text-center">{t('Amount', { ns: 'createdorders' })}</th>
+             <th className="text-center">{t('Discount', { ns: 'createdorders' })}</th>
+            <th className="text-center">{t('Tax', { ns: 'createdorders' })}</th>
+             <th className="text-center">{t('Details', { ns: 'createdorders' })}</th>
             <th className="text-center">{t('Payment', { ns: 'createdorders' })}</th>
-            <th className="text-center">{t('Details', { ns: 'createdorders' })}</th>
             <th className="text-center">{t('Cancel', { ns: 'createdorders' })}</th>
           </tr>
         </thead>
         <tbody>
-          {Object.entries(groupedOrders).length > 0 ? (
-            Object.entries(groupedOrders).map(([customerId, group]) =>
-              group.map((order, index) => (
-                <tr key={`${customerId}-${index}`}>
-                  {index === 0 && (
-                    <td className="align-middle " rowSpan={group.length}>{order?.order?.customer?.name}</td>
-                  )}
-                  <td>{order?.product?.name}</td>
-                  <td>{order?.quantity}</td>
-                  <td>{order?.price.toFixed(2)}</td>
-                  {index === 0 && (
-                    <>
-                      <td className="text-center align-middle" rowSpan={group.length}>
-                        <button
-                          className="btn btn-outline-success btn-sm"
-                          onClick={() => createPayment(order.order.customer.customerIdEvent)}
-                        >
-                          <i className="bi bi-cash-coin"></i>
-                        </button>
-                      </td>
-
-                      <td className="align-middle text-center" rowSpan={group.length}>
-                        <button
-                          className="btn btn-outline-warning btn-sm"
-                          onClick={() => viewOrder(order.order.customer.customerIdEvent)}
-                        >
-                          <i className="bi bi-eye"></i>
-                        </button>
-                      </td>
-
-
-                    </>
-                  )}
-                  <td className="text-center">
-                    <button
-                      className="btn btn-outline-danger btn-sm"
-                      onClick={() => cancelOrder(order.order.orderIdEvent)}
-                    >
-                      <i className="bi bi-x-circle"></i>
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )
+          {currentItems.length > 0 ? (
+            currentItems.map((order, index) => (
+              <tr key={index}>
+                <td>{order.orderId}</td>
+                <td>{order.customerName}</td>
+                <td>{order.customerEmail}</td>
+                <td>{order.amount?.toFixed(2)}</td>
+                <td>{order.totalDiscount?.toFixed(2)}</td>
+                <td>{order.totalTax?.toFixed(2)}</td>
+                <td className="text-center">
+                  <button
+                    className="btn btn-outline-warning btn-sm"
+                    onClick={() => viewOrder(order.orderId)}
+                  >
+                    <i className="bi bi-eye"></i>
+                  </button>
+                </td>
+                <td className="text-center">
+                  <button
+                    className="btn btn-outline-success btn-sm"
+                    onClick={() => createPayment(order.orderId)}
+                  >
+                    <i className="bi bi-cash-coin"></i>
+                  </button>
+                </td>
+                <td className="text-center">
+                  <button
+                    className="btn btn-outline-danger btn-sm"
+                    onClick={() => cancelOrder(order.orderId)}
+                  >
+                    <i className="bi bi-x-circle"></i>
+                  </button>
+                </td>
+              </tr>
+            ))
           ) : (
             <tr>
-              <td colSpan="7" className="text-center">
+              <td colSpan="9" className="text-center">
                 {t('No_Orders', { ns: 'createdorders' })}
               </td>
             </tr>
@@ -212,20 +164,12 @@ const CreatedOrders = () => {
         <nav>
           <ul className="pagination justify-content-center">
             <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-              <button
-                className="page-link"
-                onClick={() => setCurrentPage(1)}
-                disabled={currentPage === 1}
-              >
+              <button className="page-link" onClick={() => setCurrentPage(1)}>
                 ⏮ {t('First', { ns: 'createdorders' })}
               </button>
             </li>
             <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-              <button
-                className="page-link"
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                disabled={currentPage === 1}
-              >
+              <button className="page-link" onClick={() => setCurrentPage(currentPage - 1)}>
                 ← {t('Previous', { ns: 'createdorders' })}
               </button>
             </li>
@@ -234,27 +178,13 @@ const CreatedOrders = () => {
                 Page {currentPage} / {totalPages}
               </span>
             </li>
-            <li
-              className={`page-item ${currentPage === totalPages ? 'disabled' : ''
-                }`}
-            >
-              <button
-                className="page-link"
-                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                disabled={currentPage === totalPages}
-              >
+            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+              <button className="page-link" onClick={() => setCurrentPage(currentPage + 1)}>
                 {t('Next', { ns: 'createdorders' })} →
               </button>
             </li>
-            <li
-              className={`page-item ${currentPage === totalPages ? 'disabled' : ''
-                }`}
-            >
-              <button
-                className="page-link"
-                onClick={() => setCurrentPage(totalPages)}
-                disabled={currentPage === totalPages}
-              >
+            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+              <button className="page-link" onClick={() => setCurrentPage(totalPages)}>
                 {t('Last', { ns: 'createdorders' })} ⏭
               </button>
             </li>

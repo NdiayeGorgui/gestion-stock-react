@@ -5,6 +5,19 @@
       "Entries": " entries",
       "Customer_Name": "Customer Name",
       "Order_Id": "Order Id",
+      "Delivery_Status": "Delivery Status",
+      "Payment_Id": "Payment Id",
+      "Amount": "Amount",
+      "Total_Tax": "Total Tax",
+      "Total_Discount": "Total Discount",
+      "Product_Name": "Product Name",
+      "Order_Delivered": "Order delivered",
+      "Products": "Products",
+      "Quantity": "Quantity",
+      "Price": "Price",
+      "Discount": "Discount",
+      "Tax": "Tax",
+      "Product_Id": "Product Id",
       "Date": "Date",
       "Email": "Email",
       "Status": "Status",
@@ -24,6 +37,12 @@
       "success_title": "Success!",
       "success_message": "The delivery has been created.",
       "error_title": "Error!",
-      "error_message": "Creation failed."
+      "error_message": "Creation failed.",
+       "delivers": {
+         "statusValues": {
+            "DELIVERING": "Pending",
+            "DELIVERED": "Delivered"
+         }
+      }
 
     }

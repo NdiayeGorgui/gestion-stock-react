@@ -9,6 +9,13 @@
       "Details": "Détails",
       "Status": "Statut",
       "Amount": "Montant",
+      "Total_Tax": "Taxe totale",
+      "Total_Discount": "Remise totale",
+      "Product_Name": "Nom du produit",
+      "Product_Id": "N° du produit",
+      "Quantity": "Quantité",
+      "Price": "Prix",
+      "Order_Id": "N° de commande",
       "First": "Premier ",
       "Previous": "Précédent",
       "Next": "Suivant",
@@ -17,9 +24,9 @@
       "Payment": "Paiement",
       "Customer_Name": "Nom du Client",
       "Customer_Email": "Email du Client",
-      "Payment_Id": "Numéro de Paiement",
+      "Payment_Id": "N° de Paiement",
       "Close": "Fermer",
-      "Customer_Id": "Numéro du Client",
+      "Customer_Id": "N° du Client",
       "Tax": "Taxe",
       "Total_Amount": "Montant Total",
        "Select_Mode": "Sélectionner  Mode",
@@ -30,10 +37,16 @@
       "text_invoice": "Paiement effectué et facture imprimée.",
       "confirm_payment": "Oui, imprimer",
       "cancel": "Annuler",
+       "Products": "Produits",
       "success_title": "Succés!",
       "error_title": "Erreur!",
       "error_message": "Une erreur s'est produite lors de l'impression ou du paiement.",
       "title_attention": "Attention",
-      "title_select": "Veuillez sélectionner un mode de paiement."
+      "title_select": "Veuillez sélectionner un mode de paiement.",
+      "payments": {
+         "paymentStatusValues": {
+            "COMPLETED": "Complété"
+         }
+      }
 
     }

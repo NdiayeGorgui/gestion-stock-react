@@ -6,6 +6,9 @@
       "Customer": "Client",
       "Product": "Produit",
       "Date": "Date",
+      "Amount": "Montant",
+      "Total_Tax": "Taxe totale",
+      "Total_Discount": "Remise totale",
       "Discount": "Remise",
       "Quantity": "Quantité",
       "Details": "Détails",
@@ -18,16 +21,25 @@
       "No_Bills": "Aucune facture trouvée",
       "Bill": "Facture",
       "Id": "Id",
-       "Product_Id": "Numéro du Produit",
+      "OrderId": "N° Commande",
+      "CustomerEmail": "Email",
+       "Product_Id": "N° du Produit",
        "Product_Name": "Nom du Produit",
        "Order_Ref": "Réf Commande",
-       "Customer_Id": "Numéro du Client",
+       "Customer_Id": "N° du Client",
+       "Products": "Produits",
        "Customer_Name": "Nom du Client",
        "Customer_Email": "Email du Client",
        "Billing_Date": "Date de Facturation",
        "Customer_Phone": "Téléhone du Client",
        "Close": "Fermer",
-        "Order_Id": "Numéro de Commande"
-       
+        "Order_Id": "N° de Commande",
+         "bills": {
+         "statusValues": {
+            "CREATED": "Créée",
+            "COMPLETED": "Complété",
+             "CANCELED": "Annulé"
+         }
+      }
 
     }

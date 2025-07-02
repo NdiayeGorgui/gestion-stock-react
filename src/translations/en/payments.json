@@ -8,6 +8,13 @@
       "Date": "Date",
       "Details": "Details",
       "Amount": "Amount",
+      "Total_Tax": "Total Tax",
+      "Total_Discount": "Total Discount",
+      "Product_Name": "Product Name",
+      "Product_Id": "Product Id",
+      "Quantity": "Quantity",
+      "Price": "Price",
+      "Order_Id": "Order Id",
       "Status": "Status",
       "First": "First ",
       "Previous": "Previous",
@@ -29,11 +36,17 @@
       "text_payment": "Would you like to confirm the payment and print the invoice?",
       "text_invoice": "Payment made and invoice printed.",
       "confirm_payment": "Yes, print",
+      "Products": "Products",
       "cancel": "Cancel",
       "success_title": "Success!",
       "error_title": "Error!",
       "error_message": "An error occurred while printing or paying.",
       "title_attention": "Attention",
-      "title_select": "Please select a payment method."
+      "title_select": "Please select a payment method.",
+      "payments": {
+         "paymentStatusValues": {
+            "COMPLETED": "Completed"
+         }
+      }
       
     }

@@ -7,6 +7,8 @@
       "Entries": " entrées",
       "Name": "Nom",
       "Category": "Catégorie",
+      "Description": "Description",
+      "Location": "Localisation",
       "Price": "Prix",
       "Quantity": "Quantité",
       "Quantity_Status": "Statut de la quantité",
@@ -20,7 +22,9 @@
       "Submit": "Soumettre",
       "Product_Name": "Saisir le nom du produit",
       "Product_Details": "Détails du produit",
-      "Product_Category": "Saisir la Catégorie du produit",
+      "Product_Category": "Saisir la catégorie du produit",
+      "Product_Description": "Saisir la description du produit",
+      "Product_Location": "Saisir la localisation du produit",
       "Product_Price": "Saisir le prix du produit",
       "Product_Quantity": "Saisir la quantité du produit",
       "Product_Name_Required": "Le nom du produit est requis",
@@ -40,11 +44,19 @@
       "text_add": "Voulez-vous vraiment sauvegarder ce produit ?",
       "confirm_add": "Oui, sauvegarder",
       "title_update": "Confirmer la modification",
+      "Product_ID_Event": "N° Produit",
       "text_update": "Voulez-vous vraiment modifier ce produit ?",
       "confirm_update": "Oui, modifier",
       "qtyStatus": {
          "AVAILABLE": "En stock",
          "UNAVAILABLE": "En rupture de stock",
          "LOW": "Stock faible"
-    }
-    }
+      },
+      "products": {
+         "statusValues": {
+            "PENDING": "En attente",
+            "CREATED": "Créé",
+            "FAILED": "Échec"
+         }
+      }
+   }

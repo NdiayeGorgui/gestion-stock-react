@@ -12,6 +12,22 @@
       "Previous": "Previous",
       "Next": "Next",
       "Last": "Last",
-      "No_Order_Events": "No orders  found"
+      "No_Order_Events": "No orders  found",
+      "orderevents": {
+         "statusValues": {
+            "CREATED": "Created",
+            "CONFIRMED": "Completed",
+            "SHIPPED": "Shipped",
+            "DELIVERED": "Delivered",
+            "CANCELED": "Canceled"
+         },
+         "detailsValues": {
+            "ORDER_CREATED": "Order created.",
+            "ORDER_CONFIRMED": "Order confirmed after payment.",
+            "ORDER_SHIPPED": "Order shipped",
+            "ORDER_DELIVERED": "Order delivered",
+            "ORDER_CANCELED": "Order canceled"
+         }
+      }
 
     }

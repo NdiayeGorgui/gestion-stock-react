@@ -11,17 +11,29 @@ import {
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import NotificationService from '../../services/NotificationService';
 
-
 const NotificationBell = () => {
   const [notifications, setNotifications] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
 
   useEffect(() => {
-    NotificationService.notifications$.subscribe((notifs) => {
+    // 🔁 S'abonne au BehaviorSubject
+    const subscription = NotificationService.notifications$.subscribe((notifs) => {
       setNotifications(notifs);
     });
 
+    // 🔄 Appel initial
     NotificationService.getNotifications();
+
+    // ⏱️ Poll toutes les 30 secondes
+    const interval = setInterval(() => {
+      NotificationService.getNotifications();
+    }, 30000);
+
+    // Nettoyage
+    return () => {
+      subscription.unsubscribe();
+      clearInterval(interval);
+    };
   }, []);
 
   const unreadCount = notifications.filter(n => !n.readValue).length;

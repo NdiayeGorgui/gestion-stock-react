@@ -35,6 +35,8 @@ import './App.css';
 import KeycloakProviderWrapper from './components/Keycloack/KeycloakProviderWrapper';
 import AdminRoute from './components/admin/AdminRoute';
 import Settings from './Settings';
+import OrderCompletedDetails from './components/orders/OrderCompletedDetails';
+import OrderCanceledDetails from './components/orders/OrderCanceledDetails';
 
 
 function App() {
@@ -72,6 +74,8 @@ function App() {
               <Route path="login" element={<Login />} />
               <Route path="orderDetails/:id" element={<OrderDetails />} />
               <Route path="created-order-details/:id" element={<OrderCreatedDetails />} />
+              <Route path="completed-order-details/:id" element={<OrderCompletedDetails />} />
+              <Route path="canceled-order-details/:id" element={<OrderCanceledDetails />} />
               <Route path="created-orders" element={<CreatedOrders />} />
               <Route path="completed-orders" element={<CompletedOrders />} />
               <Route path="canceled-orders" element={<CanceledOrders />} />

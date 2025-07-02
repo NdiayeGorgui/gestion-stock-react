@@ -36,8 +36,8 @@ const Payments = () => {
   }
 
 
-  function viewPayment(paymentIdEvent) {
-    navigator(`/admin/payment/${paymentIdEvent}`)
+  function viewPayment(orderId) {
+    navigator(`/admin/payment/${orderId}`)
   }
 
 
@@ -115,11 +115,11 @@ const Payments = () => {
                 <td>{payment.paymentMode}</td>
                 <td>{payment.amount.toFixed(2)}</td>
                 <td>{new Date(payment.timeStamp).toLocaleDateString('fr-FR')}</td>
-                <td>{payment.paymentStatus}</td>
+                <td>{t(`payments.paymentStatusValues.${payment.paymentStatus}`, { ns: 'payments' })}</td>
                 <td className="text-center">
 
 
-                  <button className="btn btn-outline-warning btn-sm" onClick={() => viewPayment(payment.paymentIdEvent)}>
+                  <button className="btn btn-outline-warning btn-sm" onClick={() => viewPayment(payment.orderId)}>
                     <i className="bi bi-eye"></i>
                   </button>
 

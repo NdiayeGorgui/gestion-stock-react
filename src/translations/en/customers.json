@@ -7,6 +7,8 @@
       "Entries": " entries",
       "Name": "Name",
       "Address": "Address",
+      "City": "City",
+      "PostalCode": "Postal code",
       "Phone": "Phone",
       "Email": "Email",
       "Status": "Status",
@@ -20,6 +22,8 @@
       "Customer_Name": "Enter customer name",
       "Customer_Details": "Customer Details",
       "Customer_Address": "Enter customer address",
+      "Customer_City": "Enter customer city",
+      "Customer_PostalCode": "Enter customer postal code",
       "Customer_Phone": "Enter customer phone",
       "Customer_Email": "Enter customer email",
       "Customer_Name_Required": "Customer name is required",
@@ -41,9 +45,18 @@
       "title_update": "Confirm update",
       "text_update": "Do you really want to update this customer ?",
       "confirm_update": "Yes, update",
+       "Customer_ID_Event": "Customer Id",
       "title_customer_exist": "Customer exists", 
       "title_server_error": "Server Error",
       "server_error": "Unable to verify email. Please try again later.", 
       "server_error_text": "An error occurred while saving.",
-      "warning_title": "Warning !."
+      "warning_title": "Warning !.",
+      "customers": {
+         "statusValues": {
+            "PENDING": "Pending",
+            "CREATED": "Created",
+            "FAILED": "Failed"
+         }
+      }
+
    }

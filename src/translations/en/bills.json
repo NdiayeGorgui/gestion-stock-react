@@ -4,8 +4,14 @@
       "Show": "Show:",
       "Entries": " entries",
       "Customer": "Customer",
+      "OrderId": "Order Id",
+      "CustomerEmail": "Email",
+      "Products": "Products",
       "Product": "Product",
       "Date": "Date",
+      "Amount": "Amount",
+      "Total_Tax": "Total Tax",
+      "Total_Discount": "Total Discount",
       "Discount": "Discount",
       "Quantity": "Quantity",
       "Details": "Details",
@@ -27,6 +33,13 @@
        "Billing_Date": "Billing Date",
        "Customer_Phone": "Customer Phone",
        "Close": "Close",
-        "Order_Id": "Order Id"
+        "Order_Id": "Order Id",
+         "bills": {
+         "statusValues": {
+            "CREATED": "Created",
+            "COMPLETED": "Completed",
+             "CANCELED": "Canceled"
+         }
+      }
        
     }

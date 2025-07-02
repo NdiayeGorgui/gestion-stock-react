@@ -5,8 +5,10 @@
   "categories": "Categories",
   "orders": "Orders",
   "suppliers": "Suppliers",
-  "new_card_1": "New Products",
-  "new_card_2": "New Customers",
+  "new_card_products": "New Products",
+  "new_customers": "New Customers",
+  "new_categories": "New Categories",
+  "new_orders": "New Orders",
   "recent_products": "Recent Products",
   "name": "Name",
   "category": "Category",
@@ -21,9 +23,21 @@
   "products_remaining": "Products Remaining",
   "Welcom": "Welcome to Trocady Store",
   "Smart_Toy": "Smart Toy",
+  "Overview": "Overview",
   "Chat": "Chat Bot",
   "Message": "Write your message",
   "Send": "send",
-  "created_date": "Created date"
+  "created_date": "Created date",
+  "settings": "Settings",
+  "dark_mode": "Dark mode",
+  "language": "Language",
+  "reset": "Reset to default",
+  "font_size": "Font size" , 
+  "enable_notifications": "Enable notifications" ,
+   "fontSizes": {
+    "small": "Small",
+    "medium": "Medium",
+    "large": "Large"
+  }
 
 }

@@ -36,6 +36,9 @@ const Dashboard = () => {
   const [newCustomers, setNewCustomers] = useState([]);
   const [recentProductsTable, setRecentProductsTable] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [newCategories, setNewCategories] = useState([]);
+  const [newOrders, setNewOrders] = useState([]);
+
 
   const filteredRecentProducts = recentProductsTable.filter(prod =>
     prod.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -47,33 +50,30 @@ const Dashboard = () => {
   useEffect(() => {
     fetchData();
   }, []);
+const isInLast7Days = (dateStr) => {
+  if (!dateStr || typeof dateStr !== 'string') return false;
 
-  const isInLast7Days = (dateStr) => {
-    if (!dateStr || typeof dateStr !== 'string') return false;
+  const cleanDate = dateStr.includes('.')
+    ? dateStr.replace(' ', 'T').replace(/\.(\d{3})\d*/, '.$1')
+    : dateStr.replace(' ', 'T');
 
-    // Nettoyage : format ISO
-    const cleanDate = dateStr.includes('.')
-      ? dateStr.replace(' ', 'T').replace(/\.(\d{3})\d*/, '.$1')
-      : dateStr.replace(' ', 'T');
+  const utcDate = new Date(cleanDate);
+  if (isNaN(utcDate.getTime())) return false;
 
-    // Convertit la date UTC (si c'est ce que tu as en BD)
-    const utcDate = new Date(cleanDate);
+  // ✅ Appliquer GMT-4 (correction identique à Angular)
+  const localDate = new Date(utcDate.getTime() - 4 * 60 * 60 * 1000);
 
-    if (isNaN(utcDate.getTime())) return false;
+  const now = new Date();
+  now.setHours(23, 59, 59, 999);
 
-    // Convertir la date UTC en locale (GMT-4)
-    const gmtOffset = -4 * 60; // minutes
-    const localDate = new Date(utcDate.getTime() + gmtOffset * 60000);
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(now.getDate() - 6);
+  sevenDaysAgo.setHours(0, 0, 0, 0);
 
-    const now = new Date();
-    now.setHours(23, 59, 59, 999); // Fin de journée locale
-
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(now.getDate() - 6); // Inclut aujourd’hui
-    sevenDaysAgo.setHours(0, 0, 0, 0); // Début du jour 7e
-
-    return localDate >= sevenDaysAgo && localDate <= now;
-  };
+  const inRange = localDate >= sevenDaysAgo && localDate <= now;
+  console.log(`React - Date: ${localDate.toISOString()} -> InLast7Days: ${inRange}`);
+  return inRange;
+};
 
 
 
@@ -105,6 +105,13 @@ const Dashboard = () => {
       const recentProducts = allProducts.filter(p => isInLast7Days(p.createdDate));
       setNewProducts(recentProducts);
       console.log("Produits récents (7 jours)", recentProducts.map(p => ({ name: p.name, date: p.createdDate })));
+      // 🔹 Nouvelles catégories (dans les 7 derniers jours)
+      const uniqueNewCategories = [...new Set(recentProducts.map(p => p.category))];
+      setNewCategories(uniqueNewCategories);
+
+      // 🔹 Nouvelles commandes (dans les 7 derniers jours)
+      const recentOrders = completedOrdersRes.data.filter(o => isInLast7Days(o.createdDate));
+      setNewOrders(recentOrders);
 
 
       // 🔸 Carte "New Customers" (7 derniers jours)
@@ -133,23 +140,37 @@ const Dashboard = () => {
         name: item.name,
         value: item.qty
       })));
+
+       console.log("React - Nouveaux produits:", recentProducts.map(p => ({ name: p.name, date: p.createdDate })));
+    console.log("React - Nouveaux clients:", recentCustomers.map(c => ({ name: c.name, date: c.createdDate })));
+    console.log("React - Nouvelles catégories:", uniqueNewCategories);
     } catch (error) {
       console.error('Erreur lors du chargement des données du tableau de bord', error);
     }
   };
 
+const renderStatCard = (icon, title, value) => (
+  <Paper
+    elevation={3}
+    sx={{
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      height: '140px', // Hauteur uniforme stricte
+      p: 2
+    }}
+  >
+    <Box sx={{ mr: 2, fontSize: 40 }}>{icon}</Box>
+    <Box>
+      <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 'bold' }}>
+        {t(title)}
+      </Typography>
+      <Typography variant="h6">{value}</Typography>
+    </Box>
+  </Paper>
+);
 
-  const renderStatCard = (icon, title, value) => (
-    <Grid item xs={12} sm={6} md={3}>
-      <Paper elevation={3} sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
-        <Box sx={{ mr: 2 }}>{icon}</Box>
-        <Box>
-          <Typography variant="subtitle2" sx={{ mb: 2, fontWeight: 'bold' }}>{t(title)}</Typography>
-          <Typography variant="h6">{value}</Typography>
-        </Box>
-      </Paper>
-    </Grid>
-  );
 
   const renderBarChart = (title, data) => (
     <Box sx={{ mt: 6, mb: 5 }}>
@@ -241,9 +262,10 @@ const Dashboard = () => {
   );
 
   return (
-    <Box sx={{ px: 4, py: 3 }}>
+    <Box sx={{ maxWidth: '100%', px: 0, py: 3 }}>
+
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3, alignItems: 'center' }}>
-        <Typography variant="h5" sx={{ mb: 2 ,fontWeight: 'bold'}}>{t('dashboard_title')}</Typography>
+        <Typography variant="h5" sx={{ mb: 2, fontWeight: 'bold' }}>{t('dashboard_title')}</Typography>
         <TextField
           variant="outlined"
           size="small"
@@ -253,28 +275,39 @@ const Dashboard = () => {
         />
 
       </Box>
+<Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>
+ {t('Overview')}
+</Typography>
 
-      <Grid container spacing={2} sx={{ mb: 4 }}>
-        <Grid item xs={12} sm={6} md={2}>
-          {renderStatCard(<InventoryIcon fontSize="large" color="primary" />, 'total_products', products.length)}
-        </Grid>
-        <Grid item xs={12} sm={6} md={2}>
-          {renderStatCard(<CategoryIcon fontSize="large" color="secondary" />, 'categories', [...new Set(products.map(p => p.category))].length
-          )}
-        </Grid>
-        <Grid item xs={12} sm={6} md={2}>
-          {renderStatCard(<ShoppingCartIcon fontSize="large" sx={{ color: '#FF9800' }} />, 'orders', completedOrders.length)}
-        </Grid>
-        <Grid item xs={12} sm={6} md={2}>
-          {renderStatCard(<PeopleIcon fontSize="large" sx={{ color: '#4CAF50' }} />, 'suppliers', 8)}
-        </Grid>
-        <Grid item xs={12} sm={6} md={2}>
-          {renderStatCard(<InventoryIcon fontSize="large" sx={{ color: '#3f51b5' }} />, 'new_card_1', newProducts.length)}
-        </Grid>
-        <Grid item xs={12} sm={6} md={2}>
-          {renderStatCard(<PeopleIcon fontSize="large" sx={{ color: '#9c27b0' }} />, 'new_card_2', newCustomers.length)}
-        </Grid>
-      </Grid>
+<Grid container spacing={2} sx={{ mb: 3, display: 'flex', flexWrap: 'wrap' }}>
+  {[
+    { icon: <InventoryIcon fontSize="large" color="primary" />, title: 'total_products', value: products.length },
+    { icon: <CategoryIcon fontSize="large" color="secondary" />, title: 'categories', value: [...new Set(products.map(p => p.category))].length },
+    { icon: <ShoppingCartIcon fontSize="large" sx={{ color: '#FF9800' }} />, title: 'orders', value: completedOrders.length },
+    { icon: <PeopleIcon fontSize="large" sx={{ color: '#4CAF50' }} />, title: 'suppliers', value: 8 },
+    { icon: <InventoryIcon fontSize="large" sx={{ color: '#3f51b5' }} />, title: 'new_products', value: newProducts.length },
+    { icon: <PeopleIcon fontSize="large" sx={{ color: '#9c27b0' }} />, title: 'new_customers', value: newCustomers.length },
+    // { icon: <CategoryIcon fontSize="large" sx={{ color: '#00bcd4' }} />, title: 'new_categories', value: newCategories.length },
+    { icon: <ShoppingCartIcon fontSize="large" sx={{ color: '#e91e63' }} />, title: 'new_orders', value: newOrders.length }
+  ].map((card, index) => (
+    <Grid
+      item
+      key={index}
+      xs={12}
+      sm={6}
+      md={3}
+      lg={1.5}
+      sx={{
+        flexBasis: { xs: '100%', sm: '50%', md: '12.5%' },
+        maxWidth: { xs: '100%', sm: '50%', md: '12.5%' }
+      }}
+    >
+      {renderStatCard(card.icon, card.title, card.value)}
+    </Grid>
+  ))}
+</Grid>
+
+
 
       {renderRecentProductsTable()}
       {renderBarChart(t('best_selling_products'), mostOrderedProducts)}

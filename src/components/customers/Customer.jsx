@@ -11,12 +11,17 @@ const Customer = () => {
     const [address, setAddress] = useState('')
     const [phone, setPhone] = useState('')
     const [email, setEmail] = useState('')
+    const [city, setCity] = useState('');
+    const [postalCode, setPostalCode] = useState('');
+
 
 
     const { id } = useParams();
     const [errors, setErrors] = useState({
         name: '',
         address: '',
+        city: '',
+        postalCode: '',
         phone: '',
         email: ''
     })
@@ -27,10 +32,13 @@ const Customer = () => {
 
     useEffect(() => {
 
-         if (!loading && token && id) {
+        if (!loading && token && id) {
             getCustomer(id).then((response) => {
                 setName(response.data.name);
                 setAddress(response.data.address);
+                setCity(response.data.city || '');
+                setPostalCode(response.data.postalCode || '');
+
                 setPhone(response.data.phone);
                 setEmail(response.data.email);
 
@@ -39,7 +47,7 @@ const Customer = () => {
             })
         }
 
-   }, [loading, token, id]);
+    }, [loading, token, id]);
 
     function confirmSaveOrUpdate(e) {
         e.preventDefault();
@@ -70,7 +78,8 @@ const Customer = () => {
 
         if (!validateForm()) return;
 
-        const customer = { name, address, phone, email };
+        const customer = { name, address, city, postalCode, phone, email };
+
 
         if (!id) {
             try {
@@ -111,7 +120,7 @@ const Customer = () => {
                 Swal.fire({
                     icon: 'error',
                     title: t('error_title', { ns: 'customers' }),
-                    text:  t('server_error_text', { ns: 'customers' }),
+                    text: t('server_error_text', { ns: 'customers' }),
                     confirmButtonColor: '#d33'
                 });
             });
@@ -133,6 +142,19 @@ const Customer = () => {
             errorsCopy.address = '';
         } else {
             errorsCopy.address = t('Customer_Address_Required', { ns: 'customers' });
+            valid = false;
+        }
+        if (city.trim()) {
+            errorsCopy.city = '';
+        } else {
+            errorsCopy.city = t('Customer_City_Required', { ns: 'customers' });
+            valid = false;
+        }
+
+        if (postalCode.trim()) {
+            errorsCopy.postalCode = '';
+        } else {
+            errorsCopy.postalCode = t('Customer_PostalCode_Required', { ns: 'customers' });
             valid = false;
         }
 
@@ -164,80 +186,132 @@ const Customer = () => {
     }
 
     return (
-        <div className='container'>
-            <br /> <br />
-            <div className='row'>
-                <div className='card col-md-6 offset-md-3 offset-md-3'>
-                    {
-                        pageTitle()
-                    }
-                    <div className='card-body'>
-                        <form>
-                            <div className='form-group mb-2'>
-                                <label className='form-label'>{t('Name', { ns: 'customers' })}:</label>
-                                <input
-                                    type='text'
-                                    placeholder={t('Customer_Name', { ns: 'customers' })}
-                                    name='name'
-                                    value={name}
-                                    className={`form-control ${errors.name ? 'is-invalid' : ''}`}
-                                    onChange={(e) => setName(e.target.value)}
-                                >
-                                </input>
-                                {errors.name && <div className='invalid-feedback'> {errors.name} </div>}
-                            </div>
+  <div className='container'>
+    <br /> <br />
+    <div className='row'>
+      <div className='card col-md-8 offset-md-2'>
+        
+        {/* Ligne du haut : Submit | Titre | Fermer */}
+        <div className="d-flex justify-content-between align-items-center mt-3 mb-4 px-3">
+          <button className="btn btn-success" onClick={confirmSaveOrUpdate}>
+            {t('Submit', { ns: 'customers' })}
+          </button>
 
-                            <div className='form-group mb-2'>
-                                <label className='form-label'>{t('Address', { ns: 'customers' })}:</label>
-                                <input
-                                    type='text'
-                                    placeholder={t('Customer_Address', { ns: 'customers' })}
-                                    name='address'
-                                    value={address}
-                                    className={`form-control ${errors.address ? 'is-invalid' : ''}`}
-                                    onChange={(e) => setAddress(e.target.value)}
-                                >
-                                </input>
-                                {errors.address && <div className='invalid-feedback'> {errors.address} </div>}
-                            </div>
+          <h2 className="text-center flex-grow-1 m-0">
+            {id ? t('Update_Customer', { ns: 'customers' }) : t('Add_Customer', { ns: 'customers' })}
+          </h2>
 
-                            <div className='form-group mb-2'>
-                                <label className='form-label'>{t('Phone', { ns: 'customers' })}:</label>
-                                <input
-                                    type='text'
-                                    placeholder={t('Customer_Phone', { ns: 'customers' })}
-                                    name='phone'
-                                    value={phone}
-                                    className={`form-control ${errors.phone ? 'is-invalid' : ''}`}
-                                    onChange={(e) => setPhone(e.target.value)}
-                                >
-                                </input>
-                                {errors.phone && <div className='invalid-feedback'> {errors.phone} </div>}
-                            </div>
+          <button
+            type="button"
+            className="btn btn-outline-danger"
+            onClick={() => navigator('/admin/customers')}
+            title={t('Close', { ns: 'customers' })}
+          >
+            <i className="bi bi-x-lg"></i>
+          </button>
+        </div>
 
-                            <div className='form-group mb-2'>
-                                <label className='form-label'>{t('Email', { ns: 'customers' })}:</label>
-                                <input
-                                    type='text'
-                                    placeholder={t('Customer_Email', { ns: 'customers' })}
-                                    name='email'
-                                    value={email}
-                                    className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                >
-                                </input>
-                                {errors.email && <div className='invalid-feedback'> {errors.email} </div>}
-                            </div>
-                            <button className='btn btn-success' onClick={confirmSaveOrUpdate}>{t('Submit', { ns: 'customers' })}</button>
-                        </form>
-
-                    </div>
+        {/* Formulaire */}
+        <div className='card-body'>
+          <form>
+            <div className="row">
+              {/* Colonne 1 */}
+              <div className="col-md-6">
+                {/* Name */}
+                <div className='form-group mb-3'>
+                  <label className='form-label'>{t('Name', { ns: 'customers' })}:</label>
+                  <input
+                    type='text'
+                    name='name'
+                    value={name}
+                    placeholder={t('Customer_Name', { ns: 'customers' })}
+                    className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                  {errors.name && <div className='invalid-feedback'>{errors.name}</div>}
                 </div>
 
-            </div>
+                {/* Address */}
+                <div className='form-group mb-3'>
+                  <label className='form-label'>{t('Address', { ns: 'customers' })}:</label>
+                  <input
+                    type='text'
+                    name='address'
+                    value={address}
+                    placeholder={t('Customer_Address', { ns: 'customers' })}
+                    className={`form-control ${errors.address ? 'is-invalid' : ''}`}
+                    onChange={(e) => setAddress(e.target.value)}
+                  />
+                  {errors.address && <div className='invalid-feedback'>{errors.address}</div>}
+                </div>
 
+                {/* City */}
+                <div className='form-group mb-3'>
+                  <label className='form-label'>{t('City', { ns: 'customers' })}:</label>
+                  <input
+                    type='text'
+                    name='city'
+                    value={city}
+                    placeholder={t('Customer_City', { ns: 'customers' })}
+                    className={`form-control ${errors.city ? 'is-invalid' : ''}`}
+                    onChange={(e) => setCity(e.target.value)}
+                  />
+                  {errors.city && <div className='invalid-feedback'>{errors.city}</div>}
+                </div>
+              </div>
+
+              {/* Colonne 2 */}
+              <div className="col-md-6">
+                {/* Postal Code */}
+                <div className='form-group mb-3'>
+                  <label className='form-label'>{t('PostalCode', { ns: 'customers' })}:</label>
+                  <input
+                    type='text'
+                    name='postalCode'
+                    value={postalCode}
+                    placeholder={t('Customer_PostalCode', { ns: 'customers' })}
+                    className={`form-control ${errors.postalCode ? 'is-invalid' : ''}`}
+                    onChange={(e) => setPostalCode(e.target.value)}
+                  />
+                  {errors.postalCode && <div className='invalid-feedback'>{errors.postalCode}</div>}
+                </div>
+
+                {/* Phone */}
+                <div className='form-group mb-3'>
+                  <label className='form-label'>{t('Phone', { ns: 'customers' })}:</label>
+                  <input
+                    type='text'
+                    name='phone'
+                    value={phone}
+                    placeholder={t('Customer_Phone', { ns: 'customers' })}
+                    className={`form-control ${errors.phone ? 'is-invalid' : ''}`}
+                    onChange={(e) => setPhone(e.target.value)}
+                  />
+                  {errors.phone && <div className='invalid-feedback'>{errors.phone}</div>}
+                </div>
+
+                {/* Email */}
+                <div className='form-group mb-3'>
+                  <label className='form-label'>{t('Email', { ns: 'customers' })}:</label>
+                  <input
+                    type='email'
+                    name='email'
+                    value={email}
+                    placeholder={t('Customer_Email', { ns: 'customers' })}
+                    className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  {errors.email && <div className='invalid-feedback'>{errors.email}</div>}
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
-    )
+      </div>
+    </div>
+  </div>
+);
+
 }
 
 export default Customer

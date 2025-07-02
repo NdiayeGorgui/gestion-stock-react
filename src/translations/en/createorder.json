@@ -7,6 +7,8 @@
       "Search_Customer": "Search or select customer...",
       "Search_Product": "Search or select product...",
       "Address": "Address",
+       "OrderId": "Order Id",
+       "Products": "Products",
       "Phone": "Phone",
       "Email": "Email",
       "Discount": "Discount",

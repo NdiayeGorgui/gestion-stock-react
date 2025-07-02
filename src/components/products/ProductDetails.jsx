@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getProduct } from '../../services/ProductService'; // ✅ Assure-toi que ce chemin est correct
+import { getProduct } from '../../services/ProductService';
 import { useAuth } from '../hooks/useAuth';
 import { useTranslation } from 'react-i18next';
 
 const ProductDetails = () => {
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
+  const [description, setDescription] = useState('');
+  const [location, setLocation] = useState('');
   const [price, setPrice] = useState('');
   const [qty, setQty] = useState('');
   const [qtyStatus, setQtyStatus] = useState('');
+  const [productIdEvent, setProductIdEvent] = useState(''); // Nouveau état
 
   const { id } = useParams();
   const navigator = useNavigate();
   const { t } = useTranslation();
-
   const { token, loading } = useAuth();
 
   useEffect(() => {
@@ -23,9 +25,12 @@ const ProductDetails = () => {
         .then((response) => {
           setName(response.data.name);
           setCategory(response.data.category);
+          setDescription(response.data.description);
+          setLocation(response.data.location);
           setPrice(response.data.price);
           setQty(response.data.qty);
           setQtyStatus(response.data.qtyStatus);
+          setProductIdEvent(response.data.productIdEvent || ''); // On récupère le nouveau champ
         })
         .catch((error) => {
           console.error(error);
@@ -38,76 +43,78 @@ const ProductDetails = () => {
   }
 
   return (
-    <div className='container'>
+    <div className="container">
       <br /> <br />
-      <div className='row'>
-        <div className='card col-md-6 offset-md-3'>
-          <h2 className='text-center'>{t('Product_Details', { ns: 'products' })}</h2>
-          <div className='card-body'>
+      <div className="row">
+        <div className="card col-md-6 offset-md-3 position-relative">
+          {/* Ligne titre + bouton fermer */}
+          <div className="d-flex justify-content-between align-items-center mt-3 mb-4 px-3 position-relative" style={{ height: '48px' }}>
+            <h2 className="m-0 flex-grow-1 text-center">{t('Product_Details', { ns: 'products' })}</h2>
+            <button
+              type="button"
+              className="btn btn-outline-danger"
+              onClick={close}
+              title={t('Close', { ns: 'products' })}
+              style={{ minWidth: '40px' }}
+            >
+              <i className="bi bi-x-lg"></i>
+            </button>
+          </div>
+
+          <div className="card-body">
             <form>
-              <div className='form-group mb-2'>
-                <label className='form-label'>{t('Name', { ns: 'products' })}:</label>
-                <input
-                  type='text'
-                  name='name'
-                  value={name}
-                  className='form-control'
-                  readOnly
-                />
-              </div>
+              <div className="row">
+                {/* Colonne 1 */}
+                <div className="col-md-6">
+                  <div className="form-group mb-3">
+                    <label className="form-label">{t('Name', { ns: 'products' })}:</label>
+                    <input type="text" value={name} className="form-control" readOnly />
+                  </div>
 
-              <div className='form-group mb-2'>
-                <label className='form-label'>{t('Category', { ns: 'products' })}:</label>
-                <input
-                  type='text'
-                  name='category'
-                  value={category}
-                  className='form-control'
-                  readOnly
-                />
-              </div>
+                  <div className="form-group mb-3">
+                    <label className="form-label">{t('Description', { ns: 'products' })}:</label>
+                    <textarea value={description} className="form-control" readOnly />
+                  </div>
 
-              <div className='form-group mb-2'>
-                <label className='form-label'>{t('Price', { ns: 'products' })}:</label>
-                <input
-                  type='text'
-                  name='price'
-                  value={price}
-                  className='form-control'
-                  readOnly
-                />
-              </div>
+                  <div className="form-group mb-3">
+                    <label className="form-label">{t('Price', { ns: 'products' })}:</label>
+                    <input type="text" value={price} className="form-control" readOnly />
+                  </div>
 
-              <div className='form-group mb-2'>
-                <label className='form-label'>{t('Quantity', { ns: 'products' })}:</label>
-                <input
-                  type='text'
-                  name='qty'
-                  value={qty}
-                  className='form-control'
-                  readOnly
-                />
-              </div>
+                  <div className="form-group mb-3">
+                    <label className="form-label">{t('Quantity_Status', { ns: 'products' })}:</label>
+                    <input
+                      type="text"
+                      value={t(`qtyStatus.${qtyStatus}`, { ns: 'products' })}
+                      className="form-control"
+                      readOnly
+                    />
+                  </div>
+                </div>
 
-              <div className='form-group mb-2'>
-                <label className='form-label'>{t('Quantity_Status', { ns: 'products' })}:</label>
-                <input
-                  type='text'
-                  name='qtyStatus'
-                  value={t(`qtyStatus.${qtyStatus}`, { ns: 'products' })}
-                  className='form-control'
-                  readOnly
-                />
-              </div>
+                {/* Colonne 2 */}
+                <div className="col-md-6">
+                  <div className="form-group mb-3">
+                    <label className="form-label">{t('Category', { ns: 'products' })}:</label>
+                    <input type="text" value={category} className="form-control" readOnly />
+                  </div>
 
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <button
-                  onClick={() => close()}
-                  className="btn btn-primary"
-                  style={{ width: '50%' }}
-                >
-                  {t('Close', { ns: 'products' })}
-                </button>
+                  <div className="form-group mb-3">
+                    <label className="form-label">{t('Location', { ns: 'products' })}:</label>
+                    <textarea value={location} className="form-control" readOnly />
+                  </div>
+
+                  <div className="form-group mb-3">
+                    <label className="form-label">{t('Quantity', { ns: 'products' })}:</label>
+                    <input type="text" value={qty} className="form-control" readOnly />
+                  </div>
+
+                  {/* Nouveau champ productIdEvent */}
+                  <div className="form-group mb-3">
+                    <label className="form-label">{t('Product_ID_Event', { ns: 'products' })}:</label>
+                    <input type="text" value={productIdEvent} className="form-control" readOnly />
+                  </div>
+                </div>
               </div>
             </form>
           </div>

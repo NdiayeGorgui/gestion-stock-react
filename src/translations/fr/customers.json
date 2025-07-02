@@ -8,6 +8,8 @@
       "Name": "Nom",
       "Address": "Adresse",
       "Phone": "Téléphone",
+      "City": "Ville",
+      "PostalCode": "Code postal",
       "Email": "Email",
       "Status": "Statut",
       "Actions": "Actions",
@@ -19,6 +21,8 @@
       "Submit": "Soumettre",
       "Customer_Name": "Saisir le nom du client",
       "Customer_Address": "Saisir l'adresse du client",
+      "Customer_City": "Saisir la ille",
+      "Customer_PostalCode": "Saisir le code postal",
        "Customer_Details": "Détails du client",
       "Customer_Phone": "Saisir le téléphone du client",
       "Customer_Email": "Saisir l'adresse email du client",
@@ -39,11 +43,19 @@
       "text_add": "Voulez-vous vraiment sauvegarder ce client ?",
       "confirm_add": "Oui, sauvegarder",
       "title_update": "Confirmer la modification",
+      "Customer_ID_Event": "N° Client",
       "text_update": "Voulez-vous vraiment modifier ce client ?",
       "confirm_update": "Oui, modifier",
       "title_customer_exist": "Client existe", 
       "title_server_error": "Erreur Serveur ",
       "server_error": "Impossible de vérifier l'adresse e-mail. Veuillez réessayer ultérieurement.", 
       "server_error_text": "Une erreur s'est produite lors de l'enregistrement.",
-       "warning_title": "Avertissement !."
+       "warning_title": "Avertissement !.",
+       "customers": {
+         "statusValues": {
+            "PENDING": "En attente",
+            "CREATED": "Créé",
+            "FAILED": "Échec"
+         }
+      }
     }

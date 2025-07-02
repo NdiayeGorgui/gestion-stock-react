@@ -1,7 +1,7 @@
 import apiClient from "../components/Keycloack/axios-client";
 
 const REST_API_BASE_URL='/order-service/api/v1/orders/status';
-const REST_API_ORDER_BASE_URL='/order-service/api/v1/orders/order';
+const REST_API_ORDER_BASE_URL='/order-service/api/v1/orders';
 const REST_API_CREATE_BASE_URL='/order-service/api/v1/orders';
 const REST_API_CUSTOMER_BASE_URL='/order-service/api/v1/orders/customers';
 const REST_API_CUSTOMER1_BASE_URL='/order-service/api/v1/orders/customer';
@@ -24,7 +24,14 @@ export const createOrder = (order) => apiClient.post(REST_API_CREATE_BASE_URL, o
 
 export const removeOrder = (orderId) => apiClient.get(REST_API_CANCEL_BASE_URL + '/' + orderId);
 
-export const getOrder = (orderId) => apiClient.get(REST_API_ORDER_BASE_URL + '/' + orderId);
+export const getCreatedOrdersById = (orderId) => apiClient.get(REST_API_BASE_URL + '/' + 'CREATED'+ '/' + 'id' + '/' + orderId);
+export const getCompletedOrdersById = (orderId) => apiClient.get(REST_API_BASE_URL + '/' + 'COMPLETED'+ '/' + 'id' + '/' + orderId);
+export const getCanceledOrdersById = (orderId) => apiClient.get(REST_API_BASE_URL + '/' + 'CANCELED'+ '/' + 'id' + '/' + orderId);
+
+export const getOrdersById = (orderId) => apiClient.get(REST_API_ORDER_BASE_URL + '/' + orderId);
+
+export const getOrder = (orderId) => apiClient.get(REST_API_BASE_URL + '/' + 'COMPLETED' + '/' + orderId);
+export const getOrderById = (orderId) => apiClient.get(REST_API_BASE_URL + '/' + orderId);
 export const getCustomer = (customerIdEvent) => apiClient.get(REST_API_CUSTOMER_BASE_URL + '/' + customerIdEvent);
 export const getAmountByCustomerId = (customerIdEvent) => apiClient.get(REST_API_CUSTOMER_BASE_URL + '/' + customerIdEvent+'/' + 'CREATED');
 export const getCreatedOrdersByCustomer= (customerIdEvent) => apiClient.get(REST_API_CUSTOMER1_BASE_URL+ '/' + customerIdEvent + '/' + 'CREATED');

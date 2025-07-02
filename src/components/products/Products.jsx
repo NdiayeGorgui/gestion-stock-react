@@ -165,20 +165,25 @@ const Products = () => {
                 <td>{product.qty}</td>
 
                 <td>
-                  {product.qtyStatus === 'UNAVAILABLE' ? (
-                    <span className="text-danger fw-bold">OUT OF STOCK</span>
-                  ) : product.qtyStatus === 'LOW' ? (
-                    <span className="text-warning fw-bold">LOW STOCK</span>
-                  ) : product.qtyStatus === 'AVAILABLE' ? (
-                    <span className="text-success fw-bold">AVAILABLE</span>
-                  ) : (
-                    <span>{product.qtyStatus}</span> // fallback si statut inconnu
-                  )}
+                  <span
+                    className={
+                      product.qtyStatus === 'UNAVAILABLE'
+                        ? 'text-danger fw-bold'
+                        : product.qtyStatus === 'LOW'
+                          ? 'text-warning fw-bold'
+                          : product.qtyStatus === 'AVAILABLE'
+                            ? 'text-success fw-bold'
+                            : ''
+                    }
+                  >
+                    {t(`qtyStatus.${product.qtyStatus}`, { ns: 'products' })}
+                  </span>
                 </td>
 
 
 
-                <td>{product.status}</td>
+
+                <td>{t(`products.statusValues.${product.status}`, { ns: 'products' })}</td>
                 <td className="text-center">
                   {isAdmin && (
                     <>

@@ -114,20 +114,23 @@ const DrawerComponent = ({ isDrawerOpen, setIsDrawerOpen }) => {
   const [anchorElNotif, setAnchorElNotif] = useState(null);
   const unreadCount = notifications.filter((n) => !n.readValue).length;
 
-  useEffect(() => {
-    if (!loading && token) {
-      // Récupérer les notifications au chargement
+useEffect(() => {
+  if (!loading && token) {
+    const sub = NotificationService.notifications$.subscribe(setNotifications);
+    NotificationService.getNotifications();
+
+    // 🔁 Ajoute ce polling :
+    const interval = setInterval(() => {
       NotificationService.getNotifications();
+    }, 30000); // Toutes les 30 secondes
 
-      // S'abonner au BehaviorSubject pour mise à jour des notifications
-      const sub = NotificationService.notifications$.subscribe(setNotifications);
+    return () => {
+      sub.unsubscribe();
+      clearInterval(interval); // Nettoyage
+    };
+  }
+}, [loading, token]);
 
-      // Nettoyer à la destruction du composant
-      return () => {
-        sub.unsubscribe();
-      };
-    }
-  }, [loading, token]);
 
   // AJOUT: gestion clic notification = marque comme lu
   const handleNotificationClick = (notifId) => {

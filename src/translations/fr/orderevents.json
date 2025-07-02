@@ -12,6 +12,21 @@
       "Previous": "Précédent",
       "Next": "Suivant",
       "Last": "Dernier",
-      "No_Order_Events": "Aucune commande trouvée"
-
-    }
+      "No_Order_Events": "Aucune commande trouvée",
+      "orderevents": {
+         "statusValues": {
+            "CREATED": "Créé",
+            "CONFIRMED": "Confirmé",
+            "SHIPPED": "Expédié",
+            "DELIVERED": "Livré",
+            "CANCELED": "Annulé"
+         },
+         "detailsValues": {
+            "ORDER_CREATED": "Commande créée.",
+            "ORDER_CONFIRMED": "Commande confirmée après paiement.",
+            "ORDER_SHIPPED": "Commande expédiée",
+            "ORDER_DELIVERED": "Commande livrée",
+            "ORDER_CANCELED": "Commande annulée"
+         }
+      }
+   }

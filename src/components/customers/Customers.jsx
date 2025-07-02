@@ -160,7 +160,7 @@ const Customers = () => {
                 <td>{customer.address}</td>
                 <td>{customer.phone}</td>
                 <td>{customer.email}</td>
-                <td>{customer.status}</td>
+                <td>{t(`customers.statusValues.${customer.status}`, { ns: 'customers' })}</td>
                 <td className="text-center">
                   <button className="btn btn-outline-info btn-sm me-2" onClick={() => updateCustomer(customer.customerIdEvent)}>
                     <i className="bi bi-pencil-square"></i>
