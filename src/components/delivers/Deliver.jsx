@@ -131,7 +131,14 @@ const Deliver = () => {
                   </div>
                   <div className="form-group mb-3">
                     <label className="form-label fw-bold">{t('Date', { ns: 'delivers' })}:</label>
-                    <input type="text" value={new Date(timeStamp).toLocaleDateString('fr-FR')} className="form-control" readOnly />
+                    <input type="text" value={new Date(timeStamp).toLocaleDateString('fr-FR', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: false
+                    })} className="form-control" readOnly />
                   </div>
                   <div className="form-group mb-3">
                     <label className="form-label fw-bold">{t('Delivery_Status', { ns: 'delivers' })}:</label>
@@ -173,10 +180,10 @@ const Deliver = () => {
               </div>
 
               {/* Produits */}
-            
+
               {products.length > 0 && (
                 <div className="mt-4">
-                <h5>{t('Products', { ns: 'delivers' })}</h5>
+                  <h5>{t('Products', { ns: 'delivers' })}</h5>
                   <table className="table table-bordered">
                     <thead className="table-light">
                       <tr>

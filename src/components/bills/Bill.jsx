@@ -27,16 +27,16 @@ const Bill = () => {
     navigator('/admin/bills');
   };
 
-const handlePrint = async () => {
-  try {
-    const response = await printInvoicePdf(id); 
-    const blob = new Blob([response.data], { type: 'application/pdf' });
-    const url = window.URL.createObjectURL(blob);
-    window.open(url, '_blank');
-  } catch (err) {
-    console.error('Erreur lors de l\'impression :', err);
-  }
-};
+  const handlePrint = async () => {
+    try {
+      const response = await printInvoicePdf(id);
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, '_blank');
+    } catch (err) {
+      console.error('Erreur lors de l\'impression :', err);
+    }
+  };
 
 
 
@@ -105,7 +105,14 @@ const handlePrint = async () => {
                     <label className="form-label fw-bold">{t('Billing_Date', { ns: 'bills' })}:</label>
                     <input
                       type="text"
-                      value={new Date(billData.billingDate).toLocaleDateString('fr-FR')}
+                      value={new Date(billData.billingDate).toLocaleDateString('fr-FR', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false
+                      })}
                       className="form-control"
                       readOnly
                     />

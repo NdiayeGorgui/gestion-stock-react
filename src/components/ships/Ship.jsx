@@ -131,7 +131,14 @@ const Ship = () => {
                   </div>
                   <div className="form-group mb-3">
                     <label className="form-label fw-bold">{t('Date', { ns: 'ships' })}:</label>
-                    <input type="text" value={new Date(eventTimeStamp).toLocaleDateString('fr-FR')} className="form-control" readOnly />
+                    <input type="text" value={new Date(eventTimeStamp).toLocaleDateString('fr-FR', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: false
+                    })} className="form-control" readOnly />
                   </div>
                   <div className="form-group mb-3">
                     <label className="form-label fw-bold">{t('Shipping_Status', { ns: 'ships' })}:</label>

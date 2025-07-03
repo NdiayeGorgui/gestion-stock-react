@@ -46,7 +46,12 @@
       "payments": {
          "paymentStatusValues": {
             "COMPLETED": "Completed"
+         },
+            "paymentModes": {
+            "CASH": "Cash",
+            "CHECK": "Check",
+            "TRANSFERT": "Transfert"
+            }
          }
-      }
       
     }

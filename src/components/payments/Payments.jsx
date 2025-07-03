@@ -103,7 +103,7 @@ const Payments = () => {
       <table className="table table-striped table-bordered">
         <thead>
           <tr>
-            <th>{t('OrderId', { ns: 'payments' })}</th> <th>{t('Customer', { ns: 'payments' })}</th><th>{t('Payment_Mode', { ns: 'payments' })}</th><th>{t('Amount', { ns: 'payments' })}</th>
+            <th>{t('Order_Id', { ns: 'payments' })}</th> <th>{t('Customer', { ns: 'payments' })}</th><th>{t('Payment_Mode', { ns: 'payments' })}</th><th>{t('Amount', { ns: 'payments' })}</th>
             <th>{t('Date', { ns: 'payments' })}</th><th>{t('Status', { ns: 'payments' })}</th><th className="text-center">{t('Details', { ns: 'payments' })}</th>
           </tr>
         </thead>
@@ -113,7 +113,7 @@ const Payments = () => {
               <tr key={payment.id}>
                 <td>{payment.orderId}</td>
                 <td>{payment.customerName}</td>
-                <td>{payment.paymentMode}</td>
+                <td>{t(`payments.paymentModes.${payment.paymentMode}`, { ns: 'payments' })}</td>
                 <td>{payment.amount.toFixed(2)}</td>
                 <td>{new Date(payment.timeStamp).toLocaleDateString('fr-FR')}</td>
                 <td>{t(`payments.paymentStatusValues.${payment.paymentStatus}`, { ns: 'payments' })}</td>

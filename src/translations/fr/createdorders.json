@@ -22,8 +22,8 @@
       "Product_Name": "Nom du Produit",
       "Order_Id": "N° de Commande",
       "Order_IdEvent": "N° de Commande EV",
-      "Customer_idEvent": "Numéro du Client",
-      "Product_IdEvent": "Numéro du Produit",
+      "Customer_idEvent": "N° du Client",
+      "Product_IdEvent": "N° du Produit",
       "Date": "Date",
       "Email": "Email",
       "Category": "Catégorie",
@@ -51,6 +51,7 @@
       "text_remove": "La commande a été supprimée",
       "confirm_cancel": "Oui, retirer !",
       "cancel": "Annuler",
+      "Subtotal": "Total",
       "success_title": "Succés!",
       "error_title": "Erreur!",
       "error_message": "Echec de suppression de la commande"
