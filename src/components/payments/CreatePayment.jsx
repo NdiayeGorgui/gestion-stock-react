@@ -113,88 +113,91 @@ const CreatePayment = () => {
   const totalAmount = amountHT + order.totalTax - order.totalDiscount;
 
   return (
-  <div className="container mt-5">
-    <div className="row">
-      <div className="card col-md-8 offset-md-2">
+    <div className="container mt-5">
+      <div className="row">
+        <div className="card col-md-8 offset-md-2">
 
-        {/* Header avec titre et bouton Fermer */}
-        <div className="d-flex justify-content-between align-items-center mt-3 mb-1 px-3">
-          <h2 className="text-center flex-grow-1 m-0">{t('Payment', { ns: 'payments' })}</h2>
-          <button
-            className="btn btn-outline-danger"
-            onClick={() => navigate('/admin/created-orders')}
-            title={t('Close', { ns: 'payments' })}
-          >
-            <i className="bi bi-x-lg"></i>
-          </button>
-        </div>
+          {/* Header avec titre et bouton Fermer */}
+          <div className="d-flex justify-content-between align-items-center mt-3 mb-1 px-3">
+            <h2 className="text-center flex-grow-1 m-0">{t('Payment', { ns: 'payments' })}</h2>
+            <button
+              className="btn btn-outline-danger"
+              onClick={() => navigate('/admin/created-orders')}
+              title={t('Close', { ns: 'payments' })}
+            >
+              <i className="bi bi-x-lg"></i>
+            </button>
+          </div>
 
-        <div className="card-body">
-          <form onSubmit={handleSubmit}>
-            <div className="row">
-              {/* Colonne 1 */}
-              <div className="col-md-6">
-                <div className="form-group mb-3">
-                  <label className="form-label fw-bold">{t('Payment_Mode', { ns: 'payments' })}:</label>
-                  <select
-                    className="form-control"
-                    value={paymentMode}
-                    onChange={(e) => setPaymentMode(e.target.value)}
-                    required
-                  >
-                    <option value="">-- {t('Select_Mode', { ns: 'payments' })} --</option>
-                    {modes.map((mode) => (
-                      <option key={mode.id} value={mode.name}>{mode.name}</option>
-                    ))}
-                  </select>
+          <div className="card-body">
+            <form onSubmit={handleSubmit}>
+              <div className="row">
+                {/* Colonne 1 */}
+                <div className="col-md-6">
+                  <div className="form-group mb-3">
+                    <label className="form-label fw-bold">{t('Payment_Mode', { ns: 'payments' })}:</label>
+                    <select
+                      className="form-control"
+                      value={paymentMode}
+                      onChange={(e) => setPaymentMode(e.target.value)}
+                      required
+                    >
+                      <option value="">-- {t('Select_Mode', { ns: 'payments' })} --</option>
+                      {modes.map((mode) => (
+                        <option key={mode.id} value={mode.name}>
+                          {t(`payments.paymentModes.${mode.name}`, { ns: 'payments' })}
+                        </option>
+                      ))}
+
+                    </select>
+                  </div>
+
+                  <div className="form-group mb-3">
+                    <label className="form-label fw-bold">{t('Tax', { ns: 'payments' })}:</label>
+                    <input type="text" className="form-control" value={order.totalTax.toFixed(2)} readOnly />
+                  </div>
+
+                  <div className="form-group mb-3">
+                    <label className="form-label fw-bold">{t('Amount', { ns: 'payments' })} (HT):</label>
+                    <input type="text" className="form-control" value={amountHT.toFixed(2)} readOnly />
+                  </div>
                 </div>
 
-                <div className="form-group mb-3">
-                  <label className="form-label fw-bold">{t('Tax', { ns: 'payments' })}:</label>
-                  <input type="text" className="form-control" value={order.totalTax.toFixed(2)} readOnly />
-                </div>
+                {/* Colonne 2 */}
+                <div className="col-md-6">
+                  <div className="form-group mb-3">
+                    <label className="form-label fw-bold">{t('Customer_Name', { ns: 'payments' })}:</label>
+                    <input type="text" className="form-control" value={order.customerName || ''} readOnly />
+                  </div>
 
-                <div className="form-group mb-3">
-                  <label className="form-label fw-bold">{t('Amount', { ns: 'payments' })} (HT):</label>
-                  <input type="text" className="form-control" value={amountHT.toFixed(2)} readOnly />
+                  <div className="form-group mb-3">
+                    <label className="form-label fw-bold">{t('Discount', { ns: 'payments' })}:</label>
+                    <input type="text" className="form-control" value={order.totalDiscount.toFixed(2)} readOnly />
+                  </div>
+
+                  <div className="form-group mb-3">
+                    <label className="form-label fw-bold">{t('Total_Amount', { ns: 'payments' })} (TTC):</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={totalAmount.toFixed(2)}
+                      readOnly
+                    />
+                  </div>
                 </div>
               </div>
 
-              {/* Colonne 2 */}
-              <div className="col-md-6">
-                <div className="form-group mb-3">
-                  <label className="form-label fw-bold">{t('Customer_Name', { ns: 'payments' })}:</label>
-                  <input type="text" className="form-control" value={order.customerName || ''} readOnly />
-                </div>
-
-                <div className="form-group mb-3">
-                  <label className="form-label fw-bold">{t('Discount', { ns: 'payments' })}:</label>
-                  <input type="text" className="form-control" value={order.totalDiscount.toFixed(2)} readOnly />
-                </div>
-
-                <div className="form-group mb-3">
-                  <label className="form-label fw-bold">{t('Total_Amount', { ns: 'payments' })} (TTC):</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={totalAmount.toFixed(2)}
-                    readOnly
-                  />
-                </div>
+              <div className="text-center mt-4">
+                <button className="btn btn-primary" type="submit" disabled={!paymentMode}>
+                  {t('Pay_Now', { ns: 'payments' })}
+                </button>
               </div>
-            </div>
-
-            <div className="text-center mt-4">
-              <button className="btn btn-primary" type="submit" disabled={!paymentMode}>
-                {t('Pay_Now', { ns: 'payments' })}
-              </button>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
 
 };
 

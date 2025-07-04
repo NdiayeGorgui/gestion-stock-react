@@ -120,7 +120,7 @@ const Delivers = () => {
           ) : (
             <tr>
               <td colSpan="6" className="text-center">
-                {t('No_Delivers', { ns: 'delivers' })}
+                {t('No_Deliveries', { ns: 'delivers' })}
               </td>
             </tr>
           )}
