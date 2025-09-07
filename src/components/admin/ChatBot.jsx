@@ -148,7 +148,7 @@ const ChatBot = () => {
     <div className="container mt-4">
       <div className="card shadow">
         <div className="card-header bg-primary text-white">
-          <i className="material-icons me-2">smart_toy</i> {t('ChatBot')}
+          <i className="material-icons me-2">{t('Chat')}</i> 
         </div>
         <div className="card-body">
           <div
@@ -159,7 +159,7 @@ const ChatBot = () => {
             {messages.map((msg, i) => (
               <div key={i} className={`mb-2 text-${msg.from === 'user' ? 'end' : 'start'}`}>
                 <span className={`badge bg-${msg.from === 'user' ? 'primary' : 'secondary'}`}>
-                  {msg.from === 'user' ? t('Moi') : t('Bot')}
+                  {msg.from === 'user' ? t('Me') : t('Bot')}
                 </span>
                 <div className={`mt-1 p-2 rounded ${msg.from === 'user' ? 'bg-primary text-white' : 'bg-white border'}`}>
                   {msg.from === 'bot' ? (
@@ -185,7 +185,7 @@ const ChatBot = () => {
               required
             />
             <button type="submit" className="btn btn-primary me-2">
-              <i className="material-icons">send</i>
+              <i className="material-icons">{t('send')}</i>
             </button>
             <button
               type="button"
@@ -203,7 +203,7 @@ const ChatBot = () => {
               disabled={!isSpeaking}
               title="Couper la voix"
             >
-              <i className="material-icons">volume_off</i>
+              <i className="material-icons">{t('volume_off')}</i>
             </button>
           </form>
         </div>
