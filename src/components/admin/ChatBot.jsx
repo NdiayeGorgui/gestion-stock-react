@@ -8,8 +8,10 @@ const ChatBot = () => {
   const [userMessage, setUserMessage] = useState('');
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [isVoiceMode, setIsVoiceMode] = useState(false); 
+  const [isVoiceMode, setIsVoiceMode] = useState(false);
   const isVoiceModeRef = useRef(false);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const { t } = useTranslation();
   const chatWindowRef = useRef(null);
@@ -109,6 +111,7 @@ const ChatBot = () => {
     const updated = [...messages, { from: 'user', text }];
     setMessages(updated);
     setUserMessage('');
+    setIsLoading(true); // 🔁 Démarrer le spinner
 
     try {
       const response = await axios.get(
@@ -128,10 +131,12 @@ const ChatBot = () => {
       setMessages([...updated, { from: 'bot', text: errorMsg }]);
       if (voice || isVoiceModeRef.current) speak(errorMsg);
     } finally {
+      setIsLoading(false); // ✅ Stopper le spinner
       isVoiceModeRef.current = false;
       setIsVoiceMode(false);
     }
   };
+
 
   const startVoiceInput = () => {
     if (recognitionRef.current) {
@@ -148,7 +153,7 @@ const ChatBot = () => {
     <div className="container mt-4">
       <div className="card shadow">
         <div className="card-header bg-primary text-white">
-          <i className="material-icons me-2">{t('Chat')}</i> 
+          <i className="material-icons me-2">{t('Chat')}</i>
         </div>
         <div className="card-body">
           <div
@@ -171,6 +176,14 @@ const ChatBot = () => {
               </div>
             ))}
           </div>
+          {isLoading && (
+            <div className="text-center my-3">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+              <div className="mt-2">{t('thinking') || 'Chargement...'}</div>
+            </div>
+          )}
 
           <form
             onSubmit={(e) => { e.preventDefault(); sendMessage(); }}
