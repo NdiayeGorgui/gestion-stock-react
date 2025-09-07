@@ -40,7 +40,7 @@
       "error_message": "Erreur de livraison.",
        "delivers": {
          "statusValues": {
-            "DELIVERING": "En cours de livraison",
+            "DELIVERING": "En attente",
             "DELIVERED": "Livré"
          }
       }

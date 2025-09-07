@@ -39,7 +39,7 @@
       "error_message": "Erreur de création.",
        "ships": {
          "statusValues": {
-            "SHIPPING": "En cours d'expédition",
+            "SHIPPING": "En attente",
             "SHIPPED": "Expédié"
          }
       }
