@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 
 const ChatBot = () => {
@@ -11,7 +10,6 @@ const ChatBot = () => {
   const [isVoiceMode, setIsVoiceMode] = useState(false);
   const isVoiceModeRef = useRef(false);
   const [isLoading, setIsLoading] = useState(false);
-
 
   const { t } = useTranslation();
   const chatWindowRef = useRef(null);
@@ -44,7 +42,7 @@ const ChatBot = () => {
   // Auto-scroll
   useEffect(() => {
     chatWindowRef.current?.scrollTo(0, chatWindowRef.current.scrollHeight);
-  }, [messages]);
+  }, [messages, isLoading]);
 
   // Nettoyage Markdown
   const stripMarkdown = (text) =>
@@ -68,7 +66,6 @@ const ChatBot = () => {
   // Synthèse vocale
   const speak = (text) => {
     if (!('speechSynthesis' in window)) return;
-
     window.speechSynthesis.cancel();
 
     const utter = new SpeechSynthesisUtterance(stripMarkdown(text));
@@ -103,7 +100,7 @@ const ChatBot = () => {
     }
   };
 
-  // Envoi message
+  // Envoi message avec streaming
   const sendMessage = async (textParam, voice = false) => {
     const text = (textParam ?? userMessage).trim();
     if (!text) return;
@@ -111,32 +108,49 @@ const ChatBot = () => {
     const updated = [...messages, { from: 'user', text }];
     setMessages(updated);
     setUserMessage('');
-    setIsLoading(true); // 🔁 Démarrer le spinner
+    setIsLoading(true);
+
+    const botMessage = { from: 'bot', text: '' };
+    setMessages((prev) => [...prev, botMessage]);
 
     try {
-      const response = await axios.get(
-        `http://localhost:8866/api/v1/chat`,
-        { params: { query: text }, responseType: 'text' }
+      const response = await fetch(
+        `http://localhost:8866/api/v1/chat?query=${encodeURIComponent(text)}`
       );
-      const reply = response.data ?? '';
-      const newMsgs = [...updated, { from: 'bot', text: reply }];
-      setMessages(newMsgs);
+      if (!response.body) throw new Error('Pas de streaming disponible');
 
-      if ((voice || isVoiceModeRef.current) && reply.trim()) {
-        speak(reply);
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let botReply = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        botReply += chunk;
+
+        setMessages((prev) => {
+          const newMsgs = [...prev];
+          newMsgs[newMsgs.length - 1] = { from: 'bot', text: botReply };
+          return newMsgs;
+        });
+      }
+
+      if ((voice || isVoiceModeRef.current) && botReply.trim()) {
+        speak(botReply);
       }
     } catch (err) {
       console.error(err);
-      const errorMsg = 'Erreur lors de l’appel au serveur.';
-      setMessages([...updated, { from: 'bot', text: errorMsg }]);
+      const errorMsg = '⚠️ Erreur lors de l’appel au serveur.';
+      setMessages((prev) => [...prev, { from: 'bot', text: errorMsg }]);
       if (voice || isVoiceModeRef.current) speak(errorMsg);
     } finally {
-      setIsLoading(false); // ✅ Stopper le spinner
+      setIsLoading(false);
       isVoiceModeRef.current = false;
       setIsVoiceMode(false);
     }
   };
-
 
   const startVoiceInput = () => {
     if (recognitionRef.current) {
@@ -175,15 +189,17 @@ const ChatBot = () => {
                 </div>
               </div>
             ))}
-          </div>
-          {isLoading && (
-            <div className="text-center my-3">
-              <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading...</span>
+
+            {/* ✅ Effet "Bot typing..." inséré dans la conversation */}
+            {isLoading && (
+              <div className="mb-2 text-start">
+                <span className="badge bg-secondary"></span>
+                <div className="mt-1 p-2 rounded bg-light border typing-indicator">
+                  <span></span><span></span><span></span>
+                </div>
               </div>
-              <div className="mt-2">{t('thinking') || 'Chargement...'}</div>
-            </div>
-          )}
+            )}
+          </div>
 
           <form
             onSubmit={(e) => { e.preventDefault(); sendMessage(); }}
